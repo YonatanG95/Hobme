@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "663673909068",
+    "firebase_url": "https://hobme-5eca6.firebaseio.com",
+    "project_id": "hobme-5eca6",
+    "storage_bucket": "hobme-5eca6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:663673909068:android:095cbc6dd91646cd",
+        "android_client_info": {
+          "package_name": "com.project.hobme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "663673909068-li9hk9ji34ge3hf0dl9rg8a15kife0cd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.project.hobme",
+            "certificate_hash": "f2e7d9d713bbd790a92b3277ea44be2f76aa1619"
+          }
+        },
+        {
+          "client_id": "663673909068-r9m6859jj8367175ocod2gt50tbs21gm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjD8BLY5wsocFiWEw7SOpr4aSZRueE-jw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "663673909068-r9m6859jj8367175ocod2gt50tbs21gm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
