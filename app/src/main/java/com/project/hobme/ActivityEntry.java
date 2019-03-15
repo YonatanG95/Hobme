@@ -21,13 +21,14 @@ public class ActivityEntry
     private double longitude;
     private int minParticipants;
     private int maxParticipants;
+    private String description;
 
     @Ignore
     private Bitmap image;
     private UserEntry creator;
     private List<UserEntry> participants;
 
-    public ActivityEntry(int id, String type, Date creationDate, Date activityDate, double latitude, double longitude, int minParticipants, int maxParticipants) {
+    public ActivityEntry(int id, String type, Date creationDate, Date activityDate, double latitude, double longitude, int minParticipants, int maxParticipants, String description) {
         this.id = id;
         this.type = type;
         this.creationDate = creationDate;
@@ -36,10 +37,11 @@ public class ActivityEntry
         this.longitude = longitude;
         this.minParticipants = minParticipants;
         this.maxParticipants = maxParticipants;
+        this.description = description;
     }
 
     @Ignore
-    public ActivityEntry(String type, Date creationDate, Date activityDate, double latitude, double longitude, int minParticipants, int maxParticipants, UserEntry creator, List<UserEntry> participants, Bitmap image) {
+    public ActivityEntry(String type, Date creationDate, Date activityDate, double latitude, double longitude, int minParticipants, int maxParticipants, UserEntry creator, List<UserEntry> participants, Bitmap image, String description) {
         this.type = type;
         this.creationDate = creationDate;
         this.activityDate = activityDate;
@@ -50,6 +52,7 @@ public class ActivityEntry
         this.creator = creator;
         this.participants = participants;
         this.image = image;
+        this.description = description;
     }
 
     public void setActivityDate(Date activityDate) {
@@ -90,5 +93,9 @@ public class ActivityEntry
 
     public void setCreator(UserEntry creator) {
         this.creator = creator;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
