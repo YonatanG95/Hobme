@@ -7,7 +7,7 @@ public class DetailActivityViewModel extends ViewModel {
 
     private MutableLiveData<ActivityEntry> mActivity;
 
-    public DetailActivityViewModel(){
+    public DetailActivityViewModel(AppRepository repository, int id){
         mActivity = new MutableLiveData<>();
     }
 

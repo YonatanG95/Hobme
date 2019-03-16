@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 public class DetailActivity extends FragmentActivity{
 
     private DetailActivityViewModel mViewModel;
+    private DetailActivityViewModelFactory factory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +21,8 @@ public class DetailActivity extends FragmentActivity{
         mViewModel.getActivity().observe(this, activityEntry -> {
             if (activityEntry != null) bindActivityToUI(activityEntry);
         });
-
+        //factory = InjectorUtils.provideDetailViewModelFactory(this, id);
+        ViewModelProviders.of(this, factory).get(DetailActivityViewModel.class);
 }
     private void bindActivityToUI(ActivityEntry activityEntry) {
 
