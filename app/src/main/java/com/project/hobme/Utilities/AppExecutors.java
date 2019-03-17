@@ -1,10 +1,11 @@
-package com.project.hobme;
+package com.project.hobme.Utilities;
 
 import android.os.Handler;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import android.os.Looper;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 public class AppExecutors
 {

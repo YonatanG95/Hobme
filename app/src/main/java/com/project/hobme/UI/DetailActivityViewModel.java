@@ -1,4 +1,7 @@
-package com.project.hobme;
+package com.project.hobme.UI;
+
+import com.project.hobme.Data.AppRepository;
+import com.project.hobme.Data.Database.ActivityEntry;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

@@ -1,4 +1,6 @@
-package com.project.hobme;
+package com.project.hobme.Data.Network;
+
+import com.project.hobme.Data.Database.ActivityEntry;
 
 import androidx.annotation.NonNull;
 

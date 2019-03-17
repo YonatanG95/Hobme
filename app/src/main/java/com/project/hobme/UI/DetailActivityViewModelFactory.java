@@ -1,4 +1,6 @@
-package com.project.hobme;
+package com.project.hobme.UI;
+
+import com.project.hobme.Data.AppRepository;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;

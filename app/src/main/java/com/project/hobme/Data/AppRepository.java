@@ -1,6 +1,12 @@
-package com.project.hobme;
+package com.project.hobme.Data;
 
 import android.util.Log;
+
+import com.project.hobme.Utilities.AppExecutors;
+import com.project.hobme.Data.Network.AppNetworkDataSource;
+import com.project.hobme.Data.Database.ActivityDao;
+import com.project.hobme.Data.Database.ActivityEntry;
+import com.project.hobme.Data.Database.UserDao;
 
 import androidx.lifecycle.LiveData;
 

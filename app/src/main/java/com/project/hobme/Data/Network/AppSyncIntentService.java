@@ -1,8 +1,10 @@
-package com.project.hobme;
+package com.project.hobme.Data.Network;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
+
+import com.project.hobme.Utilities.InjectorUtils;
 
 public class AppSyncIntentService extends IntentService {
 

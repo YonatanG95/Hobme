@@ -1,6 +1,11 @@
-package com.project.hobme;
+package com.project.hobme.Utilities;
 
 import android.content.Context;
+
+import com.project.hobme.Data.AppRepository;
+import com.project.hobme.Data.Database.AppDB;
+import com.project.hobme.Data.Network.AppNetworkDataSource;
+import com.project.hobme.UI.DetailActivityViewModelFactory;
 
 public class InjectorUtils {
 
