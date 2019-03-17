@@ -1,4 +1,4 @@
-package com.project.hobme;
+package com.project.hobme.Data.Database;
 
 import androidx.room.Dao;
 

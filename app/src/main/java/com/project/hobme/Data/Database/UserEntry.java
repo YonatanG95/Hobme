@@ -1,4 +1,4 @@
-package com.project.hobme;
+package com.project.hobme.Data.Database;
 
 import android.graphics.Bitmap;
 
@@ -87,4 +87,45 @@ public class UserEntry
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public Bitmap getPicture() {
+        return picture;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public double getRank() {
+        return rank;
+    }
+
+    public List<String> getFavoriteHobieTypes() {
+        return favoriteHobieTypes;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
 }

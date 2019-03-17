@@ -1,4 +1,4 @@
-package com.project.hobme;
+package com.project.hobme.Data.Database;
 
 import android.graphics.Bitmap;
 
@@ -98,4 +98,53 @@ public class ActivityEntry
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Date getActivityDate() {
+        return activityDate;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getMaxParticipants() {
+        return maxParticipants;
+    }
+
+    public int getMinParticipants() {
+        return minParticipants;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public UserEntry getCreator() {
+        return creator;
+    }
+
+    public List<UserEntry> getParticipants() {
+        return participants;
+    }
+
 }

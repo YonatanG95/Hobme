@@ -15,4 +15,6 @@
     </string>
     <string name="facebook_application_id" translatable="false">APP_ID</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fbAPP_ID</string>
+    <string name="username">userName</string>
+    <string name="userRank">userRank</string>
 </resources>
