@@ -17,4 +17,7 @@
     <string name="facebook_login_protocol_scheme" translatable="false">fbAPP_ID</string>
     <string name="username">userName</string>
     <string name="userRank">userRank</string>
+    <string name="auth_failed">Authentication Failed</string>
+    <string name="dbname_users">users</string>
+    <string name="field_username">fullName</string>
 </resources>

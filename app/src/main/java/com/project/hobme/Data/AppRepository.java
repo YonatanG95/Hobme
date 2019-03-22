@@ -8,6 +8,8 @@ import com.project.hobme.Data.Database.ActivityDao;
 import com.project.hobme.Data.Database.ActivityEntry;
 import com.project.hobme.Data.Database.UserDao;
 
+import java.util.List;
+
 import androidx.lifecycle.LiveData;
 
 public class AppRepository {
@@ -24,6 +26,7 @@ public class AppRepository {
     private AppRepository(ActivityDao activityDao, UserDao userDao,
                                AppNetworkDataSource appNetworkDataSource,
                                AppExecutors executors) {
+        Log.d("Check", "Rep - AppRepository");
         mActivityDao = activityDao;
         mUserDao = userDao;
         mNetworkDataSource = appNetworkDataSource;
@@ -41,7 +44,7 @@ public class AppRepository {
     public synchronized static AppRepository getInstance(
             ActivityDao activityDao, UserDao userDao, AppNetworkDataSource appNetworkDataSource,
             AppExecutors executors) {
-        Log.d("Check", "Getting the repository");
+        Log.d("Check", "Rep - getInstance");
         if (sInstance == null) {
             synchronized (LOCK) {
                 sInstance = new AppRepository(activityDao, userDao, appNetworkDataSource,
@@ -57,7 +60,7 @@ public class AppRepository {
      * immediate sync is required, this method will take care of making sure that sync occurs.
      */
     private synchronized void initializeData() {
-
+        Log.d("Check", "Rep - initializeData");
         // Only perform initialization once per app lifetime. If initialization has already been
         // performed, we have nothing to do in this method.
         if (mInitialized) return;
@@ -75,6 +78,7 @@ public class AppRepository {
      */
     private void deleteOldData() {
         // TODO Finish this method when instructed
+        Log.d("Check", "Rep - deleteOldData");
     }
 
     /**
@@ -84,6 +88,7 @@ public class AppRepository {
      */
     private boolean isFetchNeeded() {
         // TODO Finish this method when instructed
+        Log.d("Check", "Rep - isFetchNeeded");
         return true;
     }
 
@@ -96,6 +101,7 @@ public class AppRepository {
     }
 
     private LiveData<ActivityEntry> getActivityById(int id){
+        Log.d("Check", "Rep - getActivityById");
         initializeData();
         return mActivityDao.getActivityByID(id);
     }

@@ -37,7 +37,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
     @Override
     public void onBindViewHolder(ItemRowHolder itemRowHolder, int i) {
 
-        final String sectionName = dataList.get(i).getFirstName();
+        final String sectionName = dataList.get(i).getFullName();
 
         List singleSectionItems = dataList.get(i).getFavoriteHobieTypes();
 

@@ -1,6 +1,7 @@
 package com.project.hobme.Data.Database;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.project.hobme.Utilities.DataConverter;
 
@@ -23,6 +24,7 @@ public abstract class AppDB extends RoomDatabase {
     private static volatile AppDB sInstance;
 
     public static AppDB getInstance(Context context) {
+        Log.d("Check","appDB - getInstance");
         if (sInstance == null) {
             synchronized (LOCK) {
                 if (sInstance == null) {

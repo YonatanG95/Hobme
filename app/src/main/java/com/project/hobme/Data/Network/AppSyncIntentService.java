@@ -8,13 +8,15 @@ import com.project.hobme.Utilities.InjectorUtils;
 
 public class AppSyncIntentService extends IntentService {
 
-    public AppSyncIntentService() {
+    public AppSyncIntentService()
+    {
         super("AppSyncIntentService");
+        Log.d("Check", "Sync - AppSyncIntentService");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d("Check", "Intent service started");
+        Log.d("Check", "Sync - onHandleIntent");
         AppNetworkDataSource networkDataSource = InjectorUtils.provideNetworkDataSource(this.getApplicationContext());
         networkDataSource.fetchActivities();
     }

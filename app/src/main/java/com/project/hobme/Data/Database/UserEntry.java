@@ -1,6 +1,7 @@
 package com.project.hobme.Data.Database;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import java.util.Date;
 import java.util.List;
@@ -9,27 +10,32 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity (tableName = "user")
 public class UserEntry
 {
     @PrimaryKey (autoGenerate = true)
     private int id;
-    private String firstName;
-    private String lastName;
+    //private String firstName;
+    //private String lastName;
+    private String fullName;
     private Date dateOfBirth;
     private double rank;
     private double latitude;
     private double longitude;
     private String aboutMe;
-    private List<String> favoriteHobieTypes;
+
 
     @Ignore
     private Bitmap picture;
+    @Ignore
+    private List<String> favoriteHobieTypes;
 
-    public UserEntry(int id, String firstName, String lastName, Date dateOfBirth, double rank, double latitude, double longitude, String aboutMe, List<String> favoriteHobieTypes, Bitmap picture) {
+    public UserEntry(int id, String fullName, Date dateOfBirth, double rank, double latitude, double longitude, String aboutMe) {
+        Log.d("Check","UE - UserEntry");
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        //this.firstName = firstName;
+        //this.lastName = lastName;
+        this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
         this.rank = rank;
         this.latitude = latitude;
@@ -40,9 +46,11 @@ public class UserEntry
     }
 
     @Ignore
-    public UserEntry(String firstName, String lastName, Date dateOfBirth, double rank, double latitude, double longitude, String aboutMe, List<String> favoriteHobieTypes, Bitmap picture) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public UserEntry(String fullName, Date dateOfBirth, double rank, double latitude, double longitude, String aboutMe, List<String> favoriteHobieTypes, Bitmap picture) {
+        Log.d("Check","UE - UserEntry2");
+        //this.firstName = firstName;
+        //this.lastName = lastName;
+        this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
         this.rank = rank;
         this.latitude = latitude;
@@ -60,12 +68,21 @@ public class UserEntry
         this.dateOfBirth = dateOfBirth;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+//    public void setFirstName(String firstName) {
+//        this.firstName = firstName;
+//    }
+//
+//    public void setLastName(String lastName) {
+//        this.lastName = lastName;
+//    }
+
+
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public void setPicture(Bitmap picture) {
@@ -74,6 +91,10 @@ public class UserEntry
 
     public void setRank(double rank) {
         this.rank = rank;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setFavoriteHobieTypes(List<String> favoriteHobieTypes) {
@@ -120,12 +141,12 @@ public class UserEntry
         return aboutMe;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
+//    public String getFirstName() {
+//        return firstName;
+//    }
+//
+//    public String getLastName() {
+//        return lastName;
+//    }
 
 }
