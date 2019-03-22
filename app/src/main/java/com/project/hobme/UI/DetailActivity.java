@@ -1,6 +1,7 @@
 package com.project.hobme.UI;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -22,15 +23,18 @@ public class DetailActivity extends FragmentActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("Check", "Detailed - onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        mViewModel = ViewModelProviders.of(this).get(DetailActivityViewModel.class);
+        int id = 1;
+        factory = InjectorUtils.provideDetailViewModelFactory(this, id);
+        mViewModel = ViewModelProviders.of(this, factory).get(DetailActivityViewModel.class);
+        //mViewModel = ViewModelProviders.of(this).get(DetailActivityViewModel.class);
         mViewModel.getActivity().observe(this, activityEntry -> {
             if (activityEntry != null) bindActivityToUI(activityEntry);
         });
-        int id = 1;
-        factory = InjectorUtils.provideDetailViewModelFactory(this, id);
-        ViewModelProviders.of(this, factory).get(DetailActivityViewModel.class);
+
+
     }
 
     private void bindActivityToUI(ActivityEntry activityEntry) {

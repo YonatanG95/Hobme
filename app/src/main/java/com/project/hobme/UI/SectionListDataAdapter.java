@@ -38,7 +38,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
         UserEntry singleItem = itemsList.get(i);
 
-        holder.tvTitle.setText(singleItem.getFirstName());
+        holder.tvTitle.setText(singleItem.getFullName());
 
 
        /* Glide.with(mContext)

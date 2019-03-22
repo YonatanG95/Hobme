@@ -1,7 +1,5 @@
 package com.project.hobme.Data.Database;
 
-import com.project.hobme.Data.Database.ActivityEntry;
-
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;

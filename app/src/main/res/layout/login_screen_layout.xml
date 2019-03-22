@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/back"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="40dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:src="@drawable/logo" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#ffff"
+        android:id="@+id/input_email"
+        android:hint="   Username"
+        android:inputType="textPersonName"
+        android:textColor="#cccccc"
+        android:drawableLeft="@drawable/person24"
+        android:textSize="20sp">
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="30dp"-->
+        <!--android:textColorHint="#cccccc">-->
+
+        <!--<EditText-->
+
+
+    </androidx.appcompat.widget.AppCompatEditText>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#ffff"
+        android:id="@+id/input_password"
+        android:hint="   Passwoard"
+        android:inputType="textPassword"
+        android:textColor="#cccccc"
+        android:drawableLeft="@drawable/key24"
+        android:textSize="20sp" >
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:textColorHint="#cccccc">-->
+
+        <!--<EditText-->
+
+
+    </androidx.appcompat.widget.AppCompatEditText>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="16dp"
+        android:text="Forgot Password?"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="#79a209df"
+        android:text="Log In"
+        android:textColor="#cccccc" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:text="No account yet? Create one"
+        android:gravity="center"
+        android:textSize="16dp"
+        android:id="@+id/link_signup"
+        android:textColor="@color/com_facebook_button_background_color"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/progressBar"
+        android:layout_centerInParent="true"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please wait..."
+        android:textColor="@color/fui_bgGitHub"
+        android:textSize="20sp"
+        android:layout_alignBottom="@+id/progressBar"
+        android:layout_alignRight="@+id/progressBar"
+        android:layout_alignLeft="@+id/progressBar"
+        android:id="@+id/pleaseWait"/>
+
+</RelativeLayout>

@@ -1,6 +1,7 @@
 package com.project.hobme.Data.Database;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import java.util.Date;
 import java.util.List;
@@ -25,10 +26,13 @@ public class ActivityEntry
 
     @Ignore
     private Bitmap image;
+    @Ignore
     private UserEntry creator;
+    @Ignore
     private List<UserEntry> participants;
 
     public ActivityEntry(int id, String type, Date creationDate, Date activityDate, double latitude, double longitude, int minParticipants, int maxParticipants, String description) {
+        Log.d("Check","AE - ActivityEntry");
         this.id = id;
         this.type = type;
         this.creationDate = creationDate;
@@ -42,6 +46,7 @@ public class ActivityEntry
 
     @Ignore
     public ActivityEntry(String type, Date creationDate, Date activityDate, double latitude, double longitude, int minParticipants, int maxParticipants, UserEntry creator, List<UserEntry> participants, Bitmap image, String description) {
+        Log.d("Check","AE - ActivityEntry2");
         this.type = type;
         this.creationDate = creationDate;
         this.activityDate = activityDate;

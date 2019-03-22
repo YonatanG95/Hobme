@@ -12,6 +12,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.project.hobme.Utilities.AppExecutors;
 import com.project.hobme.Data.Database.ActivityEntry;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -31,6 +34,7 @@ public class AppNetworkDataSource {
 
     private AppNetworkDataSource(Context context, AppExecutors executors)
     {
+        Log.d("Check", "Net DS - AppNetworkDataSource");
         mContext = context;
         mExecutors = executors;
         mDownloadedActivities = new MutableLiveData<ActivityEntry[]>();
@@ -42,7 +46,7 @@ public class AppNetworkDataSource {
      * Get the singleton for this class
      */
     public static AppNetworkDataSource getInstance(Context context, AppExecutors executors) {
-        Log.d("Check", "Getting the network data source");
+        Log.d("Check", "Net DS - getInstance");
         if (sInstance == null) {
             synchronized (LOCK) {
                 sInstance = new AppNetworkDataSource(context.getApplicationContext(), executors);
@@ -56,9 +60,10 @@ public class AppNetworkDataSource {
      * Starts an intent service to fetch the weather.
      */
     public void startFetchActivitiesService() {
+        Log.d("Check", "Net DS - startFetchActivitiesService");
         Intent intentToFetch = new Intent(mContext, AppSyncIntentService.class);
         mContext.startService(intentToFetch);
-        Log.d("Check", "Service created");
+
     }
 
 //    /**
@@ -117,6 +122,7 @@ public class AppNetworkDataSource {
      * Gets the newest weather
      */
     void fetchActivities() {
+        Log.d("Check", "Net DS - fetchActivities");
 //        Log.d(LOG_TAG, "Fetch weather started");
 //        mExecutors.networkIO().execute(() -> {
 //            try {
@@ -130,20 +136,27 @@ public class AppNetworkDataSource {
 //                // Use the URL to retrieve the JSON
 //                String jsonWeatherResponse = NetworkUtils.getResponseFromHttpUrl(weatherRequestUrl);
 //
+                List<ActivityEntry> act = new ArrayList<ActivityEntry>();
                 // Read from the database
                 ref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.d("Check", "Net DS - onDataChange");
                         // This method is called once with the initial value and again
                         // whenever data at this location is updated.
-                        String value = dataSnapshot.getValue(String.class);
-                        Log.d("CheckFirebase", "Value is: " + value);
+                        for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                            act.add(dataSnapshot.getValue(ActivityEntry.class));
+                        }
+
+                        //Log.d("CheckFirebase", "Value is: " + value);
                         //ActivitiesResponse response = new AppResponseParsers().parse(value);
-                        //mDownloadedActivities.postValue(response.getWeatherForecast());
+                        mDownloadedActivities.postValue(act.toArray(new ActivityEntry[act.size()]));
+                        Log.d("CheckNew", "Posted");
                     }
 
                     @Override
                     public void onCancelled(DatabaseError error) {
+                        Log.d("Check", "Net DS - onCancelled");
                         // Failed to read value
                         Log.w("CheckFirebase", "Failed to read value.", error.toException());
                     }
@@ -174,7 +187,34 @@ public class AppNetworkDataSource {
 //        });
     }
 
-    public LiveData<ActivityEntry[]> getCurrentActivities() {
+    public LiveData<ActivityEntry[]> getCurrentActivities()
+    {
+        Log.d("Check", "Net DS - getCurrentActivities");
+        List<ActivityEntry> act = new ArrayList<ActivityEntry>();
+        // Read from the database
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("Check", "Net DS - onDataChange");
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                    act.add(dataSnapshot.getValue(ActivityEntry.class));
+                }
+
+                //Log.d("CheckFirebase", "Value is: " + value);
+                //ActivitiesResponse response = new AppResponseParsers().parse(value);
+                mDownloadedActivities.postValue(act.toArray(new ActivityEntry[act.size()]));
+                Log.d("CheckNew", "Posted");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.d("Check", "Net DS - onCancelled");
+                // Failed to read value
+                Log.w("CheckFirebase", "Failed to read value.", error.toException());
+            }
+        });
         return mDownloadedActivities;
     }
 }
