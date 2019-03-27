@@ -22,11 +22,17 @@ public class UserEntry
     private double rank;
     private double latitude;
     private double longitude;
-    private String aboutMe;
+    //private String aboutMe;
 
 
     @Ignore
-    private Bitmap picture;
+    private Bitmap profilePicture;
+    @Ignore
+    private Bitmap picture1;
+    @Ignore
+    private Bitmap picture2;
+    @Ignore
+    private Bitmap picture3;
     @Ignore
     private List<String> favoriteHobieTypes;
 
@@ -40,13 +46,13 @@ public class UserEntry
         this.rank = rank;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.aboutMe = aboutMe;
+        //this.aboutMe = aboutMe;
         this.favoriteHobieTypes = favoriteHobieTypes;
-        this.picture = picture;
+        //this.picture = picture;
     }
 
     @Ignore
-    public UserEntry(String fullName, Date dateOfBirth, double rank, double latitude, double longitude, String aboutMe, List<String> favoriteHobieTypes, Bitmap picture) {
+    public UserEntry(String fullName, Date dateOfBirth, double rank, double latitude, double longitude, String aboutMe, List<String> favoriteHobieTypes, Bitmap profilePicture, Bitmap picture1, Bitmap picture2, Bitmap picture3) {
         Log.d("Check","UE - UserEntry2");
         //this.firstName = firstName;
         //this.lastName = lastName;
@@ -55,14 +61,17 @@ public class UserEntry
         this.rank = rank;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.aboutMe = aboutMe;
+        //this.aboutMe = aboutMe;
         this.favoriteHobieTypes = favoriteHobieTypes;
-        this.picture = picture;
+        this.profilePicture = profilePicture;
+        this.picture1 = picture1;
+        this.picture2 = picture2;
+        this.picture3 = picture3;
     }
 
-    public void setAboutMe(String aboutMe) {
-        this.aboutMe = aboutMe;
-    }
+//    public void setAboutMe(String aboutMe) {
+//        this.aboutMe = aboutMe;
+//    }
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
@@ -83,10 +92,6 @@ public class UserEntry
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public void setPicture(Bitmap picture) {
-        this.picture = picture;
     }
 
     public void setRank(double rank) {
@@ -121,10 +126,6 @@ public class UserEntry
         return latitude;
     }
 
-    public Bitmap getPicture() {
-        return picture;
-    }
-
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
@@ -137,9 +138,9 @@ public class UserEntry
         return favoriteHobieTypes;
     }
 
-    public String getAboutMe() {
-        return aboutMe;
-    }
+//    public String getAboutMe() {
+//        return aboutMe;
+//    }
 
 //    public String getFirstName() {
 //        return firstName;
@@ -149,4 +150,36 @@ public class UserEntry
 //        return lastName;
 //    }
 
+
+    public Bitmap getPicture1() {
+        return picture1;
+    }
+
+    public Bitmap getPicture2() {
+        return picture2;
+    }
+
+    public Bitmap getPicture3() {
+        return picture3;
+    }
+
+    public Bitmap getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setPicture1(Bitmap picture1) {
+        this.picture1 = picture1;
+    }
+
+    public void setPicture2(Bitmap picture2) {
+        this.picture2 = picture2;
+    }
+
+    public void setPicture3(Bitmap picture3) {
+        this.picture3 = picture3;
+    }
+
+    public void setProfilePicture(Bitmap profilePicture) {
+        this.profilePicture = profilePicture;
+    }
 }
