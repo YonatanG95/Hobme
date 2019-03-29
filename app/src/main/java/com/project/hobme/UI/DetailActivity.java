@@ -40,17 +40,17 @@ public class DetailActivity extends FragmentActivity{
     private void bindActivityToUI(ActivityEntry activityEntry) {
 
 
-        List<UserEntry> participants = activityEntry.getParticipants();
-
-        RecyclerView my_recycler_view = (RecyclerView) findViewById(R.id.my_recycler_view);
-
-        my_recycler_view.setHasFixedSize(true);
-
-        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(this, participants);
-
-        my_recycler_view.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
-        my_recycler_view.setAdapter(adapter);
+//        List<UserEntry> participants = activityEntry.getParticipants();
+//
+//        RecyclerView my_recycler_view = (RecyclerView) findViewById(R.id.my_recycler_view);
+//
+//        my_recycler_view.setHasFixedSize(true);
+//
+//        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(this, participants);
+//
+//        my_recycler_view.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+//
+//        my_recycler_view.setAdapter(adapter);
 
     }
 }

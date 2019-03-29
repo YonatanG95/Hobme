@@ -22,6 +22,7 @@ public class ActivityEntry
     private double longitude;
     private int minParticipants;
     private int maxParticipants;
+    private int currentParticipants;
     private String description;
 
     @Ignore
@@ -31,7 +32,7 @@ public class ActivityEntry
     @Ignore
     private List<UserEntry> participants;
 
-    public ActivityEntry(int id, String type, Date creationDate, Date activityDate, double latitude, double longitude, int minParticipants, int maxParticipants, String description) {
+    public ActivityEntry(int id, String type, Date creationDate, Date activityDate, double latitude, double longitude, int minParticipants, int maxParticipants, String description, int currentParticipants) {
         Log.d("Check","AE - ActivityEntry");
         this.id = id;
         this.type = type;
@@ -42,10 +43,11 @@ public class ActivityEntry
         this.minParticipants = minParticipants;
         this.maxParticipants = maxParticipants;
         this.description = description;
+        this.currentParticipants = currentParticipants;
     }
 
     @Ignore
-    public ActivityEntry(String type, Date creationDate, Date activityDate, double latitude, double longitude, int minParticipants, int maxParticipants, UserEntry creator, List<UserEntry> participants, Bitmap image, String description) {
+    public ActivityEntry(String type, Date creationDate, Date activityDate, double latitude, double longitude, int minParticipants, int maxParticipants, UserEntry creator, List<UserEntry> participants, Bitmap image, String description, int currentParticipants) {
         Log.d("Check","AE - ActivityEntry2");
         this.type = type;
         this.creationDate = creationDate;
@@ -58,6 +60,7 @@ public class ActivityEntry
         this.participants = participants;
         this.image = image;
         this.description = description;
+        this.currentParticipants = currentParticipants;
     }
 
     public void setActivityDate(Date activityDate) {
@@ -152,4 +155,11 @@ public class ActivityEntry
         return participants;
     }
 
+    public int getCurrentParticipants() {
+        return currentParticipants;
+    }
+
+    public void setCurrentParticipants(int currentParticipants) {
+        this.currentParticipants = currentParticipants;
+    }
 }
