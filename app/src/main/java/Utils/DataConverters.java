@@ -1,10 +1,10 @@
-package com.project.hobme.Utilities;
+package Utils;
 
 import java.util.Date;
 
 import androidx.room.TypeConverter;
 
-public class DataConverter {
+public class DataConverters {
 
     @TypeConverter
     public static Date toDate(Long timestamp) {
