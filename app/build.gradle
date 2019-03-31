@@ -21,6 +21,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -49,4 +52,3 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
-

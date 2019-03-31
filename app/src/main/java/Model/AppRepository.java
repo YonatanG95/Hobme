@@ -1,6 +1,7 @@
 package Model;
 
 import android.app.Application;
+import android.content.Context;
 
 import java.util.List;
 
@@ -8,11 +9,19 @@ import androidx.lifecycle.LiveData;
 
 public class AppRepository {
 
+    private static AppRepository sInstance;
     private ActivityDao activityDao;
 
-    public AppRepository(Application application){
-        AppDB database = AppDB.getInstance(application);
+    private AppRepository(Context context){
+        AppDB database = AppDB.getInstance(context);
         activityDao = database.activityDao();
+    }
+
+    public static synchronized AppRepository getInstance(Context context){
+        if (sInstance == null) {
+            sInstance = new AppRepository(context);
+        }
+        return sInstance;
     }
 
     public void insertActivity(Activity activity){
