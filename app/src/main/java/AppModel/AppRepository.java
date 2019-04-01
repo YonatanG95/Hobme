@@ -1,6 +1,5 @@
-package Model;
+package AppModel;
 
-import android.app.Application;
 import android.content.Context;
 
 import java.util.List;

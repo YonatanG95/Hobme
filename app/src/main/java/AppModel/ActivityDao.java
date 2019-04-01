@@ -1,4 +1,4 @@
-package Model;
+package AppModel;
 
 import java.util.List;
 

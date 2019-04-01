@@ -1,7 +1,7 @@
-package ViewModel;
+package AppViewModel;
 
-import Model.AppRepository;
-import Utils.AppExecutors;
+import AppModel.AppRepository;
+import AppUtils.AppExecutors;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,6 +22,6 @@ public class CustomViewModelFactory implements ViewModelProvider.Factory {
         if(modelClass.isAssignableFrom(ActivityListViewModel.class))
             return (T) new ActivityListViewModel(repository, executors);
         else
-            throw new IllegalArgumentException("ViewModel Not Found");
+            throw new IllegalArgumentException("AppViewModel Not Found");
     }
 }

@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package Utils;
+package AppUtils;
 
 import android.content.Context;
 
-import Model.AppDB;
-import Model.AppRepository;
-import ViewModel.ActivityListViewModel;
-import ViewModel.CustomViewModelFactory;
+import AppModel.AppRepository;
+import AppViewModel.CustomViewModelFactory;
 
 
 public class InjectorUtils {

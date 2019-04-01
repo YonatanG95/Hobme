@@ -1,8 +1,8 @@
-package Model;
+package AppModel;
 
 import android.content.Context;
 
-import Utils.DataConverters;
+import AppUtils.DataConverters;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;

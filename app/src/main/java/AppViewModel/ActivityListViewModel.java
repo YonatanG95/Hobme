@@ -1,14 +1,10 @@
-package ViewModel;
-
-import android.app.Application;
+package AppViewModel;
 
 import java.util.List;
 
-import Model.Activity;
-import Model.ActivityType;
-import Model.AppRepository;
-import Utils.AppExecutors;
-import androidx.annotation.NonNull;
+import AppModel.Activity;
+import AppModel.AppRepository;
+import AppUtils.AppExecutors;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 

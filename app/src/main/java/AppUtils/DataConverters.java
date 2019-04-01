@@ -1,4 +1,4 @@
-package Utils;
+package AppUtils;
 
 import java.util.Date;
 

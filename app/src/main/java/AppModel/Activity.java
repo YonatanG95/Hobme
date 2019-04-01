@@ -1,4 +1,4 @@
-package Model;
+package AppModel;
 
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -20,6 +20,7 @@ public class Activity {
     private int creatorId;
     private boolean isPrivate;
     private Date activityDateTime;
+    private String activityInfo;
     @Ignore
     private Location activityLocation;
     @Ignore
@@ -30,7 +31,7 @@ public class Activity {
     private List<Integer> membersIds;
 
     @Ignore
-    public Activity(int activityTypeId, Date creationTime, List<Integer> membersIds, int creatorId, boolean isPrivate, List<Bitmap> activityPhotos, Bitmap displayedImage, Location activityLocation, Date activityDateTime) {
+    public Activity(int activityTypeId, Date creationTime, List<Integer> membersIds, int creatorId, boolean isPrivate, List<Bitmap> activityPhotos, Bitmap displayedImage, Location activityLocation, Date activityDateTime, String activityInfo) {
         this.activityTypeId = activityTypeId;
         this.creationTime = creationTime;
         this.membersIds = membersIds;
@@ -40,14 +41,24 @@ public class Activity {
         this.displayedImage = displayedImage;
         this.activityLocation = activityLocation;
         this.activityDateTime = activityDateTime;
+        this.activityInfo = activityInfo;
     }
 
-    public Activity(int activityTypeId, Date creationTime, int creatorId, boolean isPrivate, Date activityDateTime) {
+    public Activity(int activityTypeId, Date creationTime, int creatorId, boolean isPrivate, Date activityDateTime, String activityInfo) {
         this.activityTypeId = activityTypeId;
         this.creationTime = creationTime;
         this.creatorId = creatorId;
         this.isPrivate = isPrivate;
         this.activityDateTime = activityDateTime;
+        this.activityInfo = activityInfo;
+    }
+
+    public String getActivityInfo() {
+        return activityInfo;
+    }
+
+    public void setActivityInfo(String activityInfo) {
+        this.activityInfo = activityInfo;
     }
 
     public int getId() {
