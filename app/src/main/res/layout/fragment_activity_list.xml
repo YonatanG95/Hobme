@@ -6,6 +6,10 @@
             name="adapter"
             type="AppView.ActivityAdapter">
         </variable>
+        <variable
+            name="handler"
+            type="AppView.ActivityListFragment">
+        </variable>
     </data>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
@@ -24,7 +28,8 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add"
         android:layout_gravity="bottom|end"
-        android:layout_margin="32dp"/>
+        android:layout_margin="32dp"
+        android:onClick="@{(view) -> handler.createActivityBtnClick(view)}"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

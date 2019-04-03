@@ -43,4 +43,9 @@ public class AppRepository {
         return activityDao.getActivitiesByType(activityTypeId);
     }
 
+    //TODO delete when type ready
+    public LiveData<List<Activity>> getActivities(){
+        return activityDao.getActivities();
+    }
+
 }

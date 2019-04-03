@@ -18,8 +18,10 @@ public class ActivityListViewModel extends ViewModel {
         this.mExecutor = mExecutor;
     }
 
-    public void insertActivity(Activity activity){
-        mExecutor.diskIO().execute(() -> repository.insertActivity(activity));
+    //TODO delete when type ready
+    public LiveData<List<Activity>> getActivities()
+    {
+        return repository.getActivities();
     }
 
     public LiveData<List<Activity>> getActivitiesByType(int activityTypeId){

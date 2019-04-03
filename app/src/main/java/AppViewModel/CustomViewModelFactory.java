@@ -21,6 +21,8 @@ public class CustomViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if(modelClass.isAssignableFrom(ActivityListViewModel.class))
             return (T) new ActivityListViewModel(repository, executors);
+        else if (modelClass.isAssignableFrom(CreateActivityViewModel.class))
+            return (T) new CreateActivityViewModel(repository, executors);
         else
             throw new IllegalArgumentException("AppViewModel Not Found");
     }

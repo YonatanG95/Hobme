@@ -27,4 +27,8 @@ public interface ActivityDao {
 
     @Query("SELECT * FROM activity_table WHERE activityTypeId = :activityTypeId")
     LiveData<List<Activity>> getActivitiesByType(int activityTypeId);
+
+    //TODO delete when type ready
+    @Query("SELECT * FROM activity_table")
+    LiveData<List<Activity>> getActivities();
 }
