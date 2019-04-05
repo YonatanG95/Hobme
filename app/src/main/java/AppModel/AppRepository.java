@@ -1,6 +1,7 @@
 package AppModel;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class AppRepository {
     }
 
     public void insertActivity(Activity activity){
+        Log.d("Check", "Repository - insert");
         activityDao.insert(activity);
     }
 
@@ -47,5 +49,8 @@ public class AppRepository {
     public LiveData<List<Activity>> getActivities(){
         return activityDao.getActivities();
     }
+
+    //TODO delete this
+    public void deleteAllActivities(){activityDao.deleteAllActivities();}
 
 }

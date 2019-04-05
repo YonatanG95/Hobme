@@ -1,10 +1,11 @@
 package AppView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.project.hobme.R;
-import com.project.hobme.databinding.ActivityRowItemBinding;
+import com.project.hobme.databinding.LayoutActivityRowItemBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
     }
 
     public void setActivities(List<Activity> activities){
+        Log.d("Check", ""+getItemCount());
         this.activityList = activities;
         notifyDataSetChanged();
     }
@@ -35,7 +37,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
         if(layoutInflater == null) {
             layoutInflater = LayoutInflater.from(parent.getContext());
         }
-        ActivityRowItemBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.activity_row_item, parent, false);
+        LayoutActivityRowItemBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.layout_activity_row_item, parent, false);
         return new ActivityHolder(binding);
     }
 
@@ -51,9 +53,9 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
 
     class ActivityHolder extends RecyclerView.ViewHolder {
 
-        private final ActivityRowItemBinding binding;
+        private final LayoutActivityRowItemBinding binding;
 
-        public ActivityHolder(final ActivityRowItemBinding itemBinding) {
+        public ActivityHolder(final LayoutActivityRowItemBinding itemBinding) {
             super(itemBinding.getRoot());
             this.binding = itemBinding;
         }

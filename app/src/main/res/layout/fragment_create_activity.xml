@@ -3,20 +3,36 @@
 
     <data>
         <variable
-            name="activity"
-            type="AppModel.Activity">
+            name="viewModel"
+            type="AppViewModel.CreateActivityViewModel">
+        </variable>
+        <variable
+            name="handler"
+            type="AppView.CreateActivityFragment">
         </variable>
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
         <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/testId"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@={viewModel.activity.activityInfo}"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_save"
+            android:background="@color/fui_linkColor"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="100dp"
+            android:onClick="@{(view) -> handler.addActivityBtn(view)}"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
 </layout>

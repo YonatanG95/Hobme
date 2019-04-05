@@ -27,4 +27,7 @@ public class ActivityListViewModel extends ViewModel {
     public LiveData<List<Activity>> getActivitiesByType(int activityTypeId){
         return repository.getActivitiesByType(activityTypeId);
     }
+
+    //TODO delete this
+    public void deleteAllActivities(){mExecutor.diskIO().execute(() -> repository.deleteAllActivities());}
 }

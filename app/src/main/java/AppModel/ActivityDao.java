@@ -31,4 +31,8 @@ public interface ActivityDao {
     //TODO delete when type ready
     @Query("SELECT * FROM activity_table")
     LiveData<List<Activity>> getActivities();
+
+    //TODO delete this
+    @Query("DELETE FROM activity_table")
+    void deleteAllActivities();
 }

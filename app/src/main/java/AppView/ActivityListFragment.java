@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 
 import com.project.hobme.R;
 import com.project.hobme.databinding.FragmentActivityListBinding;
+import com.project.hobme.databinding.FragmentCreateActivityBinding;
 
 import java.util.List;
 
@@ -29,7 +30,6 @@ public class ActivityListFragment extends Fragment {
     private FragmentActivityListBinding mActivityListBinding;
     private ActivityListViewModel mActivityListViewModel;
     private CustomViewModelFactory viewModelFactory;
-    private RecyclerView recyclerView;
     private ActivityAdapter adapter;
 
     public ActivityListFragment() {
@@ -48,8 +48,9 @@ public class ActivityListFragment extends Fragment {
                 .get(ActivityListViewModel.class);
 
 
+        //mActivityListViewModel.deleteAllActivities();
         //TODO delete when type ready
-        mActivityListViewModel.getActivities().observe(this, new Observer<List<Activity>>() {
+        mActivityListViewModel.getActivities().observe(getViewLifecycleOwner(), new Observer<List<Activity>>() {
             @Override
             public void onChanged(List<Activity> activities) {
                 adapter.setActivities(activities);
@@ -76,11 +77,11 @@ public class ActivityListFragment extends Fragment {
 
     public void createActivityBtnClick(View view)
     {
-        Log.d("CHECK", "button clicked");
         Fragment createActivity = new CreateActivityFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.activities_fragment_container, createActivity );
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
 }

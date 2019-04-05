@@ -53,6 +53,9 @@ public class Activity {
         this.activityInfo = activityInfo;
     }
 
+    //TODO check if legal
+    public Activity(){}
+
     public String getActivityInfo() {
         return activityInfo;
     }
