@@ -7,10 +7,18 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "activity_table")
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "activity_table",//,
+        //foreignKeys = {@ForeignKey(entity = User.class, parentColumns = "id", childColumns = "creatorId", onDelete = CASCADE)},
+       // indices = @Index(name = "creatorId_index", value = "creatorId"))
+                foreignKeys = {@ForeignKey(entity = ActivityType.class, parentColumns = "id", childColumns = "activityTypeId")})
+
 public class Activity {
 
     @PrimaryKey(autoGenerate = true)
@@ -54,6 +62,7 @@ public class Activity {
     }
 
     //TODO check if legal
+    @Ignore
     public Activity(){}
 
     public String getActivityInfo() {

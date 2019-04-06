@@ -11,10 +11,14 @@ public class AppRepository {
 
     private static AppRepository sInstance;
     private ActivityDao activityDao;
+    private UserDao userDao;
+    private UserActivityJoinDao userActivityJoinDao;
 
     private AppRepository(Context context){
         AppDB database = AppDB.getInstance(context);
         activityDao = database.activityDao();
+        userDao = database.userDao();
+        userActivityJoinDao = database.userActivityJoinDao();
     }
 
     public static synchronized AppRepository getInstance(Context context){
