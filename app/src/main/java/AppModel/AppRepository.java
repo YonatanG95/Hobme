@@ -13,12 +13,14 @@ public class AppRepository {
     private ActivityDao activityDao;
     private UserDao userDao;
     private UserActivityJoinDao userActivityJoinDao;
+    private ActivityTypeDao activityTypeDao;
 
     private AppRepository(Context context){
         AppDB database = AppDB.getInstance(context);
         activityDao = database.activityDao();
         userDao = database.userDao();
         userActivityJoinDao = database.userActivityJoinDao();
+        activityTypeDao = database.activityTypeDao();
     }
 
     public static synchronized AppRepository getInstance(Context context){
@@ -56,5 +58,15 @@ public class AppRepository {
 
     //TODO delete this
     public void deleteAllActivities(){activityDao.deleteAllActivities();}
+
+    public List<String> getAllCategories()
+    {
+        return activityTypeDao.getAllCategories();
+    }
+
+    public List<String> getAlltypes()
+    {
+        return activityTypeDao.getAllTypes();
+    }
 
 }

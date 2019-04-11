@@ -35,11 +35,6 @@ public class CreateActivityViewModel extends ViewModel {
         mExecutor.diskIO().execute(() -> repository.insertActivity(activity));
     }
 
-//    public void createActivity()
-//    {
-//        insertActivity(activity.getValue());
-//    }
-
     public LiveData<Activity> getActivity(){
         if (activity == null){
             activity = new MutableLiveData<>();

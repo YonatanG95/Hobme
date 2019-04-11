@@ -35,5 +35,4 @@ public interface ActivityDao {
     //TODO delete this
     @Query("DELETE FROM activity_table")
     void deleteAllActivities();
-
 }

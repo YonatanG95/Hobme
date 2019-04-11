@@ -8,7 +8,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {Activity.class, User.class, UserActivityJoin.class, ActivityType.class}, version = 1)
+@Database(entities = {Activity.class, User.class, UserActivityJoin.class, ActivityType.class}, version = 4)
 @TypeConverters(DataConverters.class)
 public abstract class AppDB extends RoomDatabase {
 
@@ -17,6 +17,7 @@ public abstract class AppDB extends RoomDatabase {
     public abstract ActivityDao activityDao();
     public abstract UserDao userDao();
     public abstract UserActivityJoinDao userActivityJoinDao();
+    public abstract ActivityTypeDao activityTypeDao();
 
     public static synchronized AppDB getInstance(Context context){
         if(instance == null){

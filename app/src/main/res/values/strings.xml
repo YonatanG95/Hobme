@@ -23,6 +23,14 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_activities_fragments_container">ActivitiesFragmentsContainer
-    </string>
+    <string name="title_activity_activities_fragments_container">ActivitiesFragmentsContainer</string>
+
+    <!--Create Activity Strings-->
+    <string name="createButton">ADD</string>
+    <string name="addPhoto">CHOOSE PHOTO</string>
+    <string name="date">TODAY</string>
+    <string name="endDate">END</string>
+    <string name="time">NOW</string>
+    <string name="switchText">Private</string>
+
 </resources>

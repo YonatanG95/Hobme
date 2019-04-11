@@ -52,7 +52,9 @@ public class ActivityListFragment extends Fragment {
         //TODO delete when type ready
         mActivityListViewModel.getActivities().observe(getViewLifecycleOwner(), new Observer<List<Activity>>() {
             @Override
-            public void onChanged(List<Activity> activities) {
+            public void onChanged(List<Activity> activities)
+            {
+                Log.d("Check", "size: " + activities.size());
                 adapter.setActivities(activities);
             }
         });

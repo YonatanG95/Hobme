@@ -2,15 +2,21 @@ package AppModel;
 
 import android.graphics.Bitmap;
 
+import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
+//@Entity(tableName = "category_table")
 public class Category {
 
-    protected String categoryName;
+    //@PrimaryKey(autoGenerate = true)
+    //private int id;
+    private String categoryName;
 
     @Ignore
-    protected Bitmap categoryPicture;
+    private Bitmap categoryPicture;
 
+    //@Ignore
     public Category(String name, Bitmap categoryPicture) {
         this.categoryName = name;
         this.categoryPicture = categoryPicture;
@@ -20,6 +26,7 @@ public class Category {
         this.categoryName = name;
     }
 
+    //@Ignore
     public Category(){}
 
     public String getCategoryName() {
@@ -37,4 +44,12 @@ public class Category {
     public void setCategoryPicture(Bitmap categoryPicture) {
         this.categoryPicture = categoryPicture;
     }
+
+//    public int getId() {
+//        return id;
+//    }
+//
+//    public void setId(int id) {
+//        this.id = id;
+//    }
 }

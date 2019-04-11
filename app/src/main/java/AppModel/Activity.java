@@ -9,10 +9,7 @@ import java.util.List;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
-
-import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "activity_table",//,
         //foreignKeys = {@ForeignKey(entity = User.class, parentColumns = "id", childColumns = "creatorId", onDelete = CASCADE)},
@@ -26,8 +23,12 @@ public class Activity {
     private int activityTypeId;
     private Date creationTime;
     private int creatorId;
+    private int minMembers;
+    private int maxMembers;
+    private int currMembers;
     private boolean isPrivate;
-    private Date activityDateTime;
+    private Date activityStartDateTime;
+    private Date activityEndDateTime;
     private String activityInfo;
     @Ignore
     private Location activityLocation;
@@ -48,22 +49,55 @@ public class Activity {
         this.activityPhotos = activityPhotos;
         this.displayedImage = displayedImage;
         this.activityLocation = activityLocation;
-        this.activityDateTime = activityDateTime;
+        this.activityStartDateTime = activityDateTime;
         this.activityInfo = activityInfo;
     }
 
-    public Activity(int activityTypeId, Date creationTime, int creatorId, boolean isPrivate, Date activityDateTime, String activityInfo) {
+    @Ignore
+    public Activity(int activityTypeId, Date creationTime, int creatorId, boolean isPrivate, Date activityDateTime, String activityInfo, Date activityEndDateTime) {
         this.activityTypeId = activityTypeId;
         this.creationTime = creationTime;
         this.creatorId = creatorId;
         this.isPrivate = isPrivate;
-        this.activityDateTime = activityDateTime;
+        this.activityStartDateTime = activityDateTime;
         this.activityInfo = activityInfo;
+        this.activityEndDateTime = activityEndDateTime;
     }
 
     //TODO check if legal
-    @Ignore
     public Activity(){}
+
+    public int getMinMembers() {
+        return minMembers;
+    }
+
+    public void setMinMembers(int minMembers) {
+        this.minMembers = minMembers;
+    }
+
+    public int getMaxMembers() {
+        return maxMembers;
+    }
+
+    public Date getActivityEndDateTime() {
+        return activityEndDateTime;
+    }
+
+    public void setActivityEndDateTime(Date activityEndDateTime) {
+        this.activityEndDateTime = activityEndDateTime;
+    }
+
+    public void setMaxMembers(int maxMembers) {
+        this.maxMembers = maxMembers;
+    }
+
+    public int getCurrMembers() {
+        return currMembers;
+    }
+
+    public void setCurrMembers(int currMembers) {
+        this.currMembers = currMembers;
+    }
 
     public String getActivityInfo() {
         return activityInfo;
@@ -77,12 +111,12 @@ public class Activity {
         return id;
     }
 
-    public Date getActivityDateTime() {
-        return activityDateTime;
+    public Date getActivityStartDateTime() {
+        return activityStartDateTime;
     }
 
-    public void setActivityDateTime(Date activityDateTime) {
-        this.activityDateTime = activityDateTime;
+    public void setActivityStartDateTime(Date activityStartDateTime) {
+        this.activityStartDateTime = activityStartDateTime;
     }
 
     public void setId(int id) {
