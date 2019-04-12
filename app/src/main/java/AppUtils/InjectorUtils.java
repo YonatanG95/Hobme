@@ -18,7 +18,7 @@ package AppUtils;
 
 import android.content.Context;
 
-import AppModel.AppRepository;
+import DataSources.AppRepository;
 import AppViewModel.CustomViewModelFactory;
 
 

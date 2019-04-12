@@ -1,7 +1,15 @@
-package AppModel;
+package DataSources;
 
 import android.content.Context;
 
+import AppModel.Activity;
+import AppModel.ActivityDao;
+import AppModel.ActivityType;
+import AppModel.ActivityTypeDao;
+import AppModel.User;
+import AppModel.UserActivityJoin;
+import AppModel.UserActivityJoinDao;
+import AppModel.UserDao;
 import AppUtils.DataConverters;
 import androidx.room.Database;
 import androidx.room.Room;

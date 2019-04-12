@@ -3,7 +3,7 @@ package AppViewModel;
 import java.util.List;
 
 import AppModel.Activity;
-import AppModel.AppRepository;
+import DataSources.AppRepository;
 import AppUtils.AppExecutors;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
@@ -11,11 +11,11 @@ import androidx.lifecycle.ViewModel;
 public class ActivityListViewModel extends ViewModel {
 
     private AppRepository repository;
-    private AppExecutors mExecutor;
+    //private AppExecutors mExecutor;
 
-    public ActivityListViewModel(AppRepository repository, AppExecutors mExecutor){
+    public ActivityListViewModel(AppRepository repository){//, AppExecutors mExecutor){
         this.repository = repository;
-        this.mExecutor = mExecutor;
+        //this.mExecutor = mExecutor;
     }
 
     //TODO delete when type ready
@@ -29,5 +29,8 @@ public class ActivityListViewModel extends ViewModel {
     }
 
     //TODO delete this
-    public void deleteAllActivities(){mExecutor.diskIO().execute(() -> repository.deleteAllActivities());}
+    public void deleteAllActivities(){
+        //mExecutor.diskIO().execute(() ->
+        repository.deleteAllActivities();
+    }
 }
