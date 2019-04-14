@@ -2,51 +2,62 @@ package AppModel;
 
 import android.graphics.Bitmap;
 
+import com.google.firebase.firestore.Blob;
+
+import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "activity_types_table")
+@Entity(tableName = "activity_types_table",
+        foreignKeys = {@ForeignKey(entity = Category.class, parentColumns = "id", childColumns = "categoryId")})
 public class ActivityType{
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    @PrimaryKey @NonNull
+    private String id;
     private String typeName;
+    private String categoryId;
 
     @Ignore
-    private Bitmap typePicture;
+    private Blob typePicture;
 
-    @Embedded
-    private Category category;
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     @Ignore
-    public ActivityType(int id, String name, Bitmap categoryPicture, String typeName, Bitmap typePicture, int categoryId) {
+    public ActivityType(String id, String name, String typeName, Blob typePicture) {
         this.id = id;
         this.typeName = typeName;
         this.typePicture = typePicture;
     }
 
     @Ignore
-    public ActivityType(int id, String name, String typeName) {
+    public ActivityType(String id, String name, String typeName) {
         this.id = id;
         this.typeName = typeName;
     }
 
-    public ActivityType(int id, String typeName)
+    public ActivityType(String id, String typeName)
     {
         this.id = id;
         this.typeName = typeName;
     }
+
+    @Ignore
+    public ActivityType(@NonNull String id, String typeName, Blob typePicture, String categoryId) {
+        this.id = id;
+        this.typeName = typeName;
+        this.typePicture = typePicture;
+        this.categoryId = categoryId;
+    }
+
 
     public String getTypeName() {
         return typeName;
@@ -56,19 +67,23 @@ public class ActivityType{
         this.typeName = typeName;
     }
 
-    public Bitmap getTypePicture() {
+    public Blob getTypePicture() {
         return typePicture;
     }
 
-    public void setTypePicture(Bitmap typePicture) {
+    public void setTypePicture(Blob typePicture) {
         this.typePicture = typePicture;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategory(String category) {
+        this.categoryId = category;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 }

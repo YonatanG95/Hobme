@@ -1,5 +1,7 @@
 package AppViewModel;
 
+import android.util.Log;
+
 import AppModel.Activity;
 import DataSources.AppRepository;
 import AppUtils.AppExecutors;
@@ -28,6 +30,7 @@ public class CreateActivityViewModel extends ViewModel {
         if (activity == null){
             activity = new MutableLiveData<>();
             Activity newActivity = new Activity();
+            Log.d("CHECK", "New act id: " + newActivity.getId());
             activity.setValue(newActivity);
         }
         return this.activity;

@@ -65,6 +65,7 @@ public class CreateActivityFragment extends Fragment {
     public void addActivityBtn(View view)
     {
         //Insert new activity using repository with a method of the ViewModel
+        Log.d("CHECK", "ID: "+mActivityListViewModel.getActivity().getValue().getId());
         mActivityListViewModel.insertActivity(mActivityListViewModel.getActivity().getValue());
 
         //Move back to activities list Fragment

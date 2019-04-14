@@ -18,14 +18,16 @@ package AppUtils;
 
 import android.content.Context;
 
+import com.google.firebase.firestore.Blob;
+
 import DataSources.AppRepository;
 import AppViewModel.CustomViewModelFactory;
 
 
 public class InjectorUtils {
 
-    public static AppRepository provideRepository(Context context) {
-        return AppRepository.getInstance(context);
+    public static AppRepository provideRepository(Context context, AppExecutors executors) {
+        return AppRepository.getInstance(context, executors);
     }
 
     public static AppExecutors provideExecutors(){
@@ -33,9 +35,9 @@ public class InjectorUtils {
     }
 
     public static CustomViewModelFactory provideViewModelFactory(Context context) {
-        AppRepository repository = provideRepository(context.getApplicationContext());
         AppExecutors executors = provideExecutors();
-        return new CustomViewModelFactory(repository, executors);
+        AppRepository repository = provideRepository(context.getApplicationContext(), executors);
+        return new CustomViewModelFactory(repository);//, executors);
     }
 
 }

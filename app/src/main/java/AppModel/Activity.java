@@ -6,20 +6,21 @@ import android.location.Location;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "activity_table",//,
+@Entity(tableName = "activity_table")//,//,
         //foreignKeys = {@ForeignKey(entity = User.class, parentColumns = "id", childColumns = "creatorId", onDelete = CASCADE)},
        // indices = @Index(name = "creatorId_index", value = "creatorId"))
-                foreignKeys = {@ForeignKey(entity = ActivityType.class, parentColumns = "id", childColumns = "activityTypeId")})
+                //foreignKeys = {@ForeignKey(entity = ActivityType.class, parentColumns = "id", childColumns = "activityTypeId")})
 
 public class Activity {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    @PrimaryKey @NonNull//(autoGenerate = true)
+    private String id;
     private int activityTypeId;
     private Date creationTime;
     private int creatorId;
@@ -107,7 +108,7 @@ public class Activity {
         this.activityInfo = activityInfo;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -119,7 +120,7 @@ public class Activity {
         this.activityStartDateTime = activityStartDateTime;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
