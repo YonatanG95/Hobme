@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.project.hobme.R;
 import com.project.hobme.databinding.FragmentActivityListBinding;
@@ -25,7 +26,7 @@ import com.project.hobme.databinding.FragmentCreateActivityBinding;
 
 import java.util.List;
 
-public class ActivityListFragment extends Fragment {
+public class ActivityListFragment extends Fragment{
 
     private FragmentActivityListBinding mActivityListBinding;
     private ActivityListViewModel mActivityListViewModel;
@@ -67,8 +68,11 @@ public class ActivityListFragment extends Fragment {
 //             }
 //        });
 
+        //observeActivities();
+
         return mActivityListBinding.getRoot();
     }
+
 
     private void bindData()
     {

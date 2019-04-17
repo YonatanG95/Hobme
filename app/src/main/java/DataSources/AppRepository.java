@@ -17,30 +17,35 @@ import AppModel.ActivityDao;
 import AppModel.ActivityType;
 import AppModel.ActivityTypeDao;
 import AppModel.Category;
+import AppModel.CategoryDao;
 import AppModel.UserActivityJoinDao;
 import AppModel.UserDao;
 import AppUtils.AppExecutors;
 import AppUtils.DataConverters;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 public class AppRepository {
 
     private static AppRepository sInstance;
     private ActivityDao activityDao;
     private UserDao userDao;
-    private UserActivityJoinDao userActivityJoinDao;
+    //private UserActivityJoinDao userActivityJoinDao;
     private ActivityTypeDao activityTypeDao;
+    private CategoryDao categoryDao;
     private final AppExecutors executors;
     private NetworkData networkData;
     private Context mContext;
+    private boolean mInitialized = false;
+    MutableLiveData<Category> mt = new MutableLiveData<Category>();
 
     private AppRepository(Context context, AppExecutors executors){
         this.executors = executors;
         AppDB database = AppDB.getInstance(context);
         this.activityDao = database.activityDao();
         this.userDao = database.userDao();
-        this.userActivityJoinDao = database.userActivityJoinDao();
+        //this.userActivityJoinDao = database.userActivityJoinDao();
         this.activityTypeDao = database.activityTypeDao();
         this.networkData = NetworkData.getInstance();
         this.mContext = context;
@@ -56,15 +61,17 @@ public class AppRepository {
 
     //Create new activity
     public void insertActivity(Activity activity){
-        executors.networkIO().execute(()-> {
+        executors.diskIO().execute(()-> {
             String id = networkData.insertActivity(activity);
             activity.setId(id);
-        });
-        executors.diskIO().execute(() -> {
             activityDao.insert(activity);
             Log.d("Check", "ID rep: " + activity.getId());
         });
 
+    }
+
+    public List<String> getAllCategories(){
+        return categoryDao.getAllCategories();
     }
 
 //    public void updateActivity(Activity activity){
@@ -116,6 +123,14 @@ public class AppRepository {
         executors.networkIO().execute(() -> {
             networkData.insertActivityType(activityType, categoryName);
         });
+    }
+
+    private synchronized void initializeData() {
+
+        if(mInitialized) return;
+        mInitialized = true;
+
+
     }
 
 

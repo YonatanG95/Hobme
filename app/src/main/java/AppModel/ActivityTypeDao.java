@@ -18,4 +18,10 @@ public interface ActivityTypeDao {
 
     @Query("SELECT typeName FROM activity_types_table WHERE categoryId=:categoryId")
     List<String> getTypesByCategory(String categoryId);
+
+    @Query("SELECT COUNT(id) FROM activity_types_table")
+    int countActivityTypes();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void bulkInsertActivityType(ActivityType... activityTypes);
 }
