@@ -17,16 +17,16 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {Activity.class, User.class, UserActivityJoin.class, ActivityType.class, Category.class}, version = 9)
+@Database(entities = {Activity.class, User.class, UserActivityJoin.class, ActivityType.class, Category.class}, version = 11)
 @TypeConverters(DataConverters.class)
 public abstract class AppDB extends RoomDatabase {
 
     private static AppDB instance;
 
     public abstract ActivityDao activityDao();
-    public abstract UserDao userDao();
-    public abstract UserActivityJoinDao userActivityJoinDao();
-    public abstract ActivityTypeDao activityTypeDao();
+    //public abstract UserDao userDao();
+    //public abstract UserActivityJoinDao userActivityJoinDao();
+    //public abstract ActivityTypeDao activityTypeDao();
 
     public static synchronized AppDB getInstance(Context context){
         if(instance == null){

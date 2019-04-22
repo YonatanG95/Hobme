@@ -13,20 +13,24 @@ import java.util.List;
 import AppModel.Activity;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.paging.PagedList;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ActivityHolder> {
+public class ActivityAdapter extends PagedListAdapter<Activity, ActivityAdapter.ActivityHolder> {
 
     private LayoutInflater layoutInflater;
     private List<Activity> activityList = new ArrayList<>();
 
-    public ActivityAdapter()
-    {
-        this.activityList = activityList;
+    protected ActivityAdapter() {
+        super(DIFF_CALLBACK);
     }
 
-    public void setActivities(List<Activity> activities){
-        Log.d("Check", ""+getItemCount());
+
+    public void setActivities(List<Activity> activities) {
+        Log.d("Check", "" + getItemCount());
         this.activityList = activities;
         notifyDataSetChanged();
     }
@@ -34,7 +38,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
     @NonNull
     @Override
     public ActivityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(layoutInflater == null) {
+        if (layoutInflater == null) {
             layoutInflater = LayoutInflater.from(parent.getContext());
         }
         LayoutActivityRowItemBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.layout_activity_row_item, parent, false);
@@ -43,13 +47,29 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
 
     @Override
     public void onBindViewHolder(@NonNull ActivityHolder holder, int position) {
-        holder.binding.setActivity(activityList.get(position));
+        Activity activity = getItem(position);
+        if (activity != null) {
+            holder.binding.setActivity(activity);
+        }
+        else {
+            // Null defines a placeholder item - PagedListAdapter will automatically invalidate
+            // this row when the actual object is loaded from the database
+            holder.binding.setActivity(null);
+        }
     }
 
-    @Override
-    public int getItemCount() {
-        return activityList.size();
-    }
+    public static final DiffUtil.ItemCallback<Activity> DIFF_CALLBACK =
+        new DiffUtil.ItemCallback<Activity>() {
+            @Override
+            public boolean areItemsTheSame(@NonNull Activity oldItem, @NonNull Activity newItem) {
+                return oldItem.getId() == newItem.getId();
+            }
+
+            @Override
+            public boolean areContentsTheSame(@NonNull Activity oldItem, @NonNull Activity newItem) {
+                return oldItem.equals(newItem);
+            }
+    };
 
     class ActivityHolder extends RecyclerView.ViewHolder {
 
@@ -59,5 +79,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
             super(itemBinding.getRoot());
             this.binding = itemBinding;
         }
+
     }
+
 }

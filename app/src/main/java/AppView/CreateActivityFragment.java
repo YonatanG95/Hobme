@@ -1,17 +1,21 @@
 package AppView;
 
 
+import android.annotation.TargetApi;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.project.hobme.R;
 import com.project.hobme.databinding.FragmentCreateActivityBinding;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import AppModel.Activity;
@@ -33,6 +37,9 @@ public class CreateActivityFragment extends Fragment {
     private FragmentCreateActivityBinding mFragmentCreateActivityBinding;
     private CustomViewModelFactory viewModelFactory;
     private CreateActivityViewModel mActivityListViewModel;
+    private Calendar date;
+    @TargetApi(24)
+    private DatePickerDialog datePickerDialog;
 
     public CreateActivityFragment() {
         // Required empty public constructor
@@ -42,6 +49,8 @@ public class CreateActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        date = Calendar.getInstance();
 
         mFragmentCreateActivityBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_activity, container, false);
 
@@ -74,6 +83,24 @@ public class CreateActivityFragment extends Fragment {
         transaction.replace(R.id.activities_fragment_container, listActivities );
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @TargetApi(24)
+    public void dateBtn(View genView){
+        datePickerDialog = new DatePickerDialog(getContext());
+        datePickerDialog.updateDate(date.get(Calendar.YEAR), date.get(Calendar.MONDAY), date.get(Calendar.DAY_OF_WEEK));
+        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                if(genView.getId()==R.id.dateStartBtn){
+                    mFragmentCreateActivityBinding.dateStartBtn.setText("" + dayOfMonth + "/" + (month + 1) + "/" + year);
+                }
+                if(genView.getId()==R.id.dateEndBtn){
+                    mFragmentCreateActivityBinding.dateEndBtn.setText("" + dayOfMonth + "/" + (month + 1) + "/" + year);
+                }
+            }
+        });
+        datePickerDialog.show();
     }
 
 }

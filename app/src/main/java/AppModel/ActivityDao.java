@@ -3,6 +3,7 @@ package AppModel;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -22,15 +23,20 @@ public interface ActivityDao {
     @Delete
     void delete(Activity activity);
 
-    @Query("SELECT * FROM activity_table WHERE creatorId = :creatorId")
-    LiveData<List<Activity>> getActivitiesByCreator(int creatorId);
-
-    @Query("SELECT * FROM activity_table WHERE activityTypeId = :activityTypeId")
-    LiveData<List<Activity>> getActivitiesByType(int activityTypeId);
+//    @Query("SELECT * FROM activity_table WHERE creatorId = :creatorId")
+//    LiveData<List<Activity>> getActivitiesByCreator(int creatorId);
+//
+//    @Query("SELECT * FROM activity_table WHERE activityTypeId = :activityTypeId")
+//    LiveData<List<Activity>> getActivitiesByType(int activityTypeId);
 
     //TODO delete when type ready
     @Query("SELECT * FROM activity_table")
-    LiveData<List<Activity>> getActivities();
+    DataSource.Factory<Integer, Activity> getActivities();
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void bulkInsertActivity(List<Activity> activities);
+
 
     //TODO delete this
     @Query("DELETE FROM activity_table")

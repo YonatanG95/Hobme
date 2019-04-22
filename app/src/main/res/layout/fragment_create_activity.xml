@@ -10,9 +10,6 @@
             name="handler"
             type="AppView.CreateActivityFragment">
         </variable>
-        <data>
-            <import type="java.lang.Integer" />
-        </data>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -139,8 +136,8 @@
             app:layout_constraintTop_toTopOf="parent"></TimePicker>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/materialButton3"
-            android:layout_width="120dp"
+            android:id="@+id/dateStartBtn"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
@@ -150,6 +147,7 @@
             app:icon="@drawable/ic_date"
             app:iconTint="@android:color/black"
             app:layout_constraintStart_toStartOf="parent"
+            android:onClick="@{(view) -> handler.dateBtn(view)}"
             app:layout_constraintTop_toBottomOf="@+id/appCompatSpinner" />
 
         <com.google.android.material.button.MaterialButton
@@ -163,12 +161,12 @@
             app:backgroundTint="@android:color/transparent"
             app:icon="@drawable/ic_time"
             app:iconTint="@android:color/black"
-            app:layout_constraintStart_toEndOf="@+id/materialButton3"
+            app:layout_constraintStart_toEndOf="@+id/dateStartBtn"
             app:layout_constraintTop_toBottomOf="@+id/appCompatSpinner" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/materialButton4"
-            android:layout_width="120dp"
+            android:id="@+id/dateEndBtn"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
@@ -177,8 +175,9 @@
             app:backgroundTint="@android:color/transparent"
             app:icon="@drawable/ic_date"
             app:iconTint="@android:color/black"
+            android:onClick="@{(view) -> handler.dateBtn(view)}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialButton3" />
+            app:layout_constraintTop_toBottomOf="@+id/dateStartBtn" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/materialButton6"
@@ -191,7 +190,7 @@
             app:backgroundTint="@android:color/transparent"
             app:icon="@drawable/ic_time"
             app:iconTint="@android:color/black"
-            app:layout_constraintStart_toEndOf="@+id/materialButton4"
+            app:layout_constraintStart_toEndOf="@+id/dateEndBtn"
             app:layout_constraintTop_toBottomOf="@+id/materialButton5" />
 
         <androidx.appcompat.widget.AppCompatEditText

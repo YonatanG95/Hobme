@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -51,13 +52,17 @@ public class ActivityListFragment extends Fragment{
 
         //mActivityListViewModel.deleteAllActivities();
         //TODO delete when type ready
-        mActivityListViewModel.getActivities().observe(getViewLifecycleOwner(), new Observer<List<Activity>>() {
+        mActivityListViewModel.getActivities().observe(getViewLifecycleOwner(), new Observer<PagedList<Activity>>() {
             @Override
-            public void onChanged(List<Activity> activities)
-            {
-                Log.d("Check", "size: " + activities.size());
-                adapter.setActivities(activities);
+            public void onChanged(PagedList<Activity> activities) {
+                adapter.submitList(activities);
             }
+//            @Override
+//            public void onChanged(List<Activity> activities)
+//            {
+//                Log.d("Check", "size: " + activities.size());
+//                adapter.setActivities(activities);
+//            }
         });
 
         //TODO uncomment when type ready

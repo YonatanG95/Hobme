@@ -5,8 +5,10 @@ import android.location.Location;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.BaseObservable;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
@@ -17,7 +19,7 @@ import androidx.room.PrimaryKey;
        // indices = @Index(name = "creatorId_index", value = "creatorId"))
                 //foreignKeys = {@ForeignKey(entity = ActivityType.class, parentColumns = "id", childColumns = "activityTypeId")})
 
-public class Activity {
+public class Activity{
 
     @PrimaryKey @NonNull//(autoGenerate = true)
     private String id;
@@ -187,4 +189,28 @@ public class Activity {
     public void setActivityLocation(Location activityLocation) {
         this.activityLocation = activityLocation;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Activity)) return false;
+        Activity activity = (Activity) o;
+        return getActivityTypeId() == activity.getActivityTypeId() &&
+                getCreatorId() == activity.getCreatorId() &&
+                getMinMembers() == activity.getMinMembers() &&
+                getMaxMembers() == activity.getMaxMembers() &&
+                getCurrMembers() == activity.getCurrMembers() &&
+                isPrivate() == activity.isPrivate() &&
+                getId().equals(activity.getId()) &&
+                Objects.equals(getCreationTime(), activity.getCreationTime()) &&
+                Objects.equals(getActivityStartDateTime(), activity.getActivityStartDateTime()) &&
+                Objects.equals(getActivityEndDateTime(), activity.getActivityEndDateTime()) &&
+                Objects.equals(getActivityInfo(), activity.getActivityInfo()) &&
+                Objects.equals(getActivityLocation(), activity.getActivityLocation()) &&
+                Objects.equals(getActivityPhotos(), activity.getActivityPhotos()) &&
+                Objects.equals(getDisplayedImage(), activity.getDisplayedImage()) &&
+                Objects.equals(getMembersIds(), activity.getMembersIds());
+    }
+
 }

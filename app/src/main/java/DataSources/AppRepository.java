@@ -25,31 +25,39 @@ import AppUtils.DataConverters;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.paging.DataSource;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
 
 public class AppRepository {
 
+    public static final int PAGE_SIZE = 15;
+    public static final int INIT_SIZE = 25;
+    private final int PREFETCH_DISTANCE = 4;
     private static AppRepository sInstance;
     private ActivityDao activityDao;
-    private UserDao userDao;
+    //private UserDao userDao;
     //private UserActivityJoinDao userActivityJoinDao;
-    private ActivityTypeDao activityTypeDao;
-    private CategoryDao categoryDao;
+    //private ActivityTypeDao activityTypeDao;
+    //private CategoryDao categoryDao;
     private final AppExecutors executors;
     private NetworkData networkData;
     private Context mContext;
-    private boolean mInitialized = false;
-    MutableLiveData<Category> mt = new MutableLiveData<Category>();
+    private final String TAG = "AppRepository";
+    //private boolean mInitialized = false;
+    //MutableLiveData<Category> mt = new MutableLiveData<Category>();
 
     private AppRepository(Context context, AppExecutors executors){
         this.executors = executors;
         AppDB database = AppDB.getInstance(context);
         this.activityDao = database.activityDao();
-        this.userDao = database.userDao();
+        //this.userDao = database.userDao();
         //this.userActivityJoinDao = database.userActivityJoinDao();
-        this.activityTypeDao = database.activityTypeDao();
+        //this.activityTypeDao = database.activityTypeDao();
         this.networkData = NetworkData.getInstance();
         this.mContext = context;
         //dbInit();
+        deleteAllActivities();
     }
 
     public static synchronized AppRepository getInstance(Context context, AppExecutors executors){
@@ -70,9 +78,9 @@ public class AppRepository {
 
     }
 
-    public List<String> getAllCategories(){
-        return categoryDao.getAllCategories();
-    }
+//    public List<String> getAllCategories(){
+//        return categoryDao.getAllCategories();
+//    }
 
 //    public void updateActivity(Activity activity){
 //        activityDao.update(activity);
@@ -86,17 +94,24 @@ public class AppRepository {
 //        return activityDao.getActivitiesByCreator(creatorId);
 //    }
 
-    public LiveData<List<Activity>> getActivitiesByType(int activityTypeId){
-        return activityDao.getActivitiesByType(activityTypeId);
-    }
+//    public LiveData<List<Activity>> getActivitiesByType(int activityTypeId){
+//        return activityDao.getActivitiesByType(activityTypeId);
+//    }
 
     //TODO delete when type ready
-    public LiveData<List<Activity>> getActivities(){
-        return activityDao.getActivities();
+    public LiveData<PagedList<Activity>> getActivities() {
+        Log.d(TAG, "appRepo get activities");
+        DataSource.Factory factory = activityDao.getActivities();
+        RepoBoundaryCallback repoBoundaryCallback = new RepoBoundaryCallback(executors, networkData, mContext);
+        return new LivePagedListBuilder(factory, new PagedList.Config.Builder()
+                .setEnablePlaceholders(false).setInitialLoadSizeHint(INIT_SIZE)
+                .setPageSize(PAGE_SIZE).setPrefetchDistance(PREFETCH_DISTANCE).build())
+                .setBoundaryCallback(repoBoundaryCallback).build();
     }
 
     //TODO delete this
     public void deleteAllActivities(){
+        Log.d(TAG, "appRepo delete all activities");
         executors.diskIO().execute(() -> {
             activityDao.deleteAllActivities();
         });
@@ -107,64 +122,64 @@ public class AppRepository {
 //        return activityTypeDao.getAllCategories();
 //    }
 
-    public List<String> getAlltypes()
-    {
-        return activityTypeDao.getAllTypes();
-    }
+//    public List<String> getAlltypes()
+//    {
+//        return activityTypeDao.getAllTypes();
+//    }
 
 
-    private void insertCategory(Category category){
-        executors.networkIO().execute(() -> {
-            networkData.insertCategory(category);
-        });
-    }
+//    private void insertCategory(Category category){
+//        executors.networkIO().execute(() -> {
+//            networkData.insertCategory(category);
+//        });
+//    }
+//
+//    private void insertActivityType(ActivityType activityType, String categoryName){
+//        executors.networkIO().execute(() -> {
+//            networkData.insertActivityType(activityType, categoryName);
+//        });
+//    }
 
-    private void insertActivityType(ActivityType activityType, String categoryName){
-        executors.networkIO().execute(() -> {
-            networkData.insertActivityType(activityType, categoryName);
-        });
-    }
+//    private synchronized void initializeData() {
+//
+//        if(mInitialized) return;
+//        mInitialized = true;
+//
+//
+//    }
+//
 
-    private synchronized void initializeData() {
-
-        if(mInitialized) return;
-        mInitialized = true;
-
-
-    }
-
-
-    private void dbInit(){
-
-        Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.category_outdoor);
-        Category cat1 = new Category("Outdoor", DataConverters.drawableToBlob(drawable));
-
-        insertCategory(cat1);
-
-        drawable = ContextCompat.getDrawable(mContext, R.drawable.category_sports);
-        cat1 = new Category("Sports", DataConverters.drawableToBlob(drawable));
-
-        insertCategory(cat1);
-
-        drawable = ContextCompat.getDrawable(mContext, R.drawable.type_tennis);
-        ActivityType act1 = new ActivityType("", "Tennis", DataConverters.drawableToBlob(drawable), "");
-
-        insertActivityType(act1, "Sports");
-
-        drawable = ContextCompat.getDrawable(mContext, R.drawable.type_hiking);
-        act1 = new ActivityType("", "Hiking", DataConverters.drawableToBlob(drawable), "");
-
-        insertActivityType(act1, "Outdoor");
-
-        drawable = ContextCompat.getDrawable(mContext, R.drawable.type_fishing);
-        act1 = new ActivityType("", "Fishing", DataConverters.drawableToBlob(drawable), "");
-
-        insertActivityType(act1, "Outdoor");
-
-        drawable = ContextCompat.getDrawable(mContext, R.drawable.type_soccer);
-        act1 = new ActivityType("", "Soccer", DataConverters.drawableToBlob(drawable), "");
-
-        insertActivityType(act1, "Sports");
-
-    }
+//    private void dbInit(){
+//
+//        Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.category_outdoor);
+//        Category cat1 = new Category("Outdoor", DataConverters.drawableToBlob(drawable));
+//
+//        insertCategory(cat1);
+//
+//        drawable = ContextCompat.getDrawable(mContext, R.drawable.category_sports);
+//        cat1 = new Category("Sports", DataConverters.drawableToBlob(drawable));
+//
+//        insertCategory(cat1);
+//
+//        drawable = ContextCompat.getDrawable(mContext, R.drawable.type_tennis);
+//        ActivityType act1 = new ActivityType("", "Tennis", DataConverters.drawableToBlob(drawable), "");
+//
+//        insertActivityType(act1, "Sports");
+//
+//        drawable = ContextCompat.getDrawable(mContext, R.drawable.type_hiking);
+//        act1 = new ActivityType("", "Hiking", DataConverters.drawableToBlob(drawable), "");
+//
+//        insertActivityType(act1, "Outdoor");
+//
+//        drawable = ContextCompat.getDrawable(mContext, R.drawable.type_fishing);
+//        act1 = new ActivityType("", "Fishing", DataConverters.drawableToBlob(drawable), "");
+//
+//        insertActivityType(act1, "Outdoor");
+//
+//        drawable = ContextCompat.getDrawable(mContext, R.drawable.type_soccer);
+//        act1 = new ActivityType("", "Soccer", DataConverters.drawableToBlob(drawable), "");
+//
+//        insertActivityType(act1, "Sports");
+//
+//    }
 }
