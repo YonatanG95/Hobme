@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -88,11 +89,12 @@ public class ActivityListFragment extends Fragment{
 
     public void createActivityBtnClick(View view)
     {
-        Fragment createActivity = new CreateActivityFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.activities_fragment_container, createActivity );
-        transaction.addToBackStack(null);
-        transaction.commit();
+//        Fragment createActivity = new CreateActivityFragment();
+//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//        transaction.replace(R.id.activities_fragment_container, createActivity );
+//        transaction.addToBackStack(null);
+//        transaction.commit();
+        Navigation.findNavController(view).navigate(R.id.action_activityListFragment_to_createActivityFragment2);
     }
 
 }

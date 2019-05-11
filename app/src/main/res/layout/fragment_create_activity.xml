@@ -32,15 +32,17 @@
             android:background="@color/com_facebook_button_background_color_focused_disabled"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@{viewModel.activity.displayedImage}"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/materialButton2"
+            android:id="@+id/choosePhotoBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/addPhoto"
             app:backgroundTint="@android:color/transparent"
             app:icon="@drawable/ic_photo"
+            android:onClick="@{(view) -> handler.selectImage(view)}"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="@+id/imageView"
@@ -85,59 +87,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/categorySpinner"></androidx.appcompat.widget.AppCompatSpinner>
 
-        <DatePicker
-            android:id="@+id/datePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></DatePicker>
-
-        <TimePicker
-            android:id="@+id/timePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></TimePicker>
-
-        <DatePicker
-            android:id="@+id/datePickerEnd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></DatePicker>
-
-        <TimePicker
-            android:id="@+id/timePickerEnd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></TimePicker>
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/dateStartBtn"
-            android:layout_width="150dp"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
@@ -151,8 +103,8 @@
             app:layout_constraintTop_toBottomOf="@+id/appCompatSpinner" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/materialButton5"
-            android:layout_width="120dp"
+            android:id="@+id/timeStartBtn"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="35dp"
             android:layout_marginTop="12dp"
@@ -161,12 +113,13 @@
             app:backgroundTint="@android:color/transparent"
             app:icon="@drawable/ic_time"
             app:iconTint="@android:color/black"
+            android:onClick="@{(view) -> handler.timeBtn(view)}"
             app:layout_constraintStart_toEndOf="@+id/dateStartBtn"
             app:layout_constraintTop_toBottomOf="@+id/appCompatSpinner" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/dateEndBtn"
-            android:layout_width="150dp"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
@@ -180,8 +133,8 @@
             app:layout_constraintTop_toBottomOf="@+id/dateStartBtn" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/materialButton6"
-            android:layout_width="120dp"
+            android:id="@+id/timeEndBtn"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="35dp"
             android:layout_marginTop="15dp"
@@ -190,8 +143,9 @@
             app:backgroundTint="@android:color/transparent"
             app:icon="@drawable/ic_time"
             app:iconTint="@android:color/black"
+            android:onClick="@{(view) -> handler.timeBtn(view)}"
             app:layout_constraintStart_toEndOf="@+id/dateEndBtn"
-            app:layout_constraintTop_toBottomOf="@+id/materialButton5" />
+            app:layout_constraintTop_toBottomOf="@+id/timeStartBtn" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/editText"
@@ -202,7 +156,7 @@
             android:ems="10"
             android:inputType="number"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialButton4"
+            app:layout_constraintTop_toBottomOf="@+id/dateEndBtn"
             android:text="@={``+ viewModel.activity.minMembers}"/>
 
         <androidx.appcompat.widget.AppCompatEditText
@@ -214,7 +168,7 @@
             android:ems="10"
             android:inputType="number"
             app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/materialButton6"
+            app:layout_constraintTop_toBottomOf="@+id/timeEndBtn"
             android:text="@={``+viewModel.activity.maxMembers}"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -225,7 +179,7 @@
             android:layout_marginTop="30dp"
             android:text="To"
             app:layout_constraintStart_toEndOf="@+id/editText"
-            app:layout_constraintTop_toBottomOf="@+id/materialButton4" />
+            app:layout_constraintTop_toBottomOf="@+id/dateEndBtn" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switch1"
@@ -235,7 +189,7 @@
             android:layout_marginTop="30dp"
             android:text="@string/switchText"
             app:layout_constraintStart_toEndOf="@+id/editText2"
-            app:layout_constraintTop_toBottomOf="@+id/materialButton6" />
+            app:layout_constraintTop_toBottomOf="@+id/timeEndBtn" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/editText3"

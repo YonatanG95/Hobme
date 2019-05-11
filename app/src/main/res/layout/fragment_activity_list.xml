@@ -11,6 +11,7 @@
             name="handler"
             type="AppView.ActivityListFragment">
         </variable>
+        <import type="androidx.navigation.Navigation" />
     </data>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"

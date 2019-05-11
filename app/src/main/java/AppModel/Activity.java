@@ -2,6 +2,9 @@ package AppModel;
 
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.media.Image;
+import android.view.View;
+import android.widget.ImageView;
 
 import java.util.Date;
 import java.util.List;
@@ -9,15 +12,26 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.BindingMethod;
+import androidx.databinding.BindingMethods;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.firestore.Blob;
+
+import AppUtils.DataConverters;
+
 @Entity(tableName = "activity_table")//,//,
         //foreignKeys = {@ForeignKey(entity = User.class, parentColumns = "id", childColumns = "creatorId", onDelete = CASCADE)},
        // indices = @Index(name = "creatorId_index", value = "creatorId"))
                 //foreignKeys = {@ForeignKey(entity = ActivityType.class, parentColumns = "id", childColumns = "activityTypeId")})
+@BindingMethods({
+        @BindingMethod(type = ImageView.class,
+                attribute = "android:src",
+                method = "setImageSrc")})
 
 public class Activity{
 
@@ -38,12 +52,12 @@ public class Activity{
     @Ignore
     private List<Bitmap> activityPhotos;
     @Ignore
-    private Bitmap displayedImage;
+    private Blob displayedImage;
     @Ignore
     private List<Integer> membersIds;
 
     @Ignore
-    public Activity(int activityTypeId, Date creationTime, List<Integer> membersIds, int creatorId, boolean isPrivate, List<Bitmap> activityPhotos, Bitmap displayedImage, Location activityLocation, Date activityDateTime, String activityInfo) {
+    public Activity(int activityTypeId, Date creationTime, List<Integer> membersIds, int creatorId, boolean isPrivate, List<Bitmap> activityPhotos, Blob displayedImage, Location activityLocation, Date activityDateTime, String activityInfo) {
         this.activityTypeId = activityTypeId;
         this.creationTime = creationTime;
         this.membersIds = membersIds;
@@ -174,12 +188,19 @@ public class Activity{
         this.activityPhotos = activityPhotos;
     }
 
-    public Bitmap getDisplayedImage() {
+    public Blob getDisplayedImage() {
         return displayedImage;
     }
 
-    public void setDisplayedImage(Bitmap displayedImage) {
+
+    public void setDisplayedImage(Blob displayedImage) {
         this.displayedImage = displayedImage;
+    }
+
+    @BindingAdapter("android:src")
+    public static void setSrc(ImageView imageView, Blob bitmap){
+        if(bitmap != null)
+            imageView.setImageBitmap(DataConverters.blobToBitmap(bitmap));
     }
 
     public Location getActivityLocation() {

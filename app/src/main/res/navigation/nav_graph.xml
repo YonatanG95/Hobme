@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/activityListFragment">
+    <fragment
+        android:id="@+id/activityListFragment"
+        android:name="AppView.ActivityListFragment"
+        android:label="fragment_activity_list"
+        tools:layout="@layout/fragment_activity_list" >
+        <action
+            android:id="@+id/action_activityListFragment_to_createActivityFragment2"
+            app:destination="@id/createActivityFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/createActivityFragment2"
+        android:name="AppView.CreateActivityFragment"
+        android:label="fragment_create_activity"
+        tools:layout="@layout/fragment_create_activity" >
+        <action
+            android:id="@+id/action_createActivityFragment2_to_activityListFragment"
+            app:destination="@id/activityListFragment"
+            app:popUpTo="@id/activityListFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>

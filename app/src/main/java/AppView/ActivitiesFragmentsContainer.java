@@ -17,14 +17,14 @@ public class ActivitiesFragmentsContainer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activities_fragments_container);
 
-        if (findViewById(R.id.activities_fragment_container) != null) {
-            if (savedInstanceState != null) {
-                return;
-            }
-
-            ActivityListFragment activityListFragment = new ActivityListFragment();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.activities_fragment_container, activityListFragment).commit();
-        }
+//        if (findViewById(R.id.activities_fragment_container) != null) {
+//            if (savedInstanceState != null) {
+//                return;
+//            }
+//
+//            ActivityListFragment activityListFragment = new ActivityListFragment();
+//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//            transaction.add(R.id.activities_fragment_container, activityListFragment).commit();
+//        }
     }
 }
