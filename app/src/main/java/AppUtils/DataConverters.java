@@ -33,6 +33,16 @@ public class DataConverters {
         return date == null ? null : date.getTime();
     }
 
+    @TypeConverter
+    public static byte[] toByteArray(Blob blob){
+        return blob.toBytes();
+    }
+
+    @TypeConverter
+    public static Blob toBlob(byte[] bytes){
+        return Blob.fromBytes(bytes);
+    }
+
     public static Blob drawableToBlob(Drawable drawable){
         Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -44,6 +54,13 @@ public class DataConverters {
     public static Bitmap blobToBitmap(Blob blob){
         byte[] bytes = blob.toBytes();
         return BitmapFactory.decodeByteArray(bytes, 0 ,bytes.length);
+    }
+
+    public static Blob bitmapToBlob(Bitmap bitmap){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArr = stream.toByteArray();
+        return Blob.fromBytes(byteArr);
     }
 
 //    public static Bitmap rotateImageIfNeeded(Bitmap bitmap, String path) throws IOException {

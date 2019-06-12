@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ActivityAdapter extends PagedListAdapter<Activity, ActivityAdapter.ActivityHolder> {
 
+    private final String TAG = "ActivityAdapter";
     private LayoutInflater layoutInflater;
     private List<Activity> activityList = new ArrayList<>();
 
@@ -48,7 +49,12 @@ public class ActivityAdapter extends PagedListAdapter<Activity, ActivityAdapter.
     @Override
     public void onBindViewHolder(@NonNull ActivityHolder holder, int position) {
         Activity activity = getItem(position);
+
         if (activity != null) {
+//            if (activity.getDisplayedImage() != null)
+//                Log.d(TAG, "Image: " + activity.getDisplayedImage().toString());
+//            else
+//                Log.d(TAG, "Image: " + "null");
             holder.binding.setActivity(activity);
         }
         else {

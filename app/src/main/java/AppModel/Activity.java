@@ -15,6 +15,7 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.BindingMethod;
 import androidx.databinding.BindingMethods;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
@@ -47,12 +48,13 @@ public class Activity{
     private Date activityStartDateTime;
     private Date activityEndDateTime;
     private String activityInfo;
+
+   // @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+    private Blob displayedImage;
     @Ignore
     private Location activityLocation;
     @Ignore
     private List<Bitmap> activityPhotos;
-    @Ignore
-    private Blob displayedImage;
     @Ignore
     private List<Integer> membersIds;
 

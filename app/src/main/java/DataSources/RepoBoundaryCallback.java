@@ -58,6 +58,12 @@ public class RepoBoundaryCallback extends PagedList.BoundaryCallback<Activity>{
                     if(activities != null) {
                         executors.diskIO().execute(() -> {
                             activityDao.bulkInsertActivity(activities);
+//                            for (Activity act : activities) {
+//                                if(act.getActivityInfo() != null)
+//                                    Log.d(TAG, "Image: " + act.getActivityInfo());
+//                                else
+//                                    Log.d(TAG, "Image: null");
+//                            }
                             Log.d(TAG, "Activities inserted to DB");
                             isLoading = false;
                         });

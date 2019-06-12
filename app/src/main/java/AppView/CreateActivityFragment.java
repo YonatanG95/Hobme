@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import AppUtils.DataConverters;
 import AppUtils.InjectorUtils;
 import AppViewModel.CreateActivityViewModel;
 import AppViewModel.CustomViewModelFactory;
@@ -267,11 +268,12 @@ public class CreateActivityFragment extends Fragment {
 
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                                 String picturePath = cursor.getString(columnIndex);
+                                Log.d(TAG, "imageView set");
                                 mFragmentCreateActivityBinding.imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                                mActivityListViewModel.getActivity().getValue().setDisplayedImage(DataConverters.bitmapToBlob(BitmapFactory.decodeFile(picturePath)));
                                 cursor.close();
                             }
                         }
-
                     }
                     break;
             }

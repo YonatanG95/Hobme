@@ -6,10 +6,6 @@
             name="activity"
             type="AppModel.Activity">
         </variable>
-        <!--<variable-->
-            <!--name="type"-->
-            <!--type="AppModel.ActivityType">-->
-        <!--</variable>-->
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -19,50 +15,31 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{activity.activityInfo}"
-            android:textSize="20sp"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <!--<androidx.constraintlayout.widget.ConstraintLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent">-->
+            <ImageView
+                android:id="@+id/displayedImage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:src="@{activity.displayedImage}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.5"></ImageView>
 
-
-            <!--<ImageView-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_gravity="start|top"-->
-                <!--android:src="@{activity.displayedImage}"-->
-                <!--app:layout_constraintWidth_percent="50"-->
-                <!--app:layout_widthPercent="50%"></ImageView>-->
-
-        <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
-
-        <!--<androidx.constraintlayout.widget.ConstraintLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent">-->
-
-            <!--<androidx.appcompat.widget.AppCompatTextView-->
-                <!--android:id="@+id/name"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="end|top"-->
-                <!--android:text="@{type.categoryName + ` - ` + type.typeName}"-->
-                <!--android:textSize="15sp"-->
-                <!--android:layout_weight="0.5"/>-->
-
-            <!--<androidx.appcompat.widget.AppCompatTextView-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_below="@+id/name"-->
-                <!--android:text="@{activity.currMembers + ` \\ ` + activity.minMembers + ` (` + activity.maxMembers + `)`}"-->
-                <!--android:textSize="15sp"-->
-                <!--android:layout_weight="0.5"/>-->
-
-        <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
-
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                android:drawableLeft="@drawable/ic_person"
+                android:text="@{String.valueOf(activity.maxMembers)}"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/displayedImage" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
