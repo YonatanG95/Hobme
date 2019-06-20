@@ -32,8 +32,7 @@
     <string name="endDate">END</string>
     <string name="time">NOW</string>
     <string name="switchText">Private</string>
-    <string-array
-        name="choose_photo_options">
+    <string-array name="choose_photo_options">
         <item>Take Photo</item>
         <item>Choose from Gallery</item>
         <item>Cancel</item>

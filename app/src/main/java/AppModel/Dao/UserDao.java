@@ -1,6 +1,4 @@
-package AppModel;
-
-import java.util.List;
+package AppModel.Dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -9,6 +7,8 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import AppModel.Entity.User;
 
 @Dao
 public interface UserDao {

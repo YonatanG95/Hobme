@@ -1,9 +1,9 @@
-package AppModel;
+package AppModel.Entity;
 
 import android.graphics.Bitmap;
 import android.location.Location;
-import android.media.Image;
-import android.view.View;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.widget.ImageView;
 
 import java.util.Date;
@@ -11,13 +11,10 @@ import java.util.List;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.BaseObservable;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.BindingMethod;
 import androidx.databinding.BindingMethods;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
@@ -34,7 +31,7 @@ import AppUtils.DataConverters;
                 attribute = "android:src",
                 method = "setImageSrc")})
 
-public class Activity{
+public class Activity implements Parcelable {
 
     @PrimaryKey @NonNull//(autoGenerate = true)
     private String id;
@@ -236,4 +233,13 @@ public class Activity{
                 Objects.equals(getMembersIds(), activity.getMembersIds());
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
 }

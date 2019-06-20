@@ -1,4 +1,4 @@
-package AppModel;
+package AppModel.Entity;
 
 import android.graphics.Bitmap;
 import android.location.Location;

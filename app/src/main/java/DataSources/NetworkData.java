@@ -1,6 +1,5 @@
 package DataSources;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -11,12 +10,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import AppModel.Activity;
-import AppModel.ActivityType;
-import AppModel.Category;
+import AppModel.Entity.Activity;
+import AppModel.Entity.ActivityType;
+import AppModel.Entity.Category;
 import androidx.annotation.NonNull;
 
 import java.util.List;

@@ -1,32 +1,26 @@
 package AppView;
 
-import AppModel.Activity;
+import AppModel.Entity.Activity;
 import AppUtils.InjectorUtils;
 import AppViewModel.ActivityListViewModel;
 import AppViewModel.CustomViewModelFactory;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.databinding.DataBindingUtil;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.paging.PagedList;
-import androidx.recyclerview.widget.RecyclerView;
 
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.project.hobme.R;
 import com.project.hobme.databinding.FragmentActivityListBinding;
-import com.project.hobme.databinding.FragmentCreateActivityBinding;
-
-import java.util.List;
 
 public class ActivityListFragment extends Fragment{
 
@@ -94,7 +88,11 @@ public class ActivityListFragment extends Fragment{
 //        transaction.replace(R.id.activities_fragment_container, createActivity );
 //        transaction.addToBackStack(null);
 //        transaction.commit();
-        Navigation.findNavController(view).navigate(R.id.action_activityListFragment_to_createActivityFragment2);
+        Navigation.findNavController(view).navigate(R.id.actListToCreate);
     }
 
+//    @Override
+//    public void openActivityDetails(View view, Activity activity) {
+//        Navigation.findNavController(view).navigate(R.id.action_activityListFragment_to_detailedActivityFragment);
+//    }
 }

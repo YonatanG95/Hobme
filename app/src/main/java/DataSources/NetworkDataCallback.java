@@ -4,7 +4,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.List;
 
-import AppModel.Activity;
+import AppModel.Entity.Activity;
 
 public interface NetworkDataCallback {
 

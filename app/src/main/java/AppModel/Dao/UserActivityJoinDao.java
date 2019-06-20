@@ -1,10 +1,13 @@
-package AppModel;
+package AppModel.Dao;
 
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
+
+import AppModel.Entity.Activity;
+import AppModel.Entity.User;
 
 @Dao
 public interface UserActivityJoinDao {

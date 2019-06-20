@@ -1,11 +1,8 @@
-package AppModel;
-
-import android.graphics.Bitmap;
+package AppModel.Entity;
 
 import com.google.firebase.firestore.Blob;
 
 import androidx.annotation.NonNull;
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;

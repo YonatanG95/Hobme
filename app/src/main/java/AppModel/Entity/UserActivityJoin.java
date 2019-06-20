@@ -1,4 +1,4 @@
-package AppModel;
+package AppModel.Entity;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;

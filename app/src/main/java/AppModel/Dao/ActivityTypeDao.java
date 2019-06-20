@@ -1,4 +1,4 @@
-package AppModel;
+package AppModel.Dao;
 
 import java.util.List;
 
@@ -6,6 +6,8 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+
+import AppModel.Entity.ActivityType;
 
 @Dao
 public interface ActivityTypeDao {

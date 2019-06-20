@@ -67,6 +67,8 @@ public class CreateActivityFragment extends Fragment {
     private static final int TAKE_PICTURE = 100;
     private static final int REQUEST_READ_PERMISSION = 100;
     private static final int REQUEST_WRITE_PERMISSION = 101;
+    private static final int REQUEST_IMAGE_CAPTURE = 0;
+    private static final int REQUEST_CHOOSE_IMAGE = 1;
     private final String TAG = "CreateActivityFragment";
 
     public CreateActivityFragment() {
@@ -112,7 +114,7 @@ public class CreateActivityFragment extends Fragment {
 //        transaction.replace(R.id.activities_fragment_container, listActivities );
 //        transaction.addToBackStack(null);
 //        transaction.commit();
-        Navigation.findNavController(view).navigate(R.id.action_createActivityFragment2_to_activityListFragment);
+        Navigation.findNavController(view).navigate(R.id.actCreateToList);
     }
 
     //TODO implement as data converters for databinding
@@ -181,14 +183,19 @@ public class CreateActivityFragment extends Fragment {
                         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_PERMISSION);}
                     if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
                         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);}
-                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                    StrictMode.setVmPolicy(builder.build());
-                    File filePhoto = new File(Environment.getExternalStorageDirectory(), "Pic.jpg");
-                    capturedImageUri = Uri.fromFile(filePhoto);
-                    selectedImagePath = capturedImageUri.getPath();
-                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT, selectedImagePath);
-                    startActivityForResult(takePicture, 0);
+//                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+//                    StrictMode.setVmPolicy(builder.build());
+//                    File filePhoto = new File(Environment.getExternalStorageDirectory(), "Pic.jpg");
+//                    capturedImageUri = Uri.fromFile(filePhoto);
+//                    selectedImagePath = capturedImageUri.getPath();
+//                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT, selectedImagePath);
+//                    startActivityForResult(takePicture, 0);
+                    Intent takePictureIntent = new Intent(
+                            MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    }
 
                 } else if (PHOTO_OPTIONS[item].equals("Choose from Gallery")) {
                     Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -207,56 +214,60 @@ public class CreateActivityFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode != RESULT_CANCELED) {
             switch (requestCode) {
-                case 0:
+                case REQUEST_IMAGE_CAPTURE:
                     if (resultCode == RESULT_OK) {
-                        if (data != null) {
-                            Bundle extras = data.getExtras();
-                            if (extras.containsKey("data")) {
-                                bitmap = (Bitmap) extras.get("data");
-                            }
-                            else {
-                                bitmap = getBitmapFromUri();
-                            }
-                        }
-                        else {
-                            bitmap = getBitmapFromUri();
-                        }
-
-                        ExifInterface ei = null;
-                        try {
-                            ei = new ExifInterface(selectedImagePath);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                                ExifInterface.ORIENTATION_UNDEFINED);
-
-                        Log.d(TAG, "" +orientation);
-
-                        Bitmap rotatedBitmap = null;
-                        switch(orientation) {
-
-                            case ExifInterface.ORIENTATION_ROTATE_90:
-                                rotatedBitmap = rotateImage(bitmap, 90);
-                                break;
-
-                            case ExifInterface.ORIENTATION_ROTATE_180:
-                                rotatedBitmap = rotateImage(bitmap, 180);
-                                break;
-
-                            case ExifInterface.ORIENTATION_ROTATE_270:
-                                rotatedBitmap = rotateImage(bitmap, 270);
-                                break;
-
-                            case ExifInterface.ORIENTATION_NORMAL:
-                            default:
-                                rotatedBitmap = bitmap;
-                        }
-                        mFragmentCreateActivityBinding.imageView.setImageBitmap(rotatedBitmap);
+//                        if (data != null) {
+//                            Bundle extras = data.getExtras();
+//                            if (extras.containsKey("data")) {
+//                                bitmap = (Bitmap) extras.get("data");
+//                            }
+//                            else {
+//                                bitmap = getBitmapFromUri();
+//                            }
+//                        }
+//                        else {
+//                            bitmap = getBitmapFromUri();
+//                        }
+//
+//                        ExifInterface ei = null;
+//                        try {
+//                            ei = new ExifInterface(selectedImagePath);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+//                                ExifInterface.ORIENTATION_UNDEFINED);
+//
+//                        Log.d(TAG, "" +orientation);
+//
+//                        Bitmap rotatedBitmap = null;
+//                        switch(orientation) {
+//
+//                            case ExifInterface.ORIENTATION_ROTATE_90:
+//                                rotatedBitmap = rotateImage(bitmap, 90);
+//                                break;
+//
+//                            case ExifInterface.ORIENTATION_ROTATE_180:
+//                                rotatedBitmap = rotateImage(bitmap, 180);
+//                                break;
+//
+//                            case ExifInterface.ORIENTATION_ROTATE_270:
+//                                rotatedBitmap = rotateImage(bitmap, 270);
+//                                break;
+//
+//                            case ExifInterface.ORIENTATION_NORMAL:
+//                            default:
+//                                rotatedBitmap = bitmap;
+//                        }
+//                        mFragmentCreateActivityBinding.imageView.setImageBitmap(rotatedBitmap);
+                        Bundle extras = data.getExtras();
+                        Bitmap imageBitmap = (Bitmap) extras.get("data");
+                        mFragmentCreateActivityBinding.imageView.setImageBitmap(imageBitmap);
+                        mActivityListViewModel.getActivity().getValue().setDisplayedImage(DataConverters.bitmapToBlob(imageBitmap));
                     }
 
                     break;
-                case 1:
+                case REQUEST_CHOOSE_IMAGE:
                     if (resultCode == RESULT_OK && data != null) {
                         Uri selectedImage =  data.getData();
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};

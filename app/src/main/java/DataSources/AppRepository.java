@@ -1,38 +1,22 @@
 package DataSources;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-import com.google.firebase.firestore.Blob;
-import com.project.hobme.R;
-
-import java.io.ByteArrayOutputStream;
-import java.util.List;
-
-import AppModel.Activity;
-import AppModel.ActivityDao;
-import AppModel.ActivityType;
-import AppModel.ActivityTypeDao;
-import AppModel.Category;
-import AppModel.CategoryDao;
-import AppModel.UserActivityJoinDao;
-import AppModel.UserDao;
+import AppModel.AppDB;
+import AppModel.Entity.Activity;
+import AppModel.Dao.ActivityDao;
 import AppUtils.AppExecutors;
-import AppUtils.DataConverters;
-import androidx.core.content.ContextCompat;
+
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
 public class AppRepository {
 
-    public static final int PAGE_SIZE = 15;
-    public static final int INIT_SIZE = 25;
+    public static final int PAGE_SIZE = 10;
+    public static final int INIT_SIZE = 15;
     private final int PREFETCH_DISTANCE = 4;
     private static AppRepository sInstance;
     private ActivityDao activityDao;

@@ -2,9 +2,9 @@ package AppViewModel;
 
 import android.util.Log;
 
-import AppModel.Activity;
+import AppModel.Entity.Activity;
 import DataSources.AppRepository;
-import AppUtils.AppExecutors;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

@@ -1,10 +1,8 @@
 package AppViewModel;
 
-import java.util.List;
-
-import AppModel.Activity;
+import AppModel.Entity.Activity;
 import DataSources.AppRepository;
-import AppUtils.AppExecutors;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.paging.PagedList;

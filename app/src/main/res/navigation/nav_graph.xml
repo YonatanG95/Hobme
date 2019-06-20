@@ -10,8 +10,12 @@
         android:label="fragment_activity_list"
         tools:layout="@layout/fragment_activity_list" >
         <action
-            android:id="@+id/action_activityListFragment_to_createActivityFragment2"
+            android:id="@+id/actListToCreate"
             app:destination="@id/createActivityFragment2" />
+        <action
+            android:id="@+id/actListToDetails"
+            app:destination="@id/detailedActivityFragment">
+        </action>
     </fragment>
     <fragment
         android:id="@+id/createActivityFragment2"
@@ -19,9 +23,23 @@
         android:label="fragment_create_activity"
         tools:layout="@layout/fragment_create_activity" >
         <action
-            android:id="@+id/action_createActivityFragment2_to_activityListFragment"
+            android:id="@+id/actCreateToList"
             app:destination="@id/activityListFragment"
-            app:popUpTo="@id/activityListFragment"
+            app:popUpTo="@id/createActivityFragment2"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailedActivityFragment"
+        android:name="AppView.DetailedActivityFragment"
+        android:label="fragment_detailed_activity"
+        tools:layout="@layout/fragment_detailed_activity" >
+        <action
+            android:id="@+id/actDetailsToList"
+            app:destination="@id/activityListFragment"
+            app:popUpTo="@id/detailedActivityFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="activity"
+            app:argType="AppModel.Entity.Activity" />
     </fragment>
 </navigation>

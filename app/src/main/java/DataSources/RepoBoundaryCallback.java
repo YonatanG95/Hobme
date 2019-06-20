@@ -3,8 +3,9 @@ package DataSources;
 import android.content.Context;
 import android.util.Log;
 
-import AppModel.Activity;
-import AppModel.ActivityDao;
+import AppModel.AppDB;
+import AppModel.Entity.Activity;
+import AppModel.Dao.ActivityDao;
 import AppUtils.AppExecutors;
 import androidx.annotation.NonNull;
 import androidx.paging.PagedList;
@@ -42,7 +43,7 @@ public class RepoBoundaryCallback extends PagedList.BoundaryCallback<Activity>{
     @Override
     public void onItemAtEndLoaded(@NonNull Activity itemAtEnd) {
         Log.d(TAG, "onItemAtEndLoaded");
-        fetchActivities();
+        //fetchActivities();
     }
 
     private void fetchActivities(){

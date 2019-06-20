@@ -4,7 +4,7 @@
     <data>
         <variable
             name="activity"
-            type="AppModel.Activity">
+            type="AppModel.Entity.Activity">
         </variable>
     </data>
 
@@ -35,7 +35,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="8dp"
                 android:drawableLeft="@drawable/ic_person"
-                android:text="@{String.valueOf(activity.maxMembers)}"
+                android:text="@{String.valueOf(activity.currMembers) + '/' + String.valueOf(activity.maxMembers)}"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/displayedImage" />
