@@ -83,6 +83,31 @@ public class Activity implements Parcelable {
     //TODO check if legal
     public Activity(){}
 
+    protected Activity(Parcel in) {
+        id = in.readString();
+        activityTypeId = in.readInt();
+        creatorId = in.readInt();
+        minMembers = in.readInt();
+        maxMembers = in.readInt();
+        currMembers = in.readInt();
+        isPrivate = in.readByte() != 0;
+        activityInfo = in.readString();
+        activityLocation = in.readParcelable(Location.class.getClassLoader());
+        activityPhotos = in.createTypedArrayList(Bitmap.CREATOR);
+    }
+
+    public static final Creator<Activity> CREATOR = new Creator<Activity>() {
+        @Override
+        public Activity createFromParcel(Parcel in) {
+            return new Activity(in);
+        }
+
+        @Override
+        public Activity[] newArray(int size) {
+            return new Activity[size];
+        }
+    };
+
     public int getMinMembers() {
         return minMembers;
     }
@@ -240,6 +265,15 @@ public class Activity implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(id);
+        dest.writeInt(activityTypeId);
+        dest.writeInt(creatorId);
+        dest.writeInt(minMembers);
+        dest.writeInt(maxMembers);
+        dest.writeInt(currMembers);
+        dest.writeByte((byte) (isPrivate ? 1 : 0));
+        dest.writeString(activityInfo);
+        dest.writeParcelable(activityLocation, flags);
+        dest.writeTypedList(activityPhotos);
     }
 }

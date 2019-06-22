@@ -159,7 +159,7 @@ public class NetworkData{
                 Log.d(TAG, "size: " + result.getDocuments().size());
                 DocumentSnapshot last = result.getDocuments().get(result.getDocuments().size()-1);
                 List<Activity> act = result.toObjects(Activity.class);
-                callback.onCallback(act, last);
+                callback.onCallback(act);//, last);
                     //Log.d(NETWORK_DATA_LOGS, document.getId() + " => " + document.getData());
                 //}
             } else {

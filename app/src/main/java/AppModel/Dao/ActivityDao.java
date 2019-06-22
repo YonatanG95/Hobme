@@ -2,6 +2,7 @@ package AppModel.Dao;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -31,12 +32,14 @@ public interface ActivityDao {
 //    LiveData<List<Activity>> getActivitiesByType(int activityTypeId);
 
     //TODO delete when type ready
-    @Query("SELECT * FROM activity_table")
-    DataSource.Factory<Integer, Activity> getActivities();
+    @Query("SELECT * FROM activity_table ORDER BY activityStartDateTime ASC")
+    DataSource.Factory<Integer, Activity> getDataSourcefactory();
 
+    @Query("SELECT * FROM activity_table")
+    LiveData<Activity> getActivities();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void bulkInsertActivity(List<Activity> activities);
+    void insertActivities(List<Activity> activities);
 
 
     //TODO delete this

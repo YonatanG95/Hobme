@@ -1,36 +1,29 @@
 package AppViewModel;
 
 import AppModel.Entity.Activity;
+import AppUtils.DataConverters;
 import DataSources.AppRepository;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.paging.PagedList;
 
+import java.util.Date;
+
 public class ActivityListViewModel extends ViewModel {
 
     private AppRepository repository;
 
-    //private AppExecutors mExecutor;
-
-    public ActivityListViewModel(AppRepository repository){//, AppExecutors mExecutor){
+    public ActivityListViewModel(AppRepository repository){
         this.repository = repository;
-        //this.mExecutor = mExecutor;
+        //Date d = new Date();
+        //repository.fetchMoreActivities(DataConverters.toDate(d.getTime()));
     }
 
-    //TODO delete when type ready
     public LiveData<PagedList<Activity>> getActivities()
     {
         return repository.getActivities();
     }
 
-//    public LiveData<List<Activity>> getActivitiesByType(int activityTypeId){
-//        return repository.getActivitiesByType(activityTypeId);
-//    }
 
-//    //TODO delete this
-//    public void deleteAllActivities(){
-//        //mExecutor.diskIO().execute(() ->
-//        repository.deleteAllActivities();
-//    }
 }

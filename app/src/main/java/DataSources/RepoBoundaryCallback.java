@@ -3,7 +3,6 @@ package DataSources;
 import android.content.Context;
 import android.util.Log;
 
-import AppModel.AppDB;
 import AppModel.Entity.Activity;
 import AppModel.Dao.ActivityDao;
 import AppUtils.AppExecutors;
@@ -12,9 +11,10 @@ import androidx.paging.PagedList;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.Date;
 import java.util.List;
 
-public class RepoBoundaryCallback extends PagedList.BoundaryCallback<Activity>{
+public class RepoBoundaryCallback extends PagedList.BoundaryCallback<Activity> {
 
     private AppExecutors executors;
     private ActivityDao activityDao;
@@ -22,21 +22,29 @@ public class RepoBoundaryCallback extends PagedList.BoundaryCallback<Activity>{
     private boolean isLoading = false;
     private final String TAG = "RepoBoundaryCallback";
     private static DocumentSnapshot lastPage;
+    public static final int DATABASE_PAGE_SIZE = 15;
+    private AppRepository repository;
 
-    public RepoBoundaryCallback(AppExecutors executors, NetworkData networkData, Context context){
-        this.executors = executors;
-        this.activityDao = AppDB.getInstance(context).activityDao();
-        this.networkData = networkData;
-    }
+    public RepoBoundaryCallback(AppRepository repository) {
+        this.repository = repository;
+        //onZeroItemsLoaded();
+    }//AppExecutors executors, NetworkData networkData, Context context){
+//        this.executors = executors;
+//        this.activityDao = AppDB.getInstance(context).activityDao();
+//        this.networkData = networkData;
+//    }
 
     @Override
     public void onZeroItemsLoaded() {
         Log.d(TAG, "onZeroItemsLoaded");
-        fetchActivities();
+        //fetchActivities();
+        Date d = new Date();
+        repository.fetchMoreActivities(AppUtils.DataConverters.toDate(d.getTime()));
     }
 
     @Override
     public void onItemAtFrontLoaded(@NonNull Activity itemAtFront) {
+        Log.d(TAG, "onItemAtFrontLoaded");
         //super.onItemAtFrontLoaded(itemAtFront);
     }
 
@@ -46,31 +54,31 @@ public class RepoBoundaryCallback extends PagedList.BoundaryCallback<Activity>{
         //fetchActivities();
     }
 
-    private void fetchActivities(){
-
-        if(isLoading) return;
-        isLoading = true;
-        executors.networkIO().execute(()-> {
-            networkData.getActivities(lastPage, new NetworkDataCallback() {
-                @Override
-                public void onCallback(List<Activity> activities, DocumentSnapshot documentSnapshot) {
-                    lastPage = documentSnapshot;
-                    Log.d(TAG, "In callback");
-                    if(activities != null) {
-                        executors.diskIO().execute(() -> {
-                            activityDao.bulkInsertActivity(activities);
-//                            for (Activity act : activities) {
-//                                if(act.getActivityInfo() != null)
-//                                    Log.d(TAG, "Image: " + act.getActivityInfo());
-//                                else
-//                                    Log.d(TAG, "Image: null");
-//                            }
-                            Log.d(TAG, "Activities inserted to DB");
-                            isLoading = false;
-                        });
-                    }
-                }
-            });
-        });
-    }
+//    private void fetchActivities(){
+//
+//        if(isLoading) return;
+//        isLoading = true;
+//        executors.networkIO().execute(()-> {
+//            networkData.getActivities(lastPage, new NetworkDataCallback() {
+//                @Override
+//                public void onCallback(List<Activity> activities, DocumentSnapshot documentSnapshot) {
+//                    lastPage = documentSnapshot;
+//                    Log.d(TAG, "In callback");
+//                    if(activities != null) {
+//                        executors.diskIO().execute(() -> {
+//                            activityDao.insertActivities(activities);
+////                            for (Activity act : activities) {
+////                                if(act.getActivityInfo() != null)
+////                                    Log.d(TAG, "Image: " + act.getActivityInfo());
+////                                else
+////                                    Log.d(TAG, "Image: null");
+////                            }
+//                            Log.d(TAG, "Activities inserted to DB");
+//                            isLoading = false;
+//                        });
+//                    }
+//                }
+//            });
+//        });
+//    }
 }

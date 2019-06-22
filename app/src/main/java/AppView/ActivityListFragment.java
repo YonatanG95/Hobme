@@ -35,6 +35,7 @@ public class ActivityListFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         mActivityListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_activity_list, container, false);
 
@@ -45,34 +46,16 @@ public class ActivityListFragment extends Fragment{
                 .get(ActivityListViewModel.class);
 
 
-        //mActivityListViewModel.deleteAllActivities();
         //TODO delete when type ready
         mActivityListViewModel.getActivities().observe(getViewLifecycleOwner(), new Observer<PagedList<Activity>>() {
             @Override
             public void onChanged(PagedList<Activity> activities) {
                 adapter.submitList(activities);
             }
-//            @Override
-//            public void onChanged(List<Activity> activities)
-//            {
-//                Log.d("Check", "size: " + activities.size());
-//                adapter.setActivities(activities);
-//            }
         });
-
-        //TODO uncomment when type ready
-//        mActivityListViewModel.getActivitiesByType().observe(this, new Observer<List<Activity>>() {
-//             @Override
-//             public void onChanged(List<Activity> activities) {
-//                 adapter.setActivities(activities);
-//             }
-//        });
-
-        //observeActivities();
 
         return mActivityListBinding.getRoot();
     }
-
 
     private void bindData()
     {
@@ -83,16 +66,6 @@ public class ActivityListFragment extends Fragment{
 
     public void createActivityBtnClick(View view)
     {
-//        Fragment createActivity = new CreateActivityFragment();
-//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//        transaction.replace(R.id.activities_fragment_container, createActivity );
-//        transaction.addToBackStack(null);
-//        transaction.commit();
         Navigation.findNavController(view).navigate(R.id.actListToCreate);
     }
-
-//    @Override
-//    public void openActivityDetails(View view, Activity activity) {
-//        Navigation.findNavController(view).navigate(R.id.action_activityListFragment_to_detailedActivityFragment);
-//    }
 }
