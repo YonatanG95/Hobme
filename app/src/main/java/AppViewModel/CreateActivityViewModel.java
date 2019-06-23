@@ -18,6 +18,8 @@ public class CreateActivityViewModel extends ViewModel {
     public CreateActivityViewModel(AppRepository repository)//, AppExecutors mExecutor)
     {
         this.repository = repository;
+//        activity = new MutableLiveData<>();
+//            Activity newActivity = new Activity();
         //this.mExecutor = mExecutor;
     }
 
@@ -30,9 +32,10 @@ public class CreateActivityViewModel extends ViewModel {
         if (activity == null){
             activity = new MutableLiveData<>();
             Activity newActivity = new Activity();
-            Log.d("CHECK", "New act id: " + newActivity.getId());
+//            Log.d("CHECK", "New act id: " + newActivity.getId());
             activity.setValue(newActivity);
         }
+//        Log.d("Act", "Act ID: " + this.activity.getValue().getId());
         return this.activity;
     }
 }

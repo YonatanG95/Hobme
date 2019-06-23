@@ -139,7 +139,7 @@ public class NetworkData{
 //                });
 //    }
 
-    void getActivities(DocumentSnapshot lastPage, NetworkDataCallback callback){
+    void getActivities(DocumentSnapshot lastPage, NetworkDataCallback.ActivityCallback callback){
 
         Query query = firestoreDb.collection(ACTIVITY_COLLECTION_NAME)
                 .orderBy(ORDER_BY_FIELD)

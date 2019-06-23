@@ -7,9 +7,10 @@ import java.util.List;
 import AppModel.Entity.Activity;
 import AppModel.Entity.User;
 
-public interface NetworkDataCallback {
+public class NetworkDataCallback {
 
-    void onCallback(List<Activity> activities);//, DocumentSnapshot documentSnapshot);
+    public interface ActivityCallback {
+        void onCallback(List<Activity> activities);//, DocumentSnapshot documentSnapshot);
+    }
 
-    void userCallback(User user);
 }

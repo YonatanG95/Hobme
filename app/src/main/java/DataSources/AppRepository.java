@@ -24,15 +24,15 @@ public class AppRepository {
     public static final int INIT_SIZE = 15;
     private final int PREFETCH_DISTANCE = 4;
     private static AppRepository sInstance;
-    //private ActivityDao activityDao;
+    private ActivityDao activityDao;
     //private UserDao userDao;
     //private UserActivityJoinDao userActivityJoinDao;
     //private ActivityTypeDao activityTypeDao;
     //private CategoryDao categoryDao;
 //    private final AppExecutors executors;
-//    private NetworkData networkData;
+    private NetworkData networkData;
 //    private Context mContext;
-//    private final String TAG = "AppRepository";
+    private final String TAG = "AppRepository";
     //private boolean mInitialized = false;
     //MutableLiveData<Category> mt = new MutableLiveData<Category>();
     private AppExecutors appExecutors;
@@ -43,12 +43,12 @@ public class AppRepository {
         this.appExecutors = executors;
         this.localData = new LocalData(context, executors);
         this.remoteData = new RemoteData();
-//        AppDB database = AppDB.getInstance(context);
-//        this.activityDao = database.activityDao();
+        AppDB database = AppDB.getInstance(context);
+        this.activityDao = database.activityDao();
 //        //this.userDao = database.userDao();
 //        //this.userActivityJoinDao = database.userActivityJoinDao();
 //        //this.activityTypeDao = database.activityTypeDao();
-//        this.networkData = NetworkData.getInstance();
+        this.networkData = NetworkData.getInstance();
 //        this.mContext = context;
         //dbInit();
         //deleteAllActivities();
@@ -67,12 +67,19 @@ public class AppRepository {
     }
 
     public void insertActivity(Activity activity){
-        localData.insertActivity(activity);
+        appExecutors.networkIO().execute(() -> {
+          String id = remoteData.insertActivity(activity);
+          activity.setId(id);
+            appExecutors.diskIO().execute(() -> {
+                localData.insertActivity(activity);
+                Log.d(TAG, "Activity inserted with ID: " + activity.getId());
+            });
+        });
     }
 
     public void fetchMoreActivities(Date date){
         appExecutors.networkIO().execute(()-> {
-            remoteData.fetchActivities(date, new NetworkDataCallback() {
+            remoteData.fetchActivities(date, new NetworkDataCallback.ActivityCallback() {
                 @Override
                 public void onCallback(List<Activity> activities) {
                     if(activities != null) {
@@ -86,9 +93,10 @@ public class AppRepository {
         );
     }
 
+
 //    //Create new activity
 //    public void insertActivity(Activity activity){
-//        executors.diskIO().execute(()-> {
+//        appExecutors.diskIO().execute(()-> {
 //            String id = networkData.insertActivity(activity);
 //            activity.setId(id);
 //            activityDao.insert(activity);
