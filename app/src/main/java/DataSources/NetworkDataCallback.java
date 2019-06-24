@@ -13,4 +13,5 @@ public class NetworkDataCallback {
         void onCallback(List<Activity> activities);//, DocumentSnapshot documentSnapshot);
     }
 
+
 }

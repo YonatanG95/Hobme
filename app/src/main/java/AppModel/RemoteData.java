@@ -1,13 +1,18 @@
 package AppModel;
 
+import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -16,11 +21,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.project.hobme.R;
 
 import java.util.Date;
 import java.util.List;
 
 import AppModel.Entity.Activity;
+import AppModel.Entity.User;
+import AppView.UserLoginFragment;
 import DataSources.AppRepository;
 import DataSources.NetworkDataCallback;
 
@@ -40,7 +48,8 @@ public class RemoteData {
                 .setTimestampsInSnapshotsEnabled(true)
                 .build();
         firestoreDb.setFirestoreSettings(settings);
-//        FirebaseFirestore.setLoggingEnabled(true);
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore.setLoggingEnabled(true);
     }
 
     public void fetchActivities(Date date, NetworkDataCallback.ActivityCallback callback){
@@ -86,10 +95,34 @@ public class RemoteData {
         return id;
     }
 
-//    public void currentlyLoggedIn(){
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        currentUser.get
-//        updateUI(currentUser);
-//    }
+    public boolean currentlyLoggedIn(){
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            currentUser.getUid();
+            return true;
+//            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        }
+        return false;
+    }
+
+    public void userSignInEmail(String email, String pass, View view, UserLoginFragment fragment){
+        mAuth.signInWithEmailAndPassword(email, pass)
+                .addOnCompleteListener(fragment.getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            Navigation.findNavController(view).navigate(R.id.loginToActList);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(fragment.getContext(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 
 }

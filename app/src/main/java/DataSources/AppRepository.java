@@ -2,6 +2,7 @@ package DataSources;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import AppModel.AppDB;
 import AppModel.Entity.Activity;
@@ -9,6 +10,7 @@ import AppModel.Dao.ActivityDao;
 import AppModel.LocalData;
 import AppModel.RemoteData;
 import AppUtils.AppExecutors;
+import AppView.UserLoginFragment;
 
 import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
@@ -24,13 +26,13 @@ public class AppRepository {
     public static final int INIT_SIZE = 15;
     private final int PREFETCH_DISTANCE = 4;
     private static AppRepository sInstance;
-    private ActivityDao activityDao;
+    //private ActivityDao activityDao;
     //private UserDao userDao;
     //private UserActivityJoinDao userActivityJoinDao;
     //private ActivityTypeDao activityTypeDao;
     //private CategoryDao categoryDao;
 //    private final AppExecutors executors;
-    private NetworkData networkData;
+    //private NetworkData networkData;
 //    private Context mContext;
     private final String TAG = "AppRepository";
     //private boolean mInitialized = false;
@@ -44,11 +46,11 @@ public class AppRepository {
         this.localData = new LocalData(context, executors);
         this.remoteData = new RemoteData();
         AppDB database = AppDB.getInstance(context);
-        this.activityDao = database.activityDao();
+        //this.activityDao = database.activityDao();
 //        //this.userDao = database.userDao();
 //        //this.userActivityJoinDao = database.userActivityJoinDao();
 //        //this.activityTypeDao = database.activityTypeDao();
-        this.networkData = NetworkData.getInstance();
+        //this.networkData = NetworkData.getInstance();
 //        this.mContext = context;
         //dbInit();
         //deleteAllActivities();
@@ -91,6 +93,14 @@ public class AppRepository {
             });
         }
         );
+    }
+
+    public boolean currentlyLoggedIn(){
+        return remoteData.currentlyLoggedIn();
+    }
+
+    public void signInUserEmail(String email, String password, View view, UserLoginFragment loginFragment){
+        remoteData.userSignInEmail(email, password, view, loginFragment);
     }
 
 
