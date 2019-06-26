@@ -50,5 +50,17 @@
         <action
             android:id="@+id/loginToActList"
             app:destination="@id/activityListFragment" />
+        <action
+            android:id="@+id/loginToRegister"
+            app:destination="@id/userRegisterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userRegisterFragment"
+        android:name="AppView.UserRegisterFragment"
+        android:label="user_register_fragment"
+        tools:layout="@layout/user_register_fragment" >
+        <action
+            android:id="@+id/registerToActList"
+            app:destination="@id/activityListFragment" />
     </fragment>
 </navigation>

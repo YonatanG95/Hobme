@@ -22,33 +22,47 @@
             android:id="@+id/editText4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
             android:layout_marginTop="50dp"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="@={view.email}"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="88dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/editText5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
             android:layout_marginTop="10dp"
             android:ems="10"
             android:inputType="textPassword"
             android:text="@={view.password}"
-            app:layout_constraintTop_toBottomOf="@+id/editText4"
-            tools:layout_editor_absoluteX="88dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText4" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="150dp"
             android:layout_marginTop="20dp"
             android:onClick="@{(view) -> handler.loginBtn(view)}"
             android:text="Button"
-            app:layout_constraintTop_toBottomOf="@+id/editText5"
-            tools:layout_editor_absoluteX="189dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText5" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="100dp"
+            android:text="Button"
+            android:onClick="@{(view) -> handler.registerBtn(view)}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -88,6 +88,10 @@ public class UserLoginFragment extends Fragment {
         //userSignInEmail();
     }
 
+    public void registerBtn(View view){
+        Navigation.findNavController(view).navigate(R.id.loginToRegister);
+    }
+
 //
 //    @Override
 //    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
