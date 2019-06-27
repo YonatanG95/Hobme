@@ -1,6 +1,5 @@
 package AppModel;
 
-import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -16,7 +15,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
@@ -27,7 +25,6 @@ import java.util.Date;
 import java.util.List;
 
 import AppModel.Entity.Activity;
-import AppModel.Entity.User;
 import AppView.UserLoginFragment;
 import DataSources.AppRepository;
 import DataSources.NetworkDataCallback;
@@ -40,7 +37,7 @@ public class RemoteData {
     private final String ACTIVITY_TYPE_COLLECTION_NAME = "activityType";
     private final String CATEGORY_COLLECTION_NAME = "category";
     private final String ORDER_BY_FIELD = "activityStartDateTime";
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mFirebaseAuth;
 
     public RemoteData(){
         firestoreDb = FirebaseFirestore.getInstance();
@@ -48,7 +45,7 @@ public class RemoteData {
                 .setTimestampsInSnapshotsEnabled(true)
                 .build();
         firestoreDb.setFirestoreSettings(settings);
-        mAuth = FirebaseAuth.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseFirestore.setLoggingEnabled(true);
     }
 
@@ -96,7 +93,7 @@ public class RemoteData {
     }
 
     public boolean currentlyLoggedIn(){
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
         if(currentUser != null){
             currentUser.getUid();
             return true;
@@ -106,14 +103,14 @@ public class RemoteData {
     }
 
     public void userSignInEmail(String email, String pass, View view, UserLoginFragment fragment){
-        mAuth.signInWithEmailAndPassword(email, pass)
+        mFirebaseAuth.signInWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(fragment.getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            FirebaseUser user = mFirebaseAuth.getCurrentUser();
                             Navigation.findNavController(view).navigate(R.id.loginToActList);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -123,6 +120,10 @@ public class RemoteData {
                         }
                     }
                 });
+    }
+
+    public void logOutUser(){
+        mFirebaseAuth.signOut();
     }
 
 }

@@ -103,6 +103,10 @@ public class AppRepository {
         remoteData.userSignInEmail(email, password, view, loginFragment);
     }
 
+    public void logOutUser(){
+        remoteData.logOutUser();
+    }
+
 
 //    //Create new activity
 //    public void insertActivity(Activity activity){

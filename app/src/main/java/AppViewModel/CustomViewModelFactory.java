@@ -29,6 +29,8 @@ public class CustomViewModelFactory implements ViewModelProvider.Factory {
             return (T) new UserLoginViewModel(repository);
         else if (modelClass.isAssignableFrom(UserRegisterViewModel.class))
             return (T) new UserRegisterViewModel(repository);
+        else if (modelClass.isAssignableFrom(ContainerViewModel.class))
+            return (T) new ContainerViewModel(repository);
         else
             throw new IllegalArgumentException("AppViewModel Not Found");
     }

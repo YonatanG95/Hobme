@@ -16,6 +16,10 @@
             android:id="@+id/actListToDetails"
             app:destination="@id/detailedActivityFragment">
         </action>
+        <action
+            android:id="@+id/actListToLogin"
+            app:destination="@id/userLoginFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/createActivityFragment2"
@@ -26,6 +30,10 @@
             android:id="@+id/actCreateToList"
             app:destination="@id/activityListFragment"
             app:popUpTo="@id/createActivityFragment2"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/actCreateToLogin"
+            app:destination="@id/userLoginFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -41,6 +49,10 @@
         <argument
             android:name="activity"
             app:argType="AppModel.Entity.Activity" />
+        <action
+            android:id="@+id/actDetailsToLogin"
+            app:destination="@id/userLoginFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/userLoginFragment"
