@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -51,6 +52,8 @@ public class DetailedActivityFragment extends Fragment {
                 .get(DetailedActivityViewModel.class);
 
         bindData();
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
 
         return mDetailedActivityBinding.getRoot();
     }

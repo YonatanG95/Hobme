@@ -1,5 +1,6 @@
 package AppView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -43,6 +44,8 @@ public class UserRegisterFragment extends Fragment {
 
         bindData();
 
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+
         return binding.getRoot();
     }
 
@@ -50,6 +53,10 @@ public class UserRegisterFragment extends Fragment {
         binding.setLifecycleOwner(this);
         binding.setView(mViewModel);
         binding.setHandler(this);
+    }
+
+    public void createUserEmail(View view){
+        mViewModel.createUserEmail(this, view);
     }
 
 //    @Override

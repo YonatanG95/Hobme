@@ -26,6 +26,7 @@ import java.util.List;
 
 import AppModel.Entity.Activity;
 import AppView.UserLoginFragment;
+import AppView.UserRegisterFragment;
 import DataSources.AppRepository;
 import DataSources.NetworkDataCallback;
 
@@ -124,6 +125,26 @@ public class RemoteData {
 
     public void logOutUser(){
         mFirebaseAuth.signOut();
+    }
+
+    public void createUserEmail(String email, String password, View view, UserRegisterFragment fragment){
+        mFirebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(fragment.getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "createUserWithEmail:success");
+                            FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                            Navigation.findNavController(view).navigate(R.id.registerToActList);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(fragment.getContext(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
 }

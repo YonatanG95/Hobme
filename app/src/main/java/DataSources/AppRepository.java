@@ -11,6 +11,7 @@ import AppModel.LocalData;
 import AppModel.RemoteData;
 import AppUtils.AppExecutors;
 import AppView.UserLoginFragment;
+import AppView.UserRegisterFragment;
 
 import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
@@ -105,6 +106,10 @@ public class AppRepository {
 
     public void logOutUser(){
         remoteData.logOutUser();
+    }
+
+    public void createUserEmail(String email, String password, View view, UserRegisterFragment fragment){
+        remoteData.createUserEmail(email, password, view, fragment);
     }
 
 

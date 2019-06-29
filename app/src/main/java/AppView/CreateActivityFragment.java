@@ -42,6 +42,7 @@ import AppViewModel.CreateActivityViewModel;
 import AppViewModel.CustomViewModelFactory;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -89,6 +90,8 @@ public class CreateActivityFragment extends Fragment {
                 .get(CreateActivityViewModel.class);
 
         bindData();
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
 
         return mFragmentCreateActivityBinding.getRoot();
     }

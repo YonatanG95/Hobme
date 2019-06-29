@@ -1,5 +1,6 @@
 package AppView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -61,6 +62,8 @@ public class UserLoginFragment extends Fragment {
 
         checkUserStatus();
 
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+
         return binding.getRoot();
     }
 
@@ -84,6 +87,10 @@ public class UserLoginFragment extends Fragment {
     }
 
     public void loginBtn(View view){
+//        NavController nc = (((NavHostFragment) getActivity().getSupportFragmentManager()
+//                .findFragmentById(R.id.activities_fragment_container))
+//                .getNavController());
+//        nc.navigate(R.id.loginToActList);
         mViewModel.userLogInEmail(this, view);
         //userSignInEmail();
     }

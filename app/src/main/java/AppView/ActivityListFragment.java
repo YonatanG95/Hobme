@@ -5,6 +5,7 @@ import AppUtils.InjectorUtils;
 import AppViewModel.ActivityListViewModel;
 import AppViewModel.CustomViewModelFactory;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import androidx.fragment.app.Fragment;
@@ -53,6 +54,8 @@ public class ActivityListFragment extends Fragment{
                 adapter.submitList(activities);
             }
         });
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
 
         return mActivityListBinding.getRoot();
     }
