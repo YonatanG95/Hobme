@@ -3,4 +3,11 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <!--Create Activity Colors-->
+    <color name="imagePlaceHolder">#84878c</color>
+    <color name="addImageBtn">#bdc1c9</color>
+    <color name="spinner">#eeeeee</color>
+
+
 </resources>

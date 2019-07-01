@@ -20,4 +20,37 @@
     <string name="auth_failed">Authentication Failed</string>
     <string name="dbname_users">users</string>
     <string name="field_username">fullName</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_activities_fragments_container">ActivitiesFragmentsContainer</string>
+
+    <!--Create Activity Strings-->
+    <string name="createButton">ADD</string>
+    <string name="addPhoto">CHOOSE PHOTO</string>
+    <string name="date">TODAY</string>
+    <string name="endDate">END</string>
+    <string name="time">NOW</string>
+    <string name="switchText">Private</string>
+    <string-array name="choose_photo_options">
+        <item>Take Photo</item>
+        <item>Choose from Gallery</item>
+        <item>Cancel</item>
+    </string-array>
+    <string name="title_activity_nav">NavAct</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+    <string name="open">OPEN</string>
+
 </resources>

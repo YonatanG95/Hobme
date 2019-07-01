@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/userLoginFragment">
+    <fragment
+        android:id="@+id/activityListFragment"
+        android:name="AppView.ActivityListFragment"
+        android:label="fragment_activity_list"
+        tools:layout="@layout/fragment_activity_list" >
+        <action
+            android:id="@+id/actListToCreate"
+            app:destination="@id/createActivityFragment2" />
+        <action
+            android:id="@+id/actListToDetails"
+            app:destination="@id/detailedActivityFragment">
+        </action>
+        <action
+            android:id="@+id/actListToLogin"
+            app:destination="@id/userLoginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/createActivityFragment2"
+        android:name="AppView.CreateActivityFragment"
+        android:label="fragment_create_activity"
+        tools:layout="@layout/fragment_create_activity" >
+        <action
+            android:id="@+id/actCreateToList"
+            app:destination="@id/activityListFragment"
+            app:popUpTo="@id/createActivityFragment2"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/actCreateToLogin"
+            app:destination="@id/userLoginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailedActivityFragment"
+        android:name="AppView.DetailedActivityFragment"
+        android:label="fragment_detailed_activity"
+        tools:layout="@layout/fragment_detailed_activity" >
+        <action
+            android:id="@+id/actDetailsToList"
+            app:destination="@id/activityListFragment"
+            app:popUpTo="@id/detailedActivityFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="activity"
+            app:argType="AppModel.Entity.Activity" />
+        <action
+            android:id="@+id/actDetailsToLogin"
+            app:destination="@id/userLoginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/userLoginFragment"
+        android:name="AppView.UserLoginFragment"
+        android:label="user_login_fragment"
+        tools:layout="@layout/user_login_fragment" >
+        <action
+            android:id="@+id/loginToActList"
+            app:destination="@id/activityListFragment" />
+        <action
+            android:id="@+id/loginToRegister"
+            app:destination="@id/userRegisterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userRegisterFragment"
+        android:name="AppView.UserRegisterFragment"
+        android:label="user_register_fragment"
+        tools:layout="@layout/user_register_fragment" >
+        <action
+            android:id="@+id/registerToActList"
+            app:destination="@id/activityListFragment">
+            <argument
+                android:name="UserId"
+                app:argType="string" />
+        </action>
+    </fragment>
+</navigation>

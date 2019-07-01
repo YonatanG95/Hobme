@@ -1,0 +1,212 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="AppViewModel.CreateActivityViewModel">
+        </variable>
+        <variable
+            name="handler"
+            type="AppView.CreateActivityFragment">
+        </variable>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <!--<androidx.appcompat.widget.AppCompatEditText-->
+            <!--android:id="@+id/testId"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@={viewModel.activity.activityInfo}"-->
+            <!--tools:layout_editor_absoluteX="0dp"-->
+            <!--tools:layout_editor_absoluteY="76dp" />-->
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/com_facebook_button_background_color_focused_disabled"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@{viewModel.activity.displayedImage}"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/choosePhotoBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/addPhoto"
+            app:backgroundTint="@android:color/transparent"
+            app:icon="@drawable/ic_photo"
+            android:onClick="@{(view) -> handler.selectImage(view)}"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/materialButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="8dp"
+            android:onClick="@{(view) -> handler.addActivityBtn(view)}"
+            android:text="@string/createButton"
+            app:backgroundTint="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/categorySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            android:background="@color/spinner">
+        </androidx.appcompat.widget.AppCompatSpinner>
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/appCompatSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categorySpinner"></androidx.appcompat.widget.AppCompatSpinner>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dateStartBtn"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/date"
+            android:textColor="@android:color/black"
+            app:backgroundTint="@android:color/transparent"
+            app:icon="@drawable/ic_date"
+            app:iconTint="@android:color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            android:onClick="@{(view) -> handler.dateBtn(view)}"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatSpinner" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/timeStartBtn"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/time"
+            android:textColor="@android:color/black"
+            app:backgroundTint="@android:color/transparent"
+            app:icon="@drawable/ic_time"
+            app:iconTint="@android:color/black"
+            android:onClick="@{(view) -> handler.timeBtn(view)}"
+            app:layout_constraintStart_toEndOf="@+id/dateStartBtn"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatSpinner" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dateEndBtn"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/endDate"
+            android:textColor="@android:color/black"
+            app:backgroundTint="@android:color/transparent"
+            app:icon="@drawable/ic_date"
+            app:iconTint="@android:color/black"
+            android:onClick="@{(view) -> handler.dateBtn(view)}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateStartBtn" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/timeEndBtn"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/endDate"
+            android:textColor="@android:color/black"
+            app:backgroundTint="@android:color/transparent"
+            app:icon="@drawable/ic_time"
+            app:iconTint="@android:color/black"
+            android:onClick="@{(view) -> handler.timeBtn(view)}"
+            app:layout_constraintStart_toEndOf="@+id/dateEndBtn"
+            app:layout_constraintTop_toBottomOf="@+id/timeStartBtn" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/editText"
+            android:layout_width="52dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:ems="10"
+            android:inputType="number"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateEndBtn"
+            android:text="@={``+ viewModel.activity.minMembers}"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/editText2"
+            android:layout_width="52dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:ems="10"
+            android:inputType="number"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/timeEndBtn"
+            android:text="@={``+viewModel.activity.maxMembers}"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:text="To"
+            app:layout_constraintStart_toEndOf="@+id/editText"
+            app:layout_constraintTop_toBottomOf="@+id/dateEndBtn" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/switchText"
+            app:layout_constraintStart_toEndOf="@+id/editText2"
+            app:layout_constraintTop_toBottomOf="@+id/timeEndBtn" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/editText3"
+            android:layout_width="388dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="15dp"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            app:layout_constraintBottom_toTopOf="@+id/materialButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@={viewModel.activity.activityInfo}"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
