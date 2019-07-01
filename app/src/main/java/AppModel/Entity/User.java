@@ -13,9 +13,10 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "user_table")
 public class User {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    @PrimaryKey
+    private String id;
     private String fullName;
+    private String email;
     private Date birthDate;
 
     @Ignore
@@ -32,7 +33,7 @@ public class User {
     private Location userLocation;
 
     @Ignore
-    public User(int id, String fullName, Date birthDate, Bitmap profilePicture, List<Bitmap> userPhotos, List<Integer> favoriteTypesIds, List<Integer> myActivitiesIds, List<Integer> activitiesMemberIds, Location userLocation) {
+    public User(String id, String fullName, Date birthDate, Bitmap profilePicture, List<Bitmap> userPhotos, List<Integer> favoriteTypesIds, List<Integer> myActivitiesIds, List<Integer> activitiesMemberIds, Location userLocation) {
         this.id = id;
         this.fullName = fullName;
         this.birthDate = birthDate;
@@ -44,10 +45,21 @@ public class User {
         this.userLocation = userLocation;
     }
 
-    public User(int id, String fullName, Date birthDate){
+    @Ignore
+    public User(String id, String fullName, Date birthDate){
         this.id = id;
         this.fullName = fullName;
         this.birthDate = birthDate;
+    }
+
+    public User(){}
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Location getUserLocation() {
@@ -58,11 +70,11 @@ public class User {
         this.userLocation = userLocation;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

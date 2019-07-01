@@ -10,7 +10,15 @@ import AppModel.Entity.User;
 public class NetworkDataCallback {
 
     public interface ActivityCallback {
-        void onCallback(List<Activity> activities);//, DocumentSnapshot documentSnapshot);
+        void onActivityCallback(List<Activity> activities);//, DocumentSnapshot documentSnapshot);
+    }
+
+    public interface UserIDCallback{
+        void onUserIdCallback(String id, String displayName, String email);
+    }
+
+    public interface UserCallback{
+        void onUserCallback(User user);
     }
 
 

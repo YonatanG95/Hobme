@@ -4,6 +4,7 @@ import android.view.View;
 
 import androidx.lifecycle.ViewModel;
 
+import AppModel.Entity.User;
 import AppView.UserRegisterFragment;
 import DataSources.AppRepository;
 
@@ -13,13 +14,16 @@ public class UserRegisterViewModel extends ViewModel {
     private AppRepository repository;
     private String email;
     private String password;
+    private User user;
+
 
     public UserRegisterViewModel(AppRepository repository){
         this.repository = repository;
+        this.user = new User();
     }
 
     public void createUserEmail(UserRegisterFragment fragment, View view){
-        repository.createUserEmail(email, password, view, fragment);
+        repository.createUserEmail(user, email, password, view, fragment);
     }
 
     public String getEmail() {

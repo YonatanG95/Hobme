@@ -73,6 +73,10 @@
         tools:layout="@layout/user_register_fragment" >
         <action
             android:id="@+id/registerToActList"
-            app:destination="@id/activityListFragment" />
+            app:destination="@id/activityListFragment">
+            <argument
+                android:name="UserId"
+                app:argType="string" />
+        </action>
     </fragment>
 </navigation>

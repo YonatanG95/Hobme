@@ -7,6 +7,7 @@ import android.view.View;
 import AppModel.AppDB;
 import AppModel.Entity.Activity;
 import AppModel.Dao.ActivityDao;
+import AppModel.Entity.User;
 import AppModel.LocalData;
 import AppModel.RemoteData;
 import AppUtils.AppExecutors;
@@ -84,7 +85,7 @@ public class AppRepository {
         appExecutors.networkIO().execute(()-> {
             remoteData.fetchActivities(date, new NetworkDataCallback.ActivityCallback() {
                 @Override
-                public void onCallback(List<Activity> activities) {
+                public void onActivityCallback(List<Activity> activities) {
                     if(activities != null) {
                         appExecutors.diskIO().execute(() -> {
                             localData.insertActivities(activities);
@@ -101,16 +102,60 @@ public class AppRepository {
     }
 
     public void signInUserEmail(String email, String password, View view, UserLoginFragment loginFragment){
-        remoteData.userSignInEmail(email, password, view, loginFragment);
+        appExecutors.networkIO().execute(()-> {
+            remoteData.userSignInEmail(email, password, view, loginFragment);
+        });
     }
 
     public void logOutUser(){
-        remoteData.logOutUser();
+        appExecutors.networkIO().execute(()-> {
+            remoteData.logOutUser();
+        });
     }
 
-    public void createUserEmail(String email, String password, View view, UserRegisterFragment fragment){
-        remoteData.createUserEmail(email, password, view, fragment);
+    public void createUserEmail(User user, String email, String password, String displayName, View view, UserRegisterFragment fragment){
+        appExecutors.networkIO().execute(() -> {
+            remoteData.createUserEmail(email, password, displayName, view, fragment, new NetworkDataCallback.UserIDCallback() {
+                @Override
+                public void onUserIdCallback(String id, String displayName, String email) {
+                    user.setId(id);
+                    user.setFullName(displayName);
+                    user.setEmail(email);
+                    remoteData.insertUser(user);
+                    appExecutors.diskIO().execute(() -> {
+                        localData.insertUser(user);
+                        Log.d(TAG, "User inserted with ID: " + user.getId());
+                    });
+                }
+            });
+        });
     }
+
+    public void fetchUser(String id){
+        appExecutors.networkIO().execute(() -> {
+            remoteData.getUserById(id, new NetworkDataCallback.UserCallback() {
+                @Override
+                public void onUserCallback(User user) {
+                    appExecutors.diskIO().execute(() -> {
+                        localData.insertUser(user);
+                    });
+                }
+            });
+        });
+    }
+
+    public LiveData<User> getUserById(String id){
+        LiveData<User> user = localData.getUserById(id);
+        if(user == null){
+            fetchUser(id);
+            return localData.getUserById(id);
+        }
+        else {
+            return user;
+        }
+    }
+
+
 
 
 //    //Create new activity

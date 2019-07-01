@@ -10,13 +10,16 @@ import androidx.paging.PagedList;
 import java.util.List;
 
 import AppModel.Dao.ActivityDao;
+import AppModel.Dao.UserDao;
 import AppModel.Entity.Activity;
+import AppModel.Entity.User;
 import AppUtils.AppExecutors;
 import DataSources.RepoBoundaryCallback;
 
 public class LocalData {
 
     private ActivityDao activityDao;
+    private UserDao userDao;
     //private RepoBoundaryCallback boundaryCallback;
     private final AppExecutors appExecutors;
 
@@ -25,6 +28,7 @@ public class LocalData {
 
         AppDB appDB = AppDB.getInstance(context);
         this.activityDao = appDB.activityDao();
+        this.userDao = appDB.userDao();
         this.appExecutors = appExecutors;
         //this.boundaryCallback = new RepoBoundaryCallback();
 
@@ -46,5 +50,15 @@ public class LocalData {
         appExecutors.diskIO().execute(() -> {
             activityDao.insert(activity);
         });
+    }
+
+    public void insertUser(User user){
+        appExecutors.diskIO().execute(() -> {
+            userDao.insert(user);
+        });
+    }
+
+    public LiveData<User> getUserById(String id){
+        return userDao.getUserById(id);
     }
 }
