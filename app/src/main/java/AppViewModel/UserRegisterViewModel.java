@@ -15,6 +15,7 @@ public class UserRegisterViewModel extends ViewModel {
     private String email;
     private String password;
     private User user;
+    private String displayName;
 
 
     public UserRegisterViewModel(AppRepository repository){
@@ -23,7 +24,7 @@ public class UserRegisterViewModel extends ViewModel {
     }
 
     public void createUserEmail(UserRegisterFragment fragment, View view){
-        repository.createUserEmail(user, email, password, view, fragment);
+        repository.createUserEmail(user, email, password, displayName, view, fragment);
     }
 
     public String getEmail() {
