@@ -2,6 +2,8 @@ package AppModel.Entity;
 
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.Date;
 import java.util.List;
@@ -12,7 +14,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "user_table")
-public class User {
+public class User implements Parcelable {
 
     @PrimaryKey @NonNull
     private String id;
@@ -54,6 +56,42 @@ public class User {
     }
 
     public User(){}
+
+    protected User(Parcel in) {
+        id = in.readString();
+        fullName = in.readString();
+        email = in.readString();
+        profilePicture = in.readParcelable(Bitmap.class.getClassLoader());
+        userPhotos = in.createTypedArrayList(Bitmap.CREATOR);
+        userLocation = in.readParcelable(Location.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(fullName);
+        dest.writeString(email);
+        dest.writeParcelable(profilePicture, flags);
+        dest.writeTypedList(userPhotos);
+        dest.writeParcelable(userLocation, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String getEmail() {
         return email;

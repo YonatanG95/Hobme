@@ -20,6 +20,9 @@
             android:id="@+id/actListToLogin"
             app:destination="@id/userLoginFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="user"
+            app:argType="AppModel.Entity.User" />
     </fragment>
     <fragment
         android:id="@+id/createActivityFragment2"
@@ -74,9 +77,6 @@
         <action
             android:id="@+id/registerToActList"
             app:destination="@id/activityListFragment">
-            <argument
-                android:name="UserId"
-                app:argType="string" />
         </action>
     </fragment>
 </navigation>

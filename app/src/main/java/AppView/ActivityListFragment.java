@@ -1,6 +1,7 @@
 package AppView;
 
 import AppModel.Entity.Activity;
+import AppModel.Entity.User;
 import AppUtils.InjectorUtils;
 import AppViewModel.ActivityListViewModel;
 import AppViewModel.CustomViewModelFactory;
@@ -55,6 +56,8 @@ public class ActivityListFragment extends Fragment{
             }
         });
 
+        passUser();
+
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
 
         return mActivityListBinding.getRoot();
@@ -71,4 +74,11 @@ public class ActivityListFragment extends Fragment{
     {
         Navigation.findNavController(view).navigate(R.id.actListToCreate);
     }
+
+    private void passUser(){
+        ActivityListFragmentArgs args = ActivityListFragmentArgs.fromBundle(getArguments());
+        User user = args.getUser();
+        mActivityListViewModel.setCurrUser(user);
+    }
+
 }

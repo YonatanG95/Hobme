@@ -30,7 +30,9 @@ import AppModel.Entity.Activity;
 import AppModel.Entity.User;
 import AppView.ActivityListFragmentDirections;
 import AppView.UserLoginFragment;
+import AppView.UserLoginFragmentDirections;
 import AppView.UserRegisterFragment;
+import AppView.UserRegisterFragmentDirections;
 import DataSources.AppRepository;
 import DataSources.NetworkDataCallback;
 
@@ -116,10 +118,17 @@ public class RemoteData {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                            FirebaseUser fbUser = mFirebaseAuth.getCurrentUser();
 //                            callback.onUserIdCallback(user.getUid());
+                            getUserById(fbUser.getUid(), new NetworkDataCallback.UserCallback() {
+                                @Override
+                                public void onUserCallback(User user) {
+                                    UserLoginFragmentDirections.LoginToActList action = UserLoginFragmentDirections.loginToActList(user);
+                                    Navigation.findNavController(view).navigate(action);
+                                }
+                            });
                             //TODO pass ID to next frag
-                            Navigation.findNavController(view).navigate(R.id.loginToActList);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -135,7 +144,7 @@ public class RemoteData {
     }
 
     public void createUserEmail(String email, String password, String displayName, View view, UserRegisterFragment fragment,
-                                NetworkDataCallback.UserIDCallback callback){
+                                NetworkDataCallback.UserCallback callback){
         mFirebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(fragment.getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -151,10 +160,16 @@ public class RemoteData {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            callback.onUserIdCallback(user.getUid(), user.getDisplayName(), user.getEmail());
+//                                            String userId = user.getUid();
+                                            User createdUser = new User();
+                                            createdUser.setEmail(user.getEmail());
+                                            createdUser.setFullName(user.getDisplayName());
+                                            createdUser.setId(user.getUid());
+                                            callback.onUserCallback(createdUser);
                                             //TODO pass ID to next frag
-//                                            ActivityListFragmentDirections.ActListToDetails action = ActivityListFragmentDirections
-                                            Navigation.findNavController(view).navigate(R.id.registerToActList);
+                                            UserRegisterFragmentDirections.RegisterToActList action = UserRegisterFragmentDirections.registerToActList(createdUser);
+//                                            Navigation.findNavController(view).navigate(R.id.registerToActList);
+                                            Navigation.findNavController(view).navigate(action);
                                         }
                                     }
                                 });

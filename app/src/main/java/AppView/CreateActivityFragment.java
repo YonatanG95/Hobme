@@ -294,26 +294,26 @@ public class CreateActivityFragment extends Fragment {
         }
     }
 
-    private Bitmap getBitmapFromUri() {
-
-        getContext().getContentResolver().notifyChange(capturedImageUri, null);
-        ContentResolver cr = getContext().getContentResolver();
-        Bitmap bitmap;
-        try {
-            bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, capturedImageUri);
-            return bitmap;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static Bitmap rotateImage(Bitmap source, float angle) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
-                matrix, true);
-    }
+//    private Bitmap getBitmapFromUri() {
+//
+//        getContext().getContentResolver().notifyChange(capturedImageUri, null);
+//        ContentResolver cr = getContext().getContentResolver();
+//        Bitmap bitmap;
+//        try {
+//            bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, capturedImageUri);
+//            return bitmap;
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+//
+//    public static Bitmap rotateImage(Bitmap source, float angle) {
+//        Matrix matrix = new Matrix();
+//        matrix.postRotate(angle);
+//        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+//                matrix, true);
+//    }
 
 }

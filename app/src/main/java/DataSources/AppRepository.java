@@ -113,18 +113,15 @@ public class AppRepository {
         });
     }
 
-    public void createUserEmail(User user, String email, String password, String displayName, View view, UserRegisterFragment fragment){
+    public void createUserEmail(String email, String password, String displayName, View view, UserRegisterFragment fragment){
         appExecutors.networkIO().execute(() -> {
-            remoteData.createUserEmail(email, password, displayName, view, fragment, new NetworkDataCallback.UserIDCallback() {
+            remoteData.createUserEmail(email, password, displayName, view, fragment, new NetworkDataCallback.UserCallback() {
                 @Override
-                public void onUserIdCallback(String id, String displayName, String email) {
-                    user.setId(id);
-                    user.setFullName(displayName);
-                    user.setEmail(email);
-                    remoteData.insertUser(user);
+                public void onUserCallback(User newUser) {
+                    remoteData.insertUser(newUser);
                     appExecutors.diskIO().execute(() -> {
-                        localData.insertUser(user);
-                        Log.d(TAG, "User inserted with ID: " + user.getId());
+                        localData.insertUser(newUser);
+                        Log.d(TAG, "User inserted with ID: " + newUser.getId());
                     });
                 }
             });
