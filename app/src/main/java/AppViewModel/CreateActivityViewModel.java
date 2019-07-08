@@ -1,8 +1,10 @@
 package AppViewModel;
 
 import android.util.Log;
+import android.view.View;
 
 import AppModel.Entity.Activity;
+import AppModel.Entity.User;
 import DataSources.AppRepository;
 
 import androidx.lifecycle.LiveData;
@@ -14,6 +16,7 @@ public class CreateActivityViewModel extends ViewModel {
     private AppRepository repository;
     //private AppExecutors mExecutor;
     private MutableLiveData<Activity> activity;
+    private User currUser;
 
     public CreateActivityViewModel(AppRepository repository)//, AppExecutors mExecutor)
     {
@@ -23,9 +26,9 @@ public class CreateActivityViewModel extends ViewModel {
         //this.mExecutor = mExecutor;
     }
 
-    public void insertActivity(Activity activity) {
+    public void insertActivity(View view) {
         //mExecutor.diskIO().execute(() ->
-        repository.insertActivity(activity);
+        repository.insertActivity(this.activity.getValue(), currUser, view);
     }
 
     public LiveData<Activity> getActivity(){
@@ -37,5 +40,13 @@ public class CreateActivityViewModel extends ViewModel {
         }
 //        Log.d("Act", "Act ID: " + this.activity.getValue().getId());
         return this.activity;
+    }
+
+    public User getCurrUser() {
+        return currUser;
+    }
+
+    public void setCurrUser(User currUser) {
+        this.currUser = currUser;
     }
 }

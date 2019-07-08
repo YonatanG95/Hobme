@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import AppModel.Entity.User;
 import AppUtils.DataConverters;
 import AppUtils.InjectorUtils;
 import AppViewModel.CreateActivityViewModel;
@@ -59,7 +60,7 @@ public class CreateActivityFragment extends Fragment {
 
     private FragmentCreateActivityBinding mFragmentCreateActivityBinding;
     private CustomViewModelFactory viewModelFactory;
-    private CreateActivityViewModel mActivityListViewModel;
+    private CreateActivityViewModel mCreateActivityViewModel;
     private Calendar date;
     private Uri capturedImageUri;
     private String selectedImagePath;
@@ -86,10 +87,11 @@ public class CreateActivityFragment extends Fragment {
         mFragmentCreateActivityBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_activity, container, false);
 
         viewModelFactory = InjectorUtils.provideViewModelFactory(getActivity());
-        mActivityListViewModel = ViewModelProviders.of(this, viewModelFactory)
+        mCreateActivityViewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(CreateActivityViewModel.class);
 
         bindData();
+        passUser();
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
 
@@ -99,30 +101,28 @@ public class CreateActivityFragment extends Fragment {
     //Bind this fragment and viewmodel to xml using databinding
     private void bindData(){
         mFragmentCreateActivityBinding.setHandler(this);
-        mFragmentCreateActivityBinding.setViewModel(mActivityListViewModel);
+        mFragmentCreateActivityBinding.setViewModel(mCreateActivityViewModel);
         mFragmentCreateActivityBinding.setLifecycleOwner(this);
+    }
+
+    private void passUser(){
+        CreateActivityFragmentArgs args = CreateActivityFragmentArgs.fromBundle(getArguments());
+        User user = args.getUser();
+        mCreateActivityViewModel.setCurrUser(user);
     }
 
     //Create activity button clicked
     public void addActivityBtn(View view)
     {
         //Insert new activity using repository with a method of the ViewModel
-
         setActivityDatesTimes();
-        mActivityListViewModel.insertActivity(mActivityListViewModel.getActivity().getValue());
-
-        //Move back to activities list Fragment
-//        Fragment listActivities = new ActivityListFragment();
-//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//        transaction.replace(R.id.activities_fragment_container, listActivities );
-//        transaction.addToBackStack(null);
-//        transaction.commit();
-        Navigation.findNavController(view).navigate(R.id.actCreateToList);
+        mCreateActivityViewModel.insertActivity(view);
+//        Navigation.findNavController(view).navigate(R.id.actCreateToList);
     }
 
     //TODO implement as data converters for databinding
     private void setActivityDatesTimes(){
-        mActivityListViewModel.getActivity().getValue().setCreationTime(date.getTime());
+        mCreateActivityViewModel.getActivity().getValue().setCreationTime(date.getTime());
         String startDate = mFragmentCreateActivityBinding.dateStartBtn.getText() + " " +
                 mFragmentCreateActivityBinding.timeStartBtn.getText();
         String endDate = mFragmentCreateActivityBinding.dateEndBtn.getText() + " " +
@@ -130,9 +130,9 @@ public class CreateActivityFragment extends Fragment {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try {
             Date dateToInsert = format.parse(startDate);
-            mActivityListViewModel.getActivity().getValue().setActivityStartDateTime(dateToInsert);
+            mCreateActivityViewModel.getActivity().getValue().setActivityStartDateTime(dateToInsert);
             dateToInsert = format.parse(endDate);
-            mActivityListViewModel.getActivity().getValue().setActivityEndDateTime(dateToInsert);
+            mCreateActivityViewModel.getActivity().getValue().setActivityEndDateTime(dateToInsert);
         } catch (ParseException e){
             //TODO check form on button clicked
             e.printStackTrace();
@@ -266,7 +266,7 @@ public class CreateActivityFragment extends Fragment {
                         Bundle extras = data.getExtras();
                         Bitmap imageBitmap = (Bitmap) extras.get("data");
                         mFragmentCreateActivityBinding.imageView.setImageBitmap(imageBitmap);
-                        mActivityListViewModel.getActivity().getValue().setDisplayedImage(DataConverters.bitmapToBlob(imageBitmap));
+                        mCreateActivityViewModel.getActivity().getValue().setDisplayedImage(DataConverters.bitmapToBlob(imageBitmap));
                     }
 
                     break;
@@ -284,7 +284,7 @@ public class CreateActivityFragment extends Fragment {
                                 String picturePath = cursor.getString(columnIndex);
                                 Log.d(TAG, "imageView set");
                                 mFragmentCreateActivityBinding.imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                                mActivityListViewModel.getActivity().getValue().setDisplayedImage(DataConverters.bitmapToBlob(BitmapFactory.decodeFile(picturePath)));
+                                mCreateActivityViewModel.getActivity().getValue().setDisplayedImage(DataConverters.bitmapToBlob(BitmapFactory.decodeFile(picturePath)));
                                 cursor.close();
                             }
                         }

@@ -41,24 +41,28 @@ public class LocalData {
     }
 
     public void insertActivities(List<Activity> activityList){
-        appExecutors.diskIO().execute(() -> {
+//        appExecutors.diskIO().execute(() -> {
             activityDao.insertActivities(activityList);
-        });
+//        });
     }
 
     public void insertActivity(Activity activity){
-        appExecutors.diskIO().execute(() -> {
+//        appExecutors.diskIO().execute(() -> {
             activityDao.insert(activity);
-        });
+//        });
     }
 
     public void insertUser(User user){
-        appExecutors.diskIO().execute(() -> {
+//        appExecutors.diskIO().execute(() -> {
             userDao.insert(user);
-        });
+//        });
     }
 
     public LiveData<User> getUserById(String id){
         return userDao.getUserById(id);
+    }
+
+    public void updateUser(User user){
+        userDao.update(user);
     }
 }

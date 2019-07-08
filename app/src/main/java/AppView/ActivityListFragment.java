@@ -41,8 +41,6 @@ public class ActivityListFragment extends Fragment{
         // Inflate the layout for this fragment
         mActivityListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_activity_list, container, false);
 
-        bindData();
-
         viewModelFactory = InjectorUtils.provideViewModelFactory(getActivity());
         mActivityListViewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(ActivityListViewModel.class);
@@ -56,6 +54,7 @@ public class ActivityListFragment extends Fragment{
             }
         });
 
+        bindData();
         passUser();
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
@@ -72,7 +71,9 @@ public class ActivityListFragment extends Fragment{
 
     public void createActivityBtnClick(View view)
     {
-        Navigation.findNavController(view).navigate(R.id.actListToCreate);
+//        Navigation.findNavController(view).navigate(R.id.actListToCreate);
+        ActivityListFragmentDirections.ActListToCreate action = ActivityListFragmentDirections.actListToCreate(mActivityListViewModel.getCurrUser());
+        Navigation.findNavController(view).navigate(action);
     }
 
     private void passUser(){

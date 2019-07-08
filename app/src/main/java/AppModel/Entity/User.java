@@ -5,6 +5,7 @@ import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,22 +22,23 @@ public class User implements Parcelable {
     private String fullName;
     private String email;
     private Date birthDate;
+    private String fbDocId;
 
     @Ignore
     private Bitmap profilePicture;
     @Ignore
     private List<Bitmap> userPhotos;
     @Ignore
-    private List<Integer> favoriteTypesIds;
+    private List<String> favoriteTypesIds;
     @Ignore
-    private List<Integer> myActivitiesIds;
+    private List<String> myActivitiesIds;
     @Ignore
-    private List<Integer> activitiesMemberIds;
+    private List<String> activitiesMemberIds;
     @Ignore
     private Location userLocation;
 
     @Ignore
-    public User(String id, String fullName, Date birthDate, Bitmap profilePicture, List<Bitmap> userPhotos, List<Integer> favoriteTypesIds, List<Integer> myActivitiesIds, List<Integer> activitiesMemberIds, Location userLocation) {
+    public User(String id, String fullName, Date birthDate, Bitmap profilePicture, List<Bitmap> userPhotos, List<String> favoriteTypesIds, List<String> myActivitiesIds, List<String> activitiesMemberIds, Location userLocation) {
         this.id = id;
         this.fullName = fullName;
         this.birthDate = birthDate;
@@ -55,7 +57,11 @@ public class User implements Parcelable {
         this.birthDate = birthDate;
     }
 
-    public User(){}
+    public User(){
+        this.favoriteTypesIds = new ArrayList<String>();
+        this.myActivitiesIds = new ArrayList<String>();
+        this.activitiesMemberIds = new ArrayList<String>();
+    }
 
     protected User(Parcel in) {
         id = in.readString();
@@ -149,27 +155,36 @@ public class User implements Parcelable {
         this.userPhotos = userPhotos;
     }
 
-    public List<Integer> getFavoriteTypesIds() {
+    public List<String> getFavoriteTypesIds() {
         return favoriteTypesIds;
     }
 
-    public void setFavoriteTypesIds(List<Integer> favoriteTypesIds) {
+    public void setFavoriteTypesIds(List<String> favoriteTypesIds) {
         this.favoriteTypesIds = favoriteTypesIds;
     }
 
-    public List<Integer> getMyActivitiesIds() {
+    public List<String> getMyActivitiesIds()
+    {
         return myActivitiesIds;
     }
 
-    public void setMyActivitiesIds(List<Integer> myActivitiesIds) {
+    public void setMyActivitiesIds(List<String> myActivitiesIds) {
         this.myActivitiesIds = myActivitiesIds;
     }
 
-    public List<Integer> getActivitiesMemberIds() {
+    public List<String> getActivitiesMemberIds() {
         return activitiesMemberIds;
     }
 
-    public void setActivitiesMemberIds(List<Integer> activitiesMemberIds) {
+    public void setActivitiesMemberIds(List<String> activitiesMemberIds) {
         this.activitiesMemberIds = activitiesMemberIds;
+    }
+
+    public String getFbDocId() {
+        return fbDocId;
+    }
+
+    public void setFbDocId(String fbDocId) {
+        this.fbDocId = fbDocId;
     }
 }

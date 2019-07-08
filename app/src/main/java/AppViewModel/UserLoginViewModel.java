@@ -19,8 +19,8 @@ public class UserLoginViewModel extends ViewModel {
         this.repository = repository;
     }
 
-    public boolean isAlreadyLoggedIn(){
-        return repository.currentlyLoggedIn();
+    public void isAlreadyLoggedIn(View view){
+        repository.currentlyLoggedIn(view);
     }
 
     public void userLogInEmail(UserLoginFragment fragment, View view){

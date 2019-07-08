@@ -70,10 +70,16 @@ public class AppRepository {
         return localData.getActivities(boundaryCallback);
     }
 
-    public void insertActivity(Activity activity){
+    public void insertActivity(Activity activity, User user, View view){
         appExecutors.networkIO().execute(() -> {
-          String id = remoteData.insertActivity(activity);
-          activity.setId(id);
+            activity.setCreatorId(user.getId());
+            activity.getMembersIds().add(user.getId());
+            activity.setCurrMembers(activity.getCurrMembers() + 1);
+            String id = remoteData.insertActivity(activity, user, view);
+            activity.setId(id);
+            user.getMyActivitiesIds().add(activity.getId());
+            user.getActivitiesMemberIds().add(activity.getId());
+            updateUser(user);
             appExecutors.diskIO().execute(() -> {
                 localData.insertActivity(activity);
                 Log.d(TAG, "Activity inserted with ID: " + activity.getId());
@@ -97,10 +103,13 @@ public class AppRepository {
         );
     }
 
-    public boolean currentlyLoggedIn(){
-        return remoteData.currentlyLoggedIn();
+    public void currentlyLoggedIn(View view){
+        appExecutors.networkIO().execute(()-> {
+            remoteData.currentlyLoggedIn(view);
+        });
     }
 
+    //TODO think of keeping this user special way in DB
     public void signInUserEmail(String email, String password, View view, UserLoginFragment loginFragment){
         appExecutors.networkIO().execute(()-> {
             remoteData.userSignInEmail(email, password, view, loginFragment);
@@ -150,6 +159,15 @@ public class AppRepository {
         else {
             return user;
         }
+    }
+
+    public void updateUser(User user){
+        appExecutors.networkIO().execute(() -> {
+            remoteData.updateUser(user);
+            appExecutors.diskIO().execute(() -> {
+                localData.updateUser(user);
+            });
+        });
     }
 
 

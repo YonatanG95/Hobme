@@ -9,7 +9,6 @@ import AppView.UserRegisterFragment;
 import DataSources.AppRepository;
 
 public class UserRegisterViewModel extends ViewModel {
-    // TODO: Implement the ViewModel
 
     private AppRepository repository;
     private String email;

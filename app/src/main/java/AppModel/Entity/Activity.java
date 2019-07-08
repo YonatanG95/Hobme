@@ -6,6 +6,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -37,7 +38,7 @@ public class Activity implements Parcelable {
     private String id;
     private int activityTypeId;
     private Date creationTime;
-    private int creatorId;
+    private String creatorId;
     private int minMembers;
     private int maxMembers;
     private int currMembers;
@@ -53,10 +54,10 @@ public class Activity implements Parcelable {
     @Ignore
     private List<Bitmap> activityPhotos;
     @Ignore
-    private List<Integer> membersIds;
+    private List<String> membersIds;
 
     @Ignore
-    public Activity(int activityTypeId, Date creationTime, List<Integer> membersIds, int creatorId, boolean isPrivate, List<Bitmap> activityPhotos, Blob displayedImage, Location activityLocation, Date activityDateTime, String activityInfo) {
+    public Activity(int activityTypeId, Date creationTime, List<String> membersIds, String creatorId, boolean isPrivate, List<Bitmap> activityPhotos, Blob displayedImage, Location activityLocation, Date activityDateTime, String activityInfo) {
         this.activityTypeId = activityTypeId;
         this.creationTime = creationTime;
         this.membersIds = membersIds;
@@ -70,7 +71,7 @@ public class Activity implements Parcelable {
     }
 
     @Ignore
-    public Activity(int activityTypeId, Date creationTime, int creatorId, boolean isPrivate, Date activityDateTime, String activityInfo, Date activityEndDateTime) {
+    public Activity(int activityTypeId, Date creationTime, String creatorId, boolean isPrivate, Date activityDateTime, String activityInfo, Date activityEndDateTime) {
         this.activityTypeId = activityTypeId;
         this.creationTime = creationTime;
         this.creatorId = creatorId;
@@ -80,13 +81,17 @@ public class Activity implements Parcelable {
         this.activityEndDateTime = activityEndDateTime;
     }
 
-    //TODO check if legal
-    public Activity(){}
+    public Activity(){
+        this.membersIds = new ArrayList<String>();
+        this.currMembers = 0;
+        this.maxMembers = 0;
+        this.minMembers = 0;
+    }
 
     protected Activity(Parcel in) {
         id = in.readString();
         activityTypeId = in.readInt();
-        creatorId = in.readInt();
+        creatorId = in.readString();
         minMembers = in.readInt();
         maxMembers = in.readInt();
         currMembers = in.readInt();
@@ -180,19 +185,19 @@ public class Activity implements Parcelable {
         this.creationTime = creationTime;
     }
 
-    public List<Integer> getMembersIds() {
+    public List<String> getMembersIds() {
         return membersIds;
     }
 
-    public void setMembersIds(List<Integer> membersIds) {
+    public void setMembersIds(List<String> membersIds) {
         this.membersIds = membersIds;
     }
 
-    public int getCreatorId() {
+    public String getCreatorId() {
         return creatorId;
     }
 
-    public void setCreatorId(int creatorId) {
+    public void setCreatorId(String creatorId) {
         this.creatorId = creatorId;
     }
 
@@ -267,7 +272,7 @@ public class Activity implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeInt(activityTypeId);
-        dest.writeInt(creatorId);
+        dest.writeString(creatorId);
         dest.writeInt(minMembers);
         dest.writeInt(maxMembers);
         dest.writeInt(currMembers);

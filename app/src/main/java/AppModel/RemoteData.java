@@ -23,12 +23,14 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.project.hobme.R;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import AppModel.Entity.Activity;
 import AppModel.Entity.User;
 import AppView.ActivityListFragmentDirections;
+import AppView.CreateActivityFragmentDirections;
 import AppView.UserLoginFragment;
 import AppView.UserLoginFragmentDirections;
 import AppView.UserRegisterFragment;
@@ -80,7 +82,7 @@ public class RemoteData {
             });
     }
 
-    public String insertActivity(Activity activity){
+    public String insertActivity(Activity activity, User user, View view){
 
         String id = "";
         DocumentReference ref = firestoreDb.collection(ACTIVITY_COLLECTION_NAME).document();
@@ -90,6 +92,8 @@ public class RemoteData {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d(TAG, "DocumentSnapshot added with ID: " + ref.getId());
+                CreateActivityFragmentDirections.ActCreateToList action = CreateActivityFragmentDirections.actCreateToList(user);
+                Navigation.findNavController(view).navigate(action);
             }})
             .addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -100,14 +104,19 @@ public class RemoteData {
         return id;
     }
 
-    public boolean currentlyLoggedIn(){
+    public void currentlyLoggedIn(View view){
         FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
-        if(currentUser != null){
-            currentUser.getUid();
-            return true;
+        if(currentUser != null) {
+            String id = currentUser.getUid();
+            getUserById(id, new NetworkDataCallback.UserCallback() {
+                @Override
+                public void onUserCallback(User user) {
+                    UserLoginFragmentDirections.LoginToActList action = UserLoginFragmentDirections.loginToActList(user);
+                    Navigation.findNavController(view).navigate(action);
+                }
+            });
 //            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         }
-        return false;
     }
 
     public void userSignInEmail(String email, String pass, View view, UserLoginFragment fragment){
@@ -189,17 +198,19 @@ public class RemoteData {
         DocumentReference ref = firestoreDb.collection(USER_COLLECTION_NAME).document();
         //id = ref.getId();
         //user.setId(id);
+        user.setFbDocId(ref.getId());
         ref.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d(TAG, "DocumentSnapshot added with ID: " + ref.getId());
+
             }})
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error adding document", e);
+                }
+            });
         //return id;
     }
 
@@ -246,6 +257,22 @@ public class RemoteData {
                         }
                     }
                 });
+    }
+
+    public void updateUser(User user){
+        DocumentReference ref = firestoreDb.collection(USER_COLLECTION_NAME).document(user.getFbDocId());
+        ref.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "DocumentSnapshot successfully updated!");
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Error updating document", e);
+            }
+        });
     }
 
 

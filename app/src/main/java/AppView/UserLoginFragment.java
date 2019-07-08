@@ -57,10 +57,9 @@ public class UserLoginFragment extends Fragment {
 
 //        mAuth = FirebaseAuth.getInstance();
 
+        checkUserStatus();
 
         bindData();
-
-        checkUserStatus();
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
@@ -72,12 +71,7 @@ public class UserLoginFragment extends Fragment {
      * Check if user already logged in - If so, move to main page
      */
     private void checkUserStatus() {
-        if(mViewModel.isAlreadyLoggedIn()){
-            NavController nc = (((NavHostFragment) getActivity().getSupportFragmentManager()
-                    .findFragmentById(R.id.activities_fragment_container))
-                    .getNavController());
-            nc.navigate(R.id.loginToActList);
-        }
+        mViewModel.isAlreadyLoggedIn(binding.getRoot());
     }
 
     private void bindData() {
