@@ -31,9 +31,6 @@ public class ActivityListFragment extends Fragment{
     private CustomViewModelFactory viewModelFactory;
     private ActivityAdapter adapter;
 
-    public ActivityListFragment() {
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -80,6 +77,7 @@ public class ActivityListFragment extends Fragment{
         ActivityListFragmentArgs args = ActivityListFragmentArgs.fromBundle(getArguments());
         User user = args.getUser();
         mActivityListViewModel.setCurrUser(user);
+        adapter.setCurrUser(user);
     }
 
 }

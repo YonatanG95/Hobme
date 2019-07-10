@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.project.hobme.R;
 import com.project.hobme.databinding.FragmentDetailedActivityBinding;
 
 import AppModel.Entity.Activity;
+import AppModel.Entity.User;
 import AppUtils.InjectorUtils;
 import AppViewModel.CreateActivityViewModel;
 import AppViewModel.CustomViewModelFactory;
@@ -36,7 +38,6 @@ public class DetailedActivityFragment extends Fragment {
     private FragmentDetailedActivityBinding mDetailedActivityBinding;
     private CustomViewModelFactory viewModelFactory;
     private DetailedActivityViewModel detailedActivityViewModel;
-    private Activity activity;
 
     public DetailedActivityFragment() {
     }
@@ -52,21 +53,35 @@ public class DetailedActivityFragment extends Fragment {
                 .get(DetailedActivityViewModel.class);
 
         bindData();
+        passUser();
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
 
         return mDetailedActivityBinding.getRoot();
     }
 
+    private void passUser(){
+        DetailedActivityFragmentArgs args = DetailedActivityFragmentArgs.fromBundle(getArguments());
+        User user = args.getUser();
+        detailedActivityViewModel.setCurrUser(user);
+    }
+
     private void setActivity() {
         DetailedActivityFragmentArgs args = DetailedActivityFragmentArgs.fromBundle(getArguments());
-        activity = args.getActivity();
-        mDetailedActivityBinding.setActivity(activity);
+        detailedActivityViewModel.setActivity(args.getActivity());
     }
 
     private void bindData(){
         setActivity();
         mDetailedActivityBinding.setViewModel(detailedActivityViewModel);
+        mDetailedActivityBinding.setHandler(this);
         mDetailedActivityBinding.setLifecycleOwner(this);
+    }
+
+    public void updateActivity(View view){
+        detailedActivityViewModel.updateActivity();
+        //TODO what if fail?
+        DetailedActivityFragmentDirections.ActDetailsToList action = DetailedActivityFragmentDirections.actDetailsToList(detailedActivityViewModel.getCurrUser());
+        Navigation.findNavController(view).navigate(action);
     }
 }

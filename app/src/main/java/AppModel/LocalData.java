@@ -65,4 +65,10 @@ public class LocalData {
     public void updateUser(User user){
         userDao.update(user);
     }
+
+    public void updateActivity(Activity activity){
+        activityDao.update(activity);
+    }
+
+    public void deleteActivity(Activity activity) {activityDao.delete(activity);}
 }

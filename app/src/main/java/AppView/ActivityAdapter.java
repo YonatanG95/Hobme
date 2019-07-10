@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import AppModel.Entity.Activity;
+import AppModel.Entity.User;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.ActionOnlyNavDirections;
@@ -27,6 +29,7 @@ public class ActivityAdapter extends PagedListAdapter<Activity, ActivityAdapter.
     private final String TAG = "ActivityAdapter";
     private LayoutInflater layoutInflater;
     private List<Activity> activityList = new ArrayList<>();
+    private User currUser;
 //    private CustomOnItemClickListener mListener;
 
     protected ActivityAdapter()
@@ -58,7 +61,7 @@ public class ActivityAdapter extends PagedListAdapter<Activity, ActivityAdapter.
 
         if (activity != null) {
             holder.binding.setActivity(activity);
-            ActivityListFragmentDirections.ActListToDetails action = ActivityListFragmentDirections.actListToDetails(activity);
+            ActivityListFragmentDirections.ActListToDetails action = ActivityListFragmentDirections.actListToDetails(activity, currUser);
             holder.itemView.setOnClickListener(Navigation.createNavigateOnClickListener(action)); //{
         }
         else {
@@ -104,5 +107,14 @@ public class ActivityAdapter extends PagedListAdapter<Activity, ActivityAdapter.
 //    interface CustomOnItemClickListener{
 //        void openActivityDetails(View view, Activity activity);
 //    }
+
+    public User getCurrUser() {
+        return currUser;
+    }
+
+    //TODO consider add user to factory
+    public void setCurrUser(User currUser) {
+        this.currUser = currUser;
+    }
 
 }

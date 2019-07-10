@@ -276,4 +276,36 @@ public class RemoteData {
     }
 
 
+    public void updateActivity(Activity activity){
+        DocumentReference ref = firestoreDb.collection(ACTIVITY_COLLECTION_NAME).document(activity.getId());
+        ref.set(activity).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "DocumentSnapshot successfully updated!");
+            }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error updating document", e);
+                }
+            });
+    }
+
+    public void deleteActivity(Activity activity){
+
+        DocumentReference ref = firestoreDb.collection(ACTIVITY_COLLECTION_NAME).document(activity.getId());
+        ref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "DocumentSnapshot successfully updated!");
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Error updating document", e);
+            }
+        });
+    }
 }

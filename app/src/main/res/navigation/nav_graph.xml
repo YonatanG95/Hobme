@@ -59,9 +59,9 @@
             android:id="@+id/actDetailsToLogin"
             app:destination="@id/userLoginFragment"
             app:popUpToInclusive="true" />
-        <!--<argument-->
-            <!--android:name="user"-->
-            <!--app:argType="AppModel.Entity.User" />-->
+        <argument
+            android:name="user"
+            app:argType="AppModel.Entity.User" />
     </fragment>
     <fragment
         android:id="@+id/userLoginFragment"

@@ -171,6 +171,14 @@ public class AppRepository {
     }
 
 
+    public void updateActivity(Activity activity){
+        appExecutors.networkIO().execute(() -> {
+            remoteData.updateActivity(activity);
+            appExecutors.diskIO().execute(() -> {
+                localData.updateActivity(activity);
+            });
+        });
+    }
 
 
 //    //Create new activity

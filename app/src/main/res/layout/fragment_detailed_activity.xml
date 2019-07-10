@@ -3,12 +3,11 @@
 
     <data>
         <variable
+            name="handler"
+            type="AppView.DetailedActivityFragment" />
+        <variable
             name="viewModel"
             type="AppViewModel.DetailedActivityViewModel">
-        </variable>
-        <variable
-            name="activity"
-            type="AppModel.Entity.Activity">
         </variable>
     </data>
 
@@ -16,11 +15,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textView2"
+        <androidx.appcompat.widget.AppCompatEditText
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:text="@{activity.activityInfo}" />
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="100dp"
+            android:text="@={viewModel.activity.activityInfo}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="200dp"
+            android:layout_marginEnd="100dp"
+            android:text="@={`` + viewModel.activity.maxMembers}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="200dp"
+            android:layout_marginTop="500dp"
+            android:onClick="@{(view) -> handler.updateActivity(view)}"
+            android:text="UPDATE"
+            app:backgroundTint="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
