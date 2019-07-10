@@ -180,6 +180,15 @@ public class AppRepository {
         });
     }
 
+    public void deleteActivity(Activity activity){
+        appExecutors.networkIO().execute(() -> {
+            remoteData.deleteActivity(activity);
+            appExecutors.diskIO().execute(() -> {
+                localData.deleteActivity(activity);
+            });
+        });
+    }
+
 
 //    //Create new activity
 //    public void insertActivity(Activity activity){

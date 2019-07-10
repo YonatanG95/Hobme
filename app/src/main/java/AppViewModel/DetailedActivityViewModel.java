@@ -41,6 +41,10 @@ public class DetailedActivityViewModel extends ViewModel {
         repository.updateActivity(activity.getValue());
     }
 
+    public void deleteActivity(){
+        repository.deleteActivity(activity.getValue());
+    }
+
     public User getCurrUser() {
         return currUser;
     }
