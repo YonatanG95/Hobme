@@ -42,7 +42,26 @@ public class DetailedActivityViewModel extends ViewModel {
     }
 
     public void deleteActivity(){
+        currUser.getActivitiesMemberIds().remove(activity.getValue().getId());
+        currUser.getMyActivitiesIds().remove(activity.getValue().getId());
         repository.deleteActivity(activity.getValue());
+        repository.updateUser(currUser);
+    }
+
+    public void joinActivity(){
+        activity.getValue().setCurrMembers(activity.getValue().getCurrMembers()+1);
+        activity.getValue().getMembersIds().add(currUser.getId());
+        currUser.getActivitiesMemberIds().add(activity.getValue().getId());
+        repository.updateActivity(activity.getValue());
+        repository.updateUser(currUser);
+    }
+
+    public void leaveActivity(){
+        activity.getValue().setCurrMembers(activity.getValue().getCurrMembers()-1);
+        activity.getValue().getMembersIds().remove(currUser.getId());
+        currUser.getActivitiesMemberIds().remove(activity.getValue().getId());
+        repository.updateActivity(activity.getValue());
+        repository.updateUser(currUser);
     }
 
     public User getCurrUser() {

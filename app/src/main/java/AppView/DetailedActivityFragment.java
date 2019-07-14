@@ -91,4 +91,8 @@ public class DetailedActivityFragment extends Fragment {
         DetailedActivityFragmentDirections.ActDetailsToList action = DetailedActivityFragmentDirections.actDetailsToList(detailedActivityViewModel.getCurrUser());
         Navigation.findNavController(view).navigate(action);
     }
+
+    public void joinActivity(View view){
+        detailedActivityViewModel.joinActivity();
+    }
 }
