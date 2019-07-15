@@ -4,6 +4,7 @@ package AppView;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
@@ -51,24 +52,39 @@ public class ActivitiesFragmentsContainer extends AppCompatActivity implements N
         containerViewModel = ViewModelProviders.of(this, factory)
                 .get(ContainerViewModel.class);
 
-        navController = ((NavHostFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.activities_fragment_container)).getNavController();
-        AppBarConfiguration appBarConfiguration =
-                new AppBarConfiguration.Builder(navController.getGraph())
-                        .setDrawerLayout(binding.drawerLayout)
-                        .build();
 
-        NavigationView navView = binding.navView;
-        NavigationUI.setupWithNavController(navView, navController);
+//        AppBarConfiguration appBarConfiguration =
+//                new AppBarConfiguration.Builder(navController.getGraph())
+//                        .setDrawerLayout(binding.drawerLayout)
+//                        .build();
+
+
 
         Toolbar toolbar = binding.myToolbar;
         setSupportActionBar(toolbar);
+
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle (this, binding.drawerLayout, toolbar, R.string.open, R.string.open);
-        //binding.drawerLayout.setDrawerListener(mDrawerToggle);
-        mDrawerToggle.syncState();
+        actionBar.setDisplayShowTitleEnabled(false);
+
+        DrawerLayout drawer = binding.drawerLayout;
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        if (drawer != null) {
+            drawer.addDrawerListener(toggle);
+        }
+        toggle.syncState();
+
+//        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle (this, binding.drawerLayout, toolbar, R.string.open, R.string.open);
+//        //binding.drawerLayout.setDrawerListener(mDrawerToggle);
+//        mDrawerToggle.syncState();
+
+        navController = ((NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.activities_fragment_container)).getNavController();
+        NavigationView navView = binding.navView;
+        NavigationUI.setupWithNavController(navView, navController);
         navView.setNavigationItemSelectedListener(this);
+
 //        DrawerLayout drawerLayout = binding.drawerLayout;
 //        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, false, );
 //        final ActionBar actionBar = getSupportActionBar();
@@ -93,6 +109,12 @@ public class ActivitiesFragmentsContainer extends AppCompatActivity implements N
     private void bindData() {
 
         binding.setLifecycleOwner(this);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
     @Override

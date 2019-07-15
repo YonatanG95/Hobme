@@ -53,4 +53,8 @@
     <string name="menu_send">Send</string>
     <string name="open">OPEN</string>
 
+    <!--Toolbar Menu-->
+    <string name="action_sort">Sort</string>
+    <string name="action_filter">Filter</string>
+
 </resources>
