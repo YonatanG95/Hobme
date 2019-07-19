@@ -55,7 +55,7 @@ public class DetailedActivityFragment extends Fragment {
         bindData();
         passUser();
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        //((AppCompatActivity)getActivity()).getSupportActionBar().show();
 
         return mDetailedActivityBinding.getRoot();
     }

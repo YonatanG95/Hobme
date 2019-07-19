@@ -45,6 +45,7 @@ public class UserRegisterFragment extends Fragment {
         bindData();
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        ((ActivitiesFragmentsContainer)getActivity()).hideBottomNav();
 
         return binding.getRoot();
     }

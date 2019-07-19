@@ -1,11 +1,10 @@
 package AppView;
 
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
 import com.project.hobme.R;
@@ -19,16 +18,12 @@ import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import AppUtils.InjectorUtils;
-import AppViewModel.ActivityListViewModel;
 import AppViewModel.ContainerViewModel;
 import AppViewModel.CustomViewModelFactory;
 
@@ -113,8 +108,17 @@ public class ActivitiesFragmentsContainer extends AppCompatActivity implements N
 
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.top_bar, menu);
         return true;
+    }
+
+    public void hideBottomNav()
+    {
+        binding.bottomNavigation.setVisibility(View.GONE);
+    }
+
+    public void showBottomNav(){
+        binding.bottomNavigation.setVisibility(View.VISIBLE);
     }
 
     @Override

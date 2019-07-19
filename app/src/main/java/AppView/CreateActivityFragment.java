@@ -93,7 +93,7 @@ public class CreateActivityFragment extends Fragment {
         bindData();
         passUser();
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        //((AppCompatActivity)getActivity()).getSupportActionBar().show();
 
         return mFragmentCreateActivityBinding.getRoot();
     }

@@ -9,27 +9,18 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.project.hobme.R;
 import com.project.hobme.databinding.UserLoginFragmentBinding;
 
+import AppUtils.InputValidator;
 import AppUtils.InjectorUtils;
 import AppViewModel.CustomViewModelFactory;
-import AppViewModel.DetailedActivityViewModel;
 import AppViewModel.UserLoginViewModel;
 
 public class UserLoginFragment extends Fragment {
@@ -61,14 +52,16 @@ public class UserLoginFragment extends Fragment {
 
         bindData();
 
+        binding.btnLogin.setEnabled(false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        ((ActivitiesFragmentsContainer)getActivity()).hideBottomNav();
 
         return binding.getRoot();
     }
 
 
     /**
-     * Check if user already logged in - If so, move to main page
+     * Check if user already logged in - If so, move to top_bar page
      */
     private void checkUserStatus() {
         mViewModel.isAlreadyLoggedIn(binding.getRoot());
@@ -92,6 +85,36 @@ public class UserLoginFragment extends Fragment {
     public void registerBtn(View view){
         Navigation.findNavController(view).navigate(R.id.loginToRegister);
     }
+
+
+//    private TextWatcher loginTextWatcher = new TextWatcher() {
+//        @Override
+//        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//        }
+//
+//        @Override
+//        public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//        }
+//
+//        @Override
+//        public void afterTextChanged(Editable s) {
+//
+//        }
+//    };
+
+    public void validation(CharSequence s, int start, int before, int count){
+        if(InputValidator.isPasswordValid(binding.inputPasswordLayout)
+                & InputValidator.isEmailValid(binding.inputEmailLayout)){
+            binding.btnLogin.setEnabled(true);
+        }
+        else {
+            binding.btnLogin.setEnabled(false);
+        }
+    }
+
+
 
 //
 //    @Override

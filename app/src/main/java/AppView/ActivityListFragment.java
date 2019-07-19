@@ -55,6 +55,7 @@ public class ActivityListFragment extends Fragment{
         passUser();
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        ((ActivitiesFragmentsContainer)getActivity()).showBottomNav();
 
         return mActivityListBinding.getRoot();
     }
