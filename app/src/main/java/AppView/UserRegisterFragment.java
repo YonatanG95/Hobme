@@ -18,8 +18,8 @@ import com.project.hobme.R;
 import com.project.hobme.databinding.UserRegisterFragmentBinding;
 
 import AppUtils.InjectorUtils;
+import AppUtils.InputValidator;
 import AppViewModel.CustomViewModelFactory;
-import AppViewModel.UserLoginViewModel;
 import AppViewModel.UserRegisterViewModel;
 
 public class UserRegisterFragment extends Fragment {
@@ -27,10 +27,6 @@ public class UserRegisterFragment extends Fragment {
     private UserRegisterViewModel mViewModel;
     private UserRegisterFragmentBinding binding;
     private CustomViewModelFactory viewModelFactory;
-
-//    public static UserRegisterFragment newInstance() {
-//        return new UserRegisterFragment();
-//    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -43,6 +39,8 @@ public class UserRegisterFragment extends Fragment {
                 .get(UserRegisterViewModel.class);
 
         bindData();
+
+        binding.btnSignup.setEnabled(false);
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
         ((ActivitiesFragmentsContainer)getActivity()).hideBottomNav();
@@ -60,10 +58,15 @@ public class UserRegisterFragment extends Fragment {
         mViewModel.createUserEmail(this, view);
     }
 
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//        mViewModel = ViewModelProviders.of(this).get(UserRegisterViewModel.class);
-//    }
+    public void validation(CharSequence s, int start, int before, int count){
+        if(InputValidator.isPasswordValid(binding.inputPasswordLayout)
+                & InputValidator.isEmailValid(binding.inputEmailLayout)
+                & InputValidator.isValidField(binding.inputNameLayout)){
+            binding.btnSignup.setEnabled(true);
+        }
+        else {
+            binding.btnSignup.setEnabled(false);
+        }
+    }
 
 }
