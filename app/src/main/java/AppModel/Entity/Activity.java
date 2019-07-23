@@ -36,6 +36,7 @@ public class Activity implements Parcelable {
 
     @PrimaryKey @NonNull//(autoGenerate = true)
     private String id;
+    private String name;
     private int activityTypeId;
     private Date creationTime;
     private String creatorId;
@@ -224,6 +225,14 @@ public class Activity implements Parcelable {
 
     public void setDisplayedImage(Blob displayedImage) {
         this.displayedImage = displayedImage;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @BindingAdapter("android:src")

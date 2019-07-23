@@ -20,6 +20,4 @@ public class NetworkDataCallback {
     public interface UserCallback{
         void onUserCallback(User user);
     }
-
-
 }

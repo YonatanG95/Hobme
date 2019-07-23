@@ -1,5 +1,6 @@
 package AppModel;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -11,6 +12,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+//import com.google.android.libraries.places.api.Places;
+//import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.net.PlacesClient;
+//import com.google.android.libraries.places.compat.Place;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,6 +26,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.project.hobme.R;
 
@@ -48,8 +55,10 @@ public class RemoteData {
     private final String CATEGORY_COLLECTION_NAME = "category";
     private final String ORDER_BY_FIELD = "activityStartDateTime";
     private FirebaseAuth mFirebaseAuth;
+//    private PlacesClient placesClient;
 
-    public RemoteData(){
+
+    public RemoteData() {//Context context){
         firestoreDb = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setTimestampsInSnapshotsEnabled(true)
@@ -57,6 +66,13 @@ public class RemoteData {
         firestoreDb.setFirestoreSettings(settings);
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseFirestore.setLoggingEnabled(true);
+
+//        // Initialize the SDK
+//        //TODO move to safe place
+//        Places.initialize(context, "AIzaSyBKjSLWH58p7jfzEOoysCLnnCQ2rgFkEWI");
+//
+//        // Create a new Places client instance
+//        PlacesClient placesClient = Places.createClient(context);
     }
 
     public void fetchActivities(Date date, NetworkDataCallback.ActivityCallback callback){

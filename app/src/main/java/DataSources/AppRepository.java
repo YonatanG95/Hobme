@@ -46,7 +46,7 @@ public class AppRepository {
     private AppRepository(Context context, AppExecutors executors){
         this.appExecutors = executors;
         this.localData = new LocalData(context, executors);
-        this.remoteData = new RemoteData();
+        this.remoteData = new RemoteData();//context);
         AppDB database = AppDB.getInstance(context);
         //this.activityDao = database.activityDao();
 //        //this.userDao = database.userDao();

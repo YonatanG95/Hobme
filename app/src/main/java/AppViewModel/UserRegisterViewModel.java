@@ -4,7 +4,6 @@ import android.view.View;
 
 import androidx.lifecycle.ViewModel;
 
-import AppModel.Entity.User;
 import AppView.UserRegisterFragment;
 import DataSources.AppRepository;
 

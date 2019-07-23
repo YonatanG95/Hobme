@@ -123,8 +123,8 @@ public class CreateActivityFragment extends Fragment {
     //TODO implement as data converters for databinding
     private void setActivityDatesTimes(){
         mCreateActivityViewModel.getActivity().getValue().setCreationTime(date.getTime());
-        String startDate = mFragmentCreateActivityBinding.dateStartBtn.getText() + " " +
-                mFragmentCreateActivityBinding.timeStartBtn.getText();
+        String startDate = mFragmentCreateActivityBinding.inputStartDateLayout.getEditText().getText() + " " +
+                mFragmentCreateActivityBinding.inputStartTimeLayout.getEditText().getText();
         String endDate = mFragmentCreateActivityBinding.dateEndBtn.getText() + " " +
                 mFragmentCreateActivityBinding.timeEndBtn.getText();
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -146,8 +146,8 @@ public class CreateActivityFragment extends Fragment {
         datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                if(genView.getId()==R.id.dateStartBtn){
-                    mFragmentCreateActivityBinding.dateStartBtn.setText("" + String.format("%02d/%02d/%04d",dayOfMonth, month + 1, year));
+                if(genView.getId()==R.id.input_startDate_layout){
+                    mFragmentCreateActivityBinding.inputStartDateLayout.getEditText().setText("" + String.format("%02d/%02d/%04d",dayOfMonth, month + 1, year));
                 }
                 if(genView.getId()==R.id.dateEndBtn){
                     mFragmentCreateActivityBinding.dateEndBtn.setText("" + String.format("%02d/%02d/%04d",dayOfMonth, month + 1, year));
@@ -161,8 +161,8 @@ public class CreateActivityFragment extends Fragment {
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                if(genView.getId()==R.id.timeStartBtn){
-                    mFragmentCreateActivityBinding.timeStartBtn.setText("" + String.format("%02d:%02d",hourOfDay, minute));
+                if(genView.getId()==R.id.input_startTime_layout){
+                    mFragmentCreateActivityBinding.inputStartTimeLayout.getEditText().setText("" + String.format("%02d:%02d",hourOfDay, minute));
                 }
                 if(genView.getId()==R.id.timeEndBtn){
                     mFragmentCreateActivityBinding.timeEndBtn.setText("" + String.format("%02d:%02d",hourOfDay, minute));

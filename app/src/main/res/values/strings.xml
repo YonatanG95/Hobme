@@ -72,4 +72,9 @@
     <string name="editText_name">Full Name</string>
     <string name="create_account">Create Account</string>
 
+    <!--Create Activity-->
+    <string name="activityInfo">Activity Information</string>
+    <string name="activityName">Activity Name</string>
+
+
 </resources>
