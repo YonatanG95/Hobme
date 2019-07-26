@@ -28,9 +28,10 @@
     <!--Create Activity Strings-->
     <string name="createButton">ADD</string>
     <string name="addPhoto">CHOOSE PHOTO</string>
-    <string name="date">TODAY</string>
-    <string name="endDate">END</string>
-    <string name="time">NOW</string>
+    <string name="startDate">Start Date</string>
+    <string name="endDate">End Date</string>
+    <string name="startTime">Start Time</string>
+    <string name="endTime">End Time</string>
     <string name="switchText">Private</string>
     <string-array name="choose_photo_options">
         <item>Take Photo</item>
@@ -75,6 +76,7 @@
     <!--Create Activity-->
     <string name="activityInfo">Activity Information</string>
     <string name="activityName">Activity Name</string>
-
+    <string name="membersTxt">Members</string>
+    <string name="membersSpace">To</string>
 
 </resources>

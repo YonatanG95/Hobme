@@ -17,6 +17,8 @@ import com.google.firebase.firestore.Blob;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import androidx.room.TypeConverter;
@@ -62,6 +64,17 @@ public class DataConverters {
         byte[] byteArr = stream.toByteArray();
         return Blob.fromBytes(byteArr);
     }
+
+//    public static Date stringToDate(String dateString){
+//        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+//        Date result = new Date();
+//        try {
+//            result = format.parse(dateString);
+//        } catch (ParseException e){
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
 
 //    public static Bitmap rotateImageIfNeeded(Bitmap bitmap, String path) throws IOException {
 //        ExifInterface ei = new ExifInterface(path);

@@ -23,9 +23,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
+import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.project.hobme.R;
 import com.project.hobme.databinding.FragmentCreateActivityBinding;
 
@@ -39,6 +41,7 @@ import java.util.Date;
 import AppModel.Entity.User;
 import AppUtils.DataConverters;
 import AppUtils.InjectorUtils;
+import AppUtils.InputValidator;
 import AppViewModel.CreateActivityViewModel;
 import AppViewModel.CustomViewModelFactory;
 
@@ -71,6 +74,9 @@ public class CreateActivityFragment extends Fragment {
     private static final int REQUEST_WRITE_PERMISSION = 101;
     private static final int REQUEST_IMAGE_CAPTURE = 0;
     private static final int REQUEST_CHOOSE_IMAGE = 1;
+//    private final String MIN_MEMBERS_HINT = "Minimum Members";
+//    private final String MAX_MEMBERS_HINT = "Maximum Members";
+    private final String NO_LIMIT_OPTION = "100+";
     private final String TAG = "CreateActivityFragment";
 
     public CreateActivityFragment() {
@@ -92,10 +98,21 @@ public class CreateActivityFragment extends Fragment {
 
         bindData();
         passUser();
-
+        initiateRangeBar();
+        mFragmentCreateActivityBinding.addActivityBtn.setEnabled(false);
         //((AppCompatActivity)getActivity()).getSupportActionBar().show();
 
         return mFragmentCreateActivityBinding.getRoot();
+    }
+
+    private void initiateRangeBar() {
+        mFragmentCreateActivityBinding.membersSeekbar.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
+            @Override
+            public void valueChanged(Number minValue, Number maxValue) {
+                mFragmentCreateActivityBinding.minMembers.setText(minValue.toString());
+                mFragmentCreateActivityBinding.maxMembers.setText(maxValue.toString());
+            }
+        });
     }
 
     //Bind this fragment and viewmodel to xml using databinding
@@ -120,13 +137,36 @@ public class CreateActivityFragment extends Fragment {
 //        Navigation.findNavController(view).navigate(R.id.actCreateToList);
     }
 
+//    private void initiateSpinners(){
+//        String[] members = new String[101];
+//        members[0] = NO_LIMIT_OPTION;
+//        for(int i=2; i < 101; i++){
+//            members[i-1] = Integer.toString(i);
+//        }
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, members);
+//        mFragmentCreateActivityBinding.spinnerMinMembers.setAdapter(adapter);
+//        mFragmentCreateActivityBinding.spinnerMaxMembers.setAdapter(adapter);
+//    }
+
+    public void validation(CharSequence s, int start, int before, int count){
+        if(InputValidator.isValidField(mFragmentCreateActivityBinding.inputActNameLayout)
+                & InputValidator.isValidField(mFragmentCreateActivityBinding.inputActInfoLayout)
+                & InputValidator.datesRangeValid(mFragmentCreateActivityBinding.inputStartDateLayout, mFragmentCreateActivityBinding.inputStartTimeLayout,
+                mFragmentCreateActivityBinding.inputEndDateLayout, mFragmentCreateActivityBinding.inputEndTimeLayout)){
+            mFragmentCreateActivityBinding.addActivityBtn.setEnabled(true);
+        }
+        else {
+            mFragmentCreateActivityBinding.addActivityBtn.setEnabled(false);
+        }
+    }
+
     //TODO implement as data converters for databinding
     private void setActivityDatesTimes(){
         mCreateActivityViewModel.getActivity().getValue().setCreationTime(date.getTime());
-        String startDate = mFragmentCreateActivityBinding.inputStartDateLayout.getEditText().getText() + " " +
-                mFragmentCreateActivityBinding.inputStartTimeLayout.getEditText().getText();
-        String endDate = mFragmentCreateActivityBinding.dateEndBtn.getText() + " " +
-                mFragmentCreateActivityBinding.timeEndBtn.getText();
+        String startDate = mFragmentCreateActivityBinding.startDate.getText() + " " +
+                mFragmentCreateActivityBinding.startTime.getText();
+        String endDate = mFragmentCreateActivityBinding.endDate.getText() + " " +
+                mFragmentCreateActivityBinding.endTime.getText();
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try {
             Date dateToInsert = format.parse(startDate);
@@ -146,11 +186,11 @@ public class CreateActivityFragment extends Fragment {
         datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                if(genView.getId()==R.id.input_startDate_layout){
-                    mFragmentCreateActivityBinding.inputStartDateLayout.getEditText().setText("" + String.format("%02d/%02d/%04d",dayOfMonth, month + 1, year));
+                if(genView.getId()==R.id.startDate){
+                    mFragmentCreateActivityBinding.startDate.setText("" + String.format("%02d/%02d/%04d",dayOfMonth, month + 1, year));
                 }
-                if(genView.getId()==R.id.dateEndBtn){
-                    mFragmentCreateActivityBinding.dateEndBtn.setText("" + String.format("%02d/%02d/%04d",dayOfMonth, month + 1, year));
+                if(genView.getId()==R.id.endDate){
+                    mFragmentCreateActivityBinding.endDate.setText("" + String.format("%02d/%02d/%04d",dayOfMonth, month + 1, year));
                 }
             }
         });
@@ -161,11 +201,11 @@ public class CreateActivityFragment extends Fragment {
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                if(genView.getId()==R.id.input_startTime_layout){
-                    mFragmentCreateActivityBinding.inputStartTimeLayout.getEditText().setText("" + String.format("%02d:%02d",hourOfDay, minute));
+                if(genView.getId()==R.id.startTime){
+                    mFragmentCreateActivityBinding.startTime.setText("" + String.format("%02d:%02d",hourOfDay, minute));
                 }
-                if(genView.getId()==R.id.timeEndBtn){
-                    mFragmentCreateActivityBinding.timeEndBtn.setText("" + String.format("%02d:%02d",hourOfDay, minute));
+                if(genView.getId()==R.id.endTime){
+                    mFragmentCreateActivityBinding.endTime.setText("" + String.format("%02d:%02d",hourOfDay, minute));
                 }
             }}, Calendar.HOUR, Calendar.MINUTE, true);
         timePickerDialog.show();
