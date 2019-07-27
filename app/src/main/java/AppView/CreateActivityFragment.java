@@ -28,6 +28,10 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.project.hobme.R;
 import com.project.hobme.databinding.FragmentCreateActivityBinding;
 
@@ -35,6 +39,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -98,14 +103,39 @@ public class CreateActivityFragment extends Fragment {
 
         bindData();
         passUser();
-        initiateRangeBar();
+        initializeRangeBar();
+        initializeLocation();
         mFragmentCreateActivityBinding.addActivityBtn.setEnabled(false);
         //((AppCompatActivity)getActivity()).getSupportActionBar().show();
 
         return mFragmentCreateActivityBinding.getRoot();
     }
 
-    private void initiateRangeBar() {
+    private void initializeLocation() {
+        // Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        // Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+                mCreateActivityViewModel.getActivity().getValue().setActivityLocation(place);
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i(TAG, "An error occurred: " + status);
+            }
+        });
+    }
+
+    private void initializeRangeBar() {
         mFragmentCreateActivityBinding.membersSeekbar.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
             @Override
             public void valueChanged(Number minValue, Number maxValue) {

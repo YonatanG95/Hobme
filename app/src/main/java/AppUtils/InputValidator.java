@@ -92,9 +92,4 @@ public class InputValidator {
         return true;
     }
 
-    public static boolean numRangeValid(TextInputLayout min, TextInputLayout max){
-        return true;
-    }
-
-
 }

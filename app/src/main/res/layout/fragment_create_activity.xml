@@ -95,6 +95,22 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/input_actName_layout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="10dp">
+                    <fragment android:id="@+id/autocomplete_fragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"/>
+                </androidx.cardview.widget.CardView>
+
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/categorySpinner"
                     android:layout_width="match_parent"
@@ -105,7 +121,7 @@
                     android:background="@color/spinner"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/input_actName_layout">
+                    app:layout_constraintTop_toBottomOf="@+id/location">
                 </androidx.appcompat.widget.AppCompatSpinner>
 
                 <androidx.appcompat.widget.AppCompatSpinner
@@ -229,7 +245,7 @@
                     app:layout_constraintTop_toBottomOf="@id/input_endDate_layout"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginTop="15dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="12dp"
                     android:layout_marginEnd="10dp"
                     android:layout_width="240dp"
                     android:layout_height="wrap_content"
@@ -258,37 +274,6 @@
                     android:text="@={``+viewModel.activity.maxMembers}"
                     android:enabled="false"/>
 
-                <!--<androidx.appcompat.widget.AppCompatSpinner-->
-                    <!--android:id="@+id/spinner_minMembers"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginStart="4dp"-->
-                    <!--android:layout_marginTop="15dp"-->
-                    <!--app:layout_constraintStart_toEndOf="@+id/membersTxt"-->
-                    <!--app:layout_constraintTop_toBottomOf="@+id/input_endDate_layout"-->
-                    <!--android:drawableLeft="@drawable/ic_time"-->
-                    <!--android:drawablePadding="3dp">-->
-                <!--</androidx.appcompat.widget.AppCompatSpinner>-->
-
-
-                <!--<androidx.appcompat.widget.AppCompatTextView-->
-                    <!--android:id="@+id/membersSpace"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginBottom="14dp"-->
-                    <!--app:layout_constraintStart_toEndOf="@+id/spinner_minMembers"-->
-                    <!--app:layout_constraintBottom_toBottomOf="@id/spinner_minMembers"-->
-                    <!--android:text="@string/membersSpace" />-->
-
-
-                <!--<androidx.appcompat.widget.AppCompatSpinner-->
-                    <!--android:id="@+id/spinner_maxMembers"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginStart="5dp"-->
-                    <!--app:layout_constraintStart_toEndOf="@id/membersSpace"-->
-                    <!--app:layout_constraintTop_toTopOf="@+id/spinner_minMembers">-->
-                <!--</androidx.appcompat.widget.AppCompatSpinner>-->
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_private"

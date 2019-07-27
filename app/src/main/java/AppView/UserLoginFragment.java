@@ -15,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.project.hobme.R;
 import com.project.hobme.databinding.UserLoginFragmentBinding;
 
@@ -29,6 +31,7 @@ public class UserLoginFragment extends Fragment {
     private UserLoginViewModel mViewModel;
     private UserLoginFragmentBinding binding;
     private CustomViewModelFactory viewModelFactory;
+    private final String API_KEY = "AIzaSyBKjSLWH58p7jfzEOoysCLnnCQ2rgFkEWI";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -47,8 +50,17 @@ public class UserLoginFragment extends Fragment {
         binding.btnLogin.setEnabled(false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
         ((ActivitiesFragmentsContainer)getActivity()).hideBottomNav();
+        initializeLocationSDK();
 
         return binding.getRoot();
+    }
+
+    private void initializeLocationSDK() {
+        // Initialize the SDK
+        Places.initialize(getContext(), API_KEY);
+
+        // Create a new Places client instance
+        PlacesClient placesClient = Places.createClient(getContext());
     }
 
     private void checkUserStatus() {

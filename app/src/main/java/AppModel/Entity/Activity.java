@@ -19,6 +19,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.android.libraries.places.api.model.Place;
 import com.google.firebase.firestore.Blob;
 
 import AppUtils.DataConverters;
@@ -51,14 +52,14 @@ public class Activity implements Parcelable {
    // @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     private Blob displayedImage;
     @Ignore
-    private Location activityLocation;
+    private Place activityLocation;
     @Ignore
     private List<Bitmap> activityPhotos;
     @Ignore
     private List<String> membersIds;
 
     @Ignore
-    public Activity(int activityTypeId, Date creationTime, List<String> membersIds, String creatorId, boolean isPrivate, List<Bitmap> activityPhotos, Blob displayedImage, Location activityLocation, Date activityDateTime, String activityInfo) {
+    public Activity(int activityTypeId, Date creationTime, List<String> membersIds, String creatorId, boolean isPrivate, List<Bitmap> activityPhotos, Blob displayedImage, Place activityLocation, Date activityDateTime, String activityInfo) {
         this.activityTypeId = activityTypeId;
         this.creationTime = creationTime;
         this.membersIds = membersIds;
@@ -241,11 +242,11 @@ public class Activity implements Parcelable {
             imageView.setImageBitmap(DataConverters.blobToBitmap(bitmap));
     }
 
-    public Location getActivityLocation() {
+    public Place getActivityLocation() {
         return activityLocation;
     }
 
-    public void setActivityLocation(Location activityLocation) {
+    public void setActivityLocation(Place activityLocation) {
         this.activityLocation = activityLocation;
     }
 
