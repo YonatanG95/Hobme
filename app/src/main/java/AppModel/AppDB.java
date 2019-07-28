@@ -2,6 +2,7 @@ package AppModel;
 
 import android.content.Context;
 
+import AppModel.Dao.CategoryDao;
 import AppModel.Dao.UserDao;
 import AppModel.Entity.Activity;
 import AppModel.Dao.ActivityDao;
@@ -15,7 +16,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {Activity.class, User.class, UserActivityJoin.class, ActivityType.class, Category.class}, version = 16)
+@Database(entities = {Activity.class, User.class, UserActivityJoin.class, ActivityType.class, Category.class}, version = 17)
 @TypeConverters(DataConverters.class)
 public abstract class AppDB extends RoomDatabase {
 
@@ -23,6 +24,7 @@ public abstract class AppDB extends RoomDatabase {
 
     public abstract ActivityDao activityDao();
     public abstract UserDao userDao();
+    public abstract CategoryDao categoryDao();
     //public abstract UserActivityJoinDao userActivityJoinDao();
     //public abstract ActivityTypeDao activityTypeDao();
 

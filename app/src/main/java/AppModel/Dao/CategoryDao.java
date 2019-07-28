@@ -13,7 +13,7 @@ import AppModel.Entity.Category;
 public interface CategoryDao {
 
     @Query("SELECT categoryName FROM category_table")
-    List<String> getAllCategories();
+    List<String> getAllCategoriesNames();
 
     @Query("SELECT id FROM category_table WHERE categoryName=:name")
     String getCategoryIdByName(String name);
@@ -22,5 +22,5 @@ public interface CategoryDao {
     int countCategories();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void bulkInsertCategory(Category... categories);
+    void bulkInsertCategory(List<Category> categories);
 }

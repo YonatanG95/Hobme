@@ -7,6 +7,7 @@ import android.view.View;
 import AppModel.AppDB;
 import AppModel.Entity.Activity;
 import AppModel.Dao.ActivityDao;
+import AppModel.Entity.Category;
 import AppModel.Entity.User;
 import AppModel.LocalData;
 import AppModel.RemoteData;
@@ -187,6 +188,26 @@ public class AppRepository {
                 localData.deleteActivity(activity);
             });
         });
+    }
+
+    public void fetchCategories(){
+        appExecutors.networkIO().execute(() -> {
+           remoteData.getCategories(new NetworkDataCallback.CategoryCallback() {
+               @Override
+               public void onCategoryCallback(List<Category> categories) {
+                   appExecutors.diskIO().execute(() -> {
+                       localData.insertCategories(categories);
+                   });
+               }
+           });
+        });
+    }
+
+    public List<String> getCategoriesNames(){
+        if(localData.getCategoriesNames() == null){
+            fetchCategories();
+        }
+        return localData.getCategoriesNames();
     }
 
 

@@ -14,15 +14,24 @@ public class UserRegisterViewModel extends ViewModel {
     private String password;
     private String displayName;
 
-
+    /**
+     * Constructor
+     * @param repository  - repository instance
+     */
     public UserRegisterViewModel(AppRepository repository){
         this.repository = repository;
     }
 
+    /**
+     * Handles register button press - Firebase create user with email.
+     * On result - navigation to  ActivityListFragment
+     * @param view
+     */
     public void createUserEmail(UserRegisterFragment fragment, View view){
         repository.createUserEmail(email, password, displayName, view, fragment);
     }
 
+    //region Getters and setters
     public String getEmail() {
         return email;
     }
@@ -46,4 +55,5 @@ public class UserRegisterViewModel extends ViewModel {
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
+    //endregion
 }

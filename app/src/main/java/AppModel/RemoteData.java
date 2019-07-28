@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.List;
 
 import AppModel.Entity.Activity;
+import AppModel.Entity.Category;
 import AppModel.Entity.User;
 import AppView.ActivityListFragmentDirections;
 import AppView.CreateActivityFragmentDirections;
@@ -323,5 +324,25 @@ public class RemoteData {
                 Log.w(TAG, "Error updating document", e);
             }
         });
+    }
+
+    public void getCategories(NetworkDataCallback.CategoryCallback callback){
+        firestoreDb.collection(CATEGORY_COLLECTION_NAME)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Category> categories = new ArrayList<Category>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                categories.add(document.toObject(Category.class));
+                            }
+                            callback.onCategoryCallback(categories);
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
     }
 }

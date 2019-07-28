@@ -11,6 +11,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.List;
+
 public class CreateActivityViewModel extends ViewModel {
 
     private AppRepository repository;
@@ -48,5 +50,9 @@ public class CreateActivityViewModel extends ViewModel {
 
     public void setCurrUser(User currUser) {
         this.currUser = currUser;
+    }
+
+    public List<String> getCategories(){
+        return repository.getCategoriesNames();
     }
 }

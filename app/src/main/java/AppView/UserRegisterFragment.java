@@ -40,24 +40,49 @@ public class UserRegisterFragment extends Fragment {
 
         bindData();
 
-        binding.btnSignup.setEnabled(false);
-
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-        ((ActivitiesFragmentsContainer)getActivity()).hideBottomNav();
+        initializeUI();
 
         return binding.getRoot();
     }
 
+    /**
+     * Handles UI modifications
+     */
+    private void initializeUI() {
+        binding.btnSignup.setEnabled(false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        ((ActivitiesFragmentsContainer)getActivity()).hideBottomNav();
+    }
+
+    /**
+     * Set databinding parameters
+     */
     private void bindData() {
         binding.setLifecycleOwner(this);
         binding.setView(mViewModel);
         binding.setHandler(this);
     }
 
+
+    /**
+     * Handles register button press - Firebase create user with email.
+     * On result - navigation to  ActivityListFragment
+     * @param view
+     */
     public void createUserEmail(View view){
         mViewModel.createUserEmail(this, view);
     }
 
+
+    /**
+     * Validates UI text fields. All "onTextChanged" attributes
+     * refer this method on every text modification.
+     * Parameters are meaningless ("onTextChanged" requirements)
+     * @param s
+     * @param start
+     * @param before
+     * @param count
+     */
     public void validation(CharSequence s, int start, int before, int count){
         if(InputValidator.isPasswordValid(binding.inputPasswordLayout)
                 & InputValidator.isEmailValid(binding.inputEmailLayout)

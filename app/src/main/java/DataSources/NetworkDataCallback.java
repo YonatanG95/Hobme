@@ -5,6 +5,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.List;
 
 import AppModel.Entity.Activity;
+import AppModel.Entity.Category;
 import AppModel.Entity.User;
 
 public class NetworkDataCallback {
@@ -19,5 +20,9 @@ public class NetworkDataCallback {
 
     public interface UserCallback{
         void onUserCallback(User user);
+    }
+
+    public interface CategoryCallback{
+        void onCategoryCallback(List<Category> categories);
     }
 }

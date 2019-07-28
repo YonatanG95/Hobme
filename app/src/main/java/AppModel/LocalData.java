@@ -10,8 +10,10 @@ import androidx.paging.PagedList;
 import java.util.List;
 
 import AppModel.Dao.ActivityDao;
+import AppModel.Dao.CategoryDao;
 import AppModel.Dao.UserDao;
 import AppModel.Entity.Activity;
+import AppModel.Entity.Category;
 import AppModel.Entity.User;
 import AppUtils.AppExecutors;
 import DataSources.RepoBoundaryCallback;
@@ -20,6 +22,7 @@ public class LocalData {
 
     private ActivityDao activityDao;
     private UserDao userDao;
+    private CategoryDao categoryDao;
     //private RepoBoundaryCallback boundaryCallback;
     private final AppExecutors appExecutors;
 
@@ -29,6 +32,7 @@ public class LocalData {
         AppDB appDB = AppDB.getInstance(context);
         this.activityDao = appDB.activityDao();
         this.userDao = appDB.userDao();
+        this.categoryDao = appDB.categoryDao();
         this.appExecutors = appExecutors;
         //this.boundaryCallback = new RepoBoundaryCallback();
 
@@ -71,4 +75,12 @@ public class LocalData {
     }
 
     public void deleteActivity(Activity activity) {activityDao.delete(activity);}
+
+    public List<String> getCategoriesNames(){
+        return categoryDao.getAllCategoriesNames();
+    }
+
+    public void insertCategories(List<Category> categories){
+        categoryDao.bulkInsertCategory(categories);
+    }
 }

@@ -42,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import AppModel.Entity.User;
 import AppUtils.DataConverters;
@@ -105,11 +106,18 @@ public class CreateActivityFragment extends Fragment {
         passUser();
         initializeRangeBar();
         initializeLocation();
+//        initializeSpinners();
         mFragmentCreateActivityBinding.addActivityBtn.setEnabled(false);
         //((AppCompatActivity)getActivity()).getSupportActionBar().show();
 
         return mFragmentCreateActivityBinding.getRoot();
     }
+
+//    private void initializeSpinners() {
+//        List<String> categories = mCreateActivityViewModel.getCategories();
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, categories);
+//        mFragmentCreateActivityBinding.categorySpinner.setAdapter(adapter);
+//    }
 
     private void initializeLocation() {
         // Initialize the AutocompleteSupportFragment.

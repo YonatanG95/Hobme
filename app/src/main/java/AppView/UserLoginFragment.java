@@ -47,14 +47,25 @@ public class UserLoginFragment extends Fragment {
 
         bindData();
 
-        binding.btnLogin.setEnabled(false);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-        ((ActivitiesFragmentsContainer)getActivity()).hideBottomNav();
+        initializeUI();
+
         initializeLocationSDK();
 
         return binding.getRoot();
     }
 
+    /**
+     * Handles UI modifications
+     */
+    private void initializeUI() {
+        binding.btnLogin.setEnabled(false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        ((ActivitiesFragmentsContainer)getActivity()).hideBottomNav();
+    }
+
+    /**
+     * Using places API key to initialize places API
+     */
     private void initializeLocationSDK() {
         // Initialize the SDK
         Places.initialize(getContext(), API_KEY);
@@ -63,25 +74,48 @@ public class UserLoginFragment extends Fragment {
         PlacesClient placesClient = Places.createClient(getContext());
     }
 
+    /**
+     * If user session exists - navigate directly to main page (ActivityListFragment)
+     */
     private void checkUserStatus() {
         mViewModel.isAlreadyLoggedIn(binding.getRoot());
     }
 
+    /**
+     * Set databinding parameters
+     */
     private void bindData() {
         binding.setView(mViewModel);
         binding.setHandler(this);
         binding.setLifecycleOwner(this);
     }
 
+    /**
+     * Handles login button press - Firebase email login. On result - navigation to  ActivityListFragment
+     * @param view
+     */
     public void loginBtn(View view){
         mViewModel.userLogInEmail(this, view);
     }
 
+    /**
+     * Handles registration link press - navigate to UserRegisterFragment
+     * @param view
+     */
     public void registerBtn(View view){
         Navigation.findNavController(view).navigate(R.id.loginToRegister);
     }
 
 
+    /**
+     * Validates UI text fields. All "onTextChanged" attributes
+     * refer this method on every text modification.
+     * Parameters are meaningless ("onTextChanged" requirements)
+     * @param s
+     * @param start
+     * @param before
+     * @param count
+     */
     public void validation(CharSequence s, int start, int before, int count){
         if(InputValidator.isPasswordValid(binding.inputPasswordLayout)
                 & InputValidator.isEmailValid(binding.inputEmailLayout)){
