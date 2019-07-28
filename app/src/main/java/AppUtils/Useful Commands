@@ -1,66 +1,126 @@
-package DataSources;
+=============================
+AppRepository
+=============================
+//    //Create new activity
+//    public void insertActivity(Activity activity){
+//        appExecutors.diskIO().execute(()-> {
+//            String id = networkData.insertActivity(activity);
+//            activity.setId(id);
+//            activityDao.insert(activity);
+//            Log.d("Check", "ID rep: " + activity.getId());
+//        });
+//
+//    }
 
-import android.util.Log;
+//    public List<String> getAllCategories(){
+//        return categoryDao.getAllCategories();
+//    }
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
+//    public void updateActivity(Activity activity){
+//        activityDao.update(activity);
+//    }
+//
+//    public void deleteActivity(Activity activity){
+//        activityDao.delete(activity);
+//    }
+//
+//    public LiveData<List<Activity>> getActivitiesByCreator(int creatorId){
+//        return activityDao.getActivitiesByCreator(creatorId);
+//    }
 
-import AppModel.Entity.Activity;
-import AppModel.Entity.ActivityType;
-import AppModel.Entity.Category;
-import androidx.annotation.NonNull;
-
-import java.util.List;
+//    public LiveData<List<Activity>> getActivitiesByType(int activityTypeId){
+//        return activityDao.getActivitiesByType(activityTypeId);
+//    }
 
 
-public class NetworkData{
+//    public LiveData<PagedList<Activity>> getActivities() {
+//        Log.d(TAG, "appRepo get activities");
+//        DataSource.Factory factory = activityDao.getDataSourceFactory();
+//        RepoBoundaryCallback repoBoundaryCallback = new RepoBoundaryCallback();
+//        return new LivePagedListBuilder(factory, new PagedList.Config.Builder()
+//                .setEnablePlaceholders(false).setInitialLoadSizeHint(INIT_SIZE)
+//                .setPageSize(PAGE_SIZE).setPrefetchDistance(PREFETCH_DISTANCE).build())
+//                .setBoundaryCallback(repoBoundaryCallback).build();
+//    }
+//
+//
+//    public void deleteAllActivities(){
+//        Log.d(TAG, "appRepo delete all activities");
+//        executors.diskIO().execute(() -> {
+//            activityDao.deleteAllActivities();
+//        });
+//    }
 
-    private static NetworkData instance;
-    FirebaseFirestore firestoreDb = FirebaseFirestore.getInstance();
+//    public List<String> getAllCategories()
+//    {
+//        return activityTypeDao.getAllCategories();
+//    }
 
-    private final String TAG = "NetworkDataLog";
-    private final String ACTIVITY_COLLECTION_NAME = "activity";
-    private final String ACTIVITY_TYPE_COLLECTION_NAME = "activityType";
-    private final String CATEGORY_COLLECTION_NAME = "category";
-    private final String ORDER_BY_FIELD = "activityStartDateTime";
+//    public List<String> getAlltypes()
+//    {
+//        return activityTypeDao.getAllTypes();
+//    }
 
-    public static synchronized NetworkData getInstance(){
-        if(instance == null){
-            instance = new NetworkData();
-        }
-        return instance;
-    }
 
-    private NetworkData(){ }
+//    private void insertCategory(Category category){
+//        executors.networkIO().execute(() -> {
+//            networkData.insertCategory(category);
+//        });
+//    }
+//
+//    private void insertActivityType(ActivityType activityType, String categoryName){
+//        executors.networkIO().execute(() -> {
+//            networkData.insertActivityType(activityType, categoryName);
+//        });
+//    }
 
-    String insertActivity(Activity activity){
+//    private synchronized void initializeData() {
+//
+//        if(mInitialized) return;
+//        mInitialized = true;
+//
+//
+//    }
+//
 
-        String id = "";
-        DocumentReference ref = firestoreDb.collection(ACTIVITY_COLLECTION_NAME).document();
-        id = ref.getId();
-        activity.setId(id);
-        ref.set(activity).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d(TAG, "DocumentSnapshot added with ID: " + ref.getId());
-            }})
-                .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error adding document", e);
-            }
-        });
-        return id;
-    }
+//    private void dbInit(){
+//
+//        Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.category_outdoor);
+//        Category cat1 = new Category("Outdoor", DataConverters.drawableToBlob(drawable));
+//
+//        insertCategory(cat1);
+//
+//        drawable = ContextCompat.getDrawable(mContext, R.drawable.category_sports);
+//        cat1 = new Category("Sports", DataConverters.drawableToBlob(drawable));
+//
+//        insertCategory(cat1);
+//
+//        drawable = ContextCompat.getDrawable(mContext, R.drawable.type_tennis);
+//        ActivityType act1 = new ActivityType("", "Tennis", DataConverters.drawableToBlob(drawable), "");
+//
+//        insertActivityType(act1, "Sports");
+//
+//        drawable = ContextCompat.getDrawable(mContext, R.drawable.type_hiking);
+//        act1 = new ActivityType("", "Hiking", DataConverters.drawableToBlob(drawable), "");
+//
+//        insertActivityType(act1, "Outdoor");
+//
+//        drawable = ContextCompat.getDrawable(mContext, R.drawable.type_fishing);
+//        act1 = new ActivityType("", "Fishing", DataConverters.drawableToBlob(drawable), "");
+//
+//        insertActivityType(act1, "Outdoor");
+//
+//        drawable = ContextCompat.getDrawable(mContext, R.drawable.type_soccer);
+//        act1 = new ActivityType("", "Soccer", DataConverters.drawableToBlob(drawable), "");
+//
+//        insertActivityType(act1, "Sports");
+//
+//    }
 
-    String insertActivityType(ActivityType activityType, String categoryName){
+=========================================
+Old NetworkData
+=========================================
+String insertActivityType(ActivityType activityType, String categoryName){
         String id = "";
 
         DocumentReference ref = firestoreDb.collection(ACTIVITY_TYPE_COLLECTION_NAME).document();
@@ -168,4 +228,3 @@ public class NetworkData{
             }
         });
     }
-}

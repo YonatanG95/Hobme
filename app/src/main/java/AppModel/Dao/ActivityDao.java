@@ -33,7 +33,7 @@ public interface ActivityDao {
 
     //TODO delete when type ready
     @Query("SELECT * FROM activity_table ORDER BY activityStartDateTime ASC")
-    DataSource.Factory<Integer, Activity> getDataSourcefactory();
+    DataSource.Factory<Integer, Activity> getDataSourceFactory();
 
     @Query("SELECT * FROM activity_table")
     LiveData<Activity> getActivities();
