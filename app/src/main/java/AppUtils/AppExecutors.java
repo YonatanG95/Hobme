@@ -1,4 +1,6 @@
-package AppUtils;/*
+package AppUtils;
+
+/*
  * Copyright (C) 2017 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +25,6 @@ import java.util.concurrent.Executors;
 
 /**
  * Global executor pools for the whole application.
- * <p>
  * Grouping tasks like this avoids the effects of task starvation (e.g. disk reads don't wait behind
  * webservice requests).
  */
@@ -52,6 +53,7 @@ public class AppExecutors {
         }
         return sInstance;
     }
+
 
     public Executor diskIO() {
         return diskIO;

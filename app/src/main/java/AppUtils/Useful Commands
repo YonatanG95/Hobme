@@ -228,3 +228,170 @@ String insertActivityType(ActivityType activityType, String categoryName){
             }
         });
     }
+
+
+======================================================
+                RemoteData
+======================================================
+//    public void getUser(String id, NetworkDataCallback.ActivityCallback callback){
+//
+//        Query query = firestoreDb.collection(ACTIVITY_COLLECTION_NAME)
+//                .orderBy(ACTIVITY_ORDER_BY_FIELD).whereGreaterThan(ACTIVITY_ORDER_BY_FIELD, date)
+//                .limit(AppRepository.PAGE_SIZE);
+//
+//        query.get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            QuerySnapshot result = task.getResult();
+//                            List<Activity> act = result.toObjects(Activity.class);
+//                            callback.onCallback(act);
+//
+//                        }
+//                        else {
+//                            Log.w(TAG, "Error getting documents.", task.getException());
+//                        }
+//                    }
+//                });
+//    }
+
+
+==================================================
+AppRepository
+==================================================
+
+//    public LiveData<User> getUserById(String id){
+//        LiveData<User> user = localData.getUserById(id);
+//        if(user == null){
+//            fetchUser(id);
+//            return localData.getUserById(id);
+//        }
+//        else {
+//            return user;
+//        }
+//    }
+
+
+==================================================
+DataConverters
+=================================================
+//    public static Date stringToDate(String dateString){
+//        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+//        Date result = new Date();
+//        try {
+//            result = format.parse(dateString);
+//        } catch (ParseException e){
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
+
+//    public static Bitmap rotateImageIfNeeded(Bitmap bitmap, String path) throws IOException {
+//        ExifInterface ei = new ExifInterface(path);
+//        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+//                ExifInterface.ORIENTATION_UNDEFINED);
+//
+//        Bitmap rotatedBitmap = null;
+//        switch(orientation) {
+//
+//            case ExifInterface.ORIENTATION_ROTATE_90:
+//                return rotateImage(bitmap, 90);
+//
+//            case ExifInterface.ORIENTATION_ROTATE_180:
+//                return rotateImage(bitmap, 180);
+//
+//            case ExifInterface.ORIENTATION_ROTATE_270:
+//                return rotateImage(bitmap, 270);
+//
+//            case ExifInterface.ORIENTATION_NORMAL:
+//            default:
+//                return bitmap;
+//        }
+//    }
+//
+//    private static Bitmap rotateImage(Bitmap source, float angle) {
+//        Matrix matrix = new Matrix();
+//        matrix.postRotate(angle);
+//        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+//                matrix, true);
+//    }
+
+//    public static String getRealPathFromURIPath(Uri contentURI, Context context) {
+//        Cursor cursor = context.getContentResolver().query(contentURI, null, null, null, null);
+//        if (cursor == null) {
+//            return contentURI.getPath();
+//        } else {
+//            cursor.moveToFirst();
+//            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+//            return cursor.getString(idx);
+//        }
+//    }
+//
+//    public static Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
+//        Matrix matrix = new Matrix();
+//        switch (orientation) {
+//            case ExifInterface.ORIENTATION_NORMAL:
+//                return bitmap;
+//            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+//                matrix.setScale(-1, 1);
+//                break;
+//            case ExifInterface.ORIENTATION_ROTATE_180:
+//                matrix.setRotate(180);
+//                break;
+//            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+//                matrix.setRotate(180);
+//                matrix.postScale(-1, 1);
+//                break;
+//            case ExifInterface.ORIENTATION_TRANSPOSE:
+//                matrix.setRotate(90);
+//                matrix.postScale(-1, 1);
+//                break;
+//            case ExifInterface.ORIENTATION_ROTATE_90:
+//                matrix.setRotate(90);
+//                break;
+//            case ExifInterface.ORIENTATION_TRANSVERSE:
+//                matrix.setRotate(-90);
+//                matrix.postScale(-1, 1);
+//                break;
+//            case ExifInterface.ORIENTATION_ROTATE_270:
+//                matrix.setRotate(-90);
+//                break;
+//            default:
+//                return bitmap;
+//        }
+//        try {
+//            Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+//            bitmap.recycle();
+//            return bmRotated;
+//        }
+//        catch (OutOfMemoryError e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+
+    public static Bitmap getBitmapFromUri(Uri imageUri,Context context ) {
+
+        context.getContentResolver().notifyChange(imageUri, null);
+        ContentResolver cr = context.getContentResolver();
+        Bitmap bitmap;
+        try {
+            bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, imageUri);
+            return bitmap;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public static Blob drawableToBlob(Drawable drawable) {
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArr = stream.toByteArray();
+        return Blob.fromBytes(byteArr);
+    }
+}

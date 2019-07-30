@@ -1,19 +1,21 @@
 package AppUtils;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
-import android.widget.EditText;
-
-import androidx.databinding.BindingAdapter;
-
 import com.google.android.material.textfield.TextInputLayout;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Application forms and fields input validation
+ */
 public class InputValidator {
 
+    /**
+     * Validates a password (minimum length)
+     * @param editText
+     * @return True if password is valid (by conditions). Else - returns false
+     */
     public static boolean isPasswordValid(TextInputLayout editText) {
         int minimumLength = 5;
         String text = editText.getEditText().getText().toString();
@@ -30,6 +32,11 @@ public class InputValidator {
         return false;
     }
 
+    /**
+     * Validates a field (no null)
+     * @param editText
+     * @return True if field has data. Else - returns false
+     */
     public static boolean isValidField(TextInputLayout editText){
         String text = editText.getEditText().getText().toString();
         if(TextUtils.isEmpty(text)){
@@ -42,6 +49,11 @@ public class InputValidator {
         }
     }
 
+    /**
+     * Validates email input (email format)
+     * @param editText
+     * @return True if email is in the right format. Else - returns false
+     */
     public static boolean isEmailValid(TextInputLayout editText) {
         String text = editText.getEditText().getText().toString();
         if (!TextUtils.isEmpty(text)) {
@@ -57,6 +69,15 @@ public class InputValidator {
         return false;
     }
 
+    /**
+     * Validates a dates range
+     * @param sDate
+     * @param sTime
+     * @param eDate
+     * @param eTime
+     * @return True if the dates are not null and the first date is earlier than the second.
+     * Else - returns false
+     */
     public static boolean datesRangeValid(TextInputLayout sDate, TextInputLayout sTime,
                                           TextInputLayout eDate, TextInputLayout eTime){
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");

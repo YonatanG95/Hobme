@@ -30,12 +30,23 @@ public class AppRepository {
     private LocalData localData;
     private RemoteData remoteData;
 
+    /**
+     * Constructor
+     * @param context
+     * @param executors - Background jobs executors for disk IO & network
+     */
     private AppRepository(Context context, AppExecutors executors){
         this.appExecutors = executors;
         this.localData = new LocalData(context);
         this.remoteData = new RemoteData();
     }
 
+    /**
+     * Returns an instance of repository which is a single point of access to whole app DB (local & remote)
+     * @param context
+     * @param executors
+     * @return
+     */
     public static synchronized AppRepository getInstance(Context context, AppExecutors executors){
         if (sInstance == null) {
             sInstance = new AppRepository(context, executors);
@@ -45,18 +56,32 @@ public class AppRepository {
 
 
     //region Activity model methods
+
+    /**
+     * Creates boundary callback and sends it to the local-DB implementation of this method
+     * @return liveData of type paged list of activities to display in recycler views
+     */
     public LiveData<PagedList<Activity>> getActivities(){
         RepoBoundaryCallback boundaryCallback = new RepoBoundaryCallback(this);
         return localData.getActivities(boundaryCallback);
     }
 
+    /**
+     * Inserts a new activity to local and remote DB
+     * @param activity - the new activity
+     * @param user - creator of the activity
+     * @param view
+     */
     public void insertActivity(Activity activity, User user, View view){
         appExecutors.networkIO().execute(() -> {
+            //Set activity fields
             activity.setCreatorId(user.getId());
             activity.getMembersIds().add(user.getId());
             activity.setCurrMembers(activity.getCurrMembers() + 1);
             String id = remoteData.insertActivity(activity, user, view);
             activity.setId(id);
+
+            //Update user fields
             user.getMyActivitiesIds().add(activity.getId());
             user.getActivitiesMemberIds().add(activity.getId());
             updateUser(user);
@@ -67,6 +92,10 @@ public class AppRepository {
         });
     }
 
+    /**
+     * Receives activities from the network and inserts them to Room DB
+     * @param date - minimum date from which should fetch new activities
+     */
     public void fetchMoreActivities(Date date){
         appExecutors.networkIO().execute(()-> {
             remoteData.fetchActivities(date, new NetworkDataCallback.ActivityCallback() {
@@ -83,6 +112,10 @@ public class AppRepository {
         );
     }
 
+    /**
+     * Updates activity both local & remote
+     * @param activity
+     */
     public void updateActivity(Activity activity){
         appExecutors.networkIO().execute(() -> {
             remoteData.updateActivity(activity);
@@ -92,6 +125,10 @@ public class AppRepository {
         });
     }
 
+    /**
+     * Deletes activity both local & remote
+     * @param activity
+     */
     public void deleteActivity(Activity activity){
         appExecutors.networkIO().execute(() -> {
             remoteData.deleteActivity(activity);
@@ -103,12 +140,24 @@ public class AppRepository {
     //endregion
 
     //region User model methods
+
+    /**
+     * Checks if user's session to firebase is already open and if so - navigates to main page
+     * @param view
+     */
     public void currentlyLoggedIn(View view){
         appExecutors.networkIO().execute(()-> {
             remoteData.currentlyLoggedIn(view);
         });
     }
 
+    /**
+     * Authenticates user using email
+     * @param email
+     * @param password
+     * @param view
+     * @param loginFragment
+     */
     //TODO think of keeping this user special way in DB
     public void signInUserEmail(String email, String password, View view, UserLoginFragment loginFragment){
         appExecutors.networkIO().execute(()-> {
@@ -116,17 +165,29 @@ public class AppRepository {
         });
     }
 
+    /**
+     * Ends user's firebase session
+     */
     public void logOutUser(){
         appExecutors.networkIO().execute(()-> {
             remoteData.logOutUser();
         });
     }
 
+    /**
+     * Creates a user using email
+     * @param email
+     * @param password
+     * @param displayName
+     * @param view
+     * @param fragment
+     */
     public void createUserEmail(String email, String password, String displayName, View view, UserRegisterFragment fragment){
         appExecutors.networkIO().execute(() -> {
             remoteData.createUserEmail(email, password, displayName, view, fragment, new NetworkDataCallback.UserCallback() {
                 @Override
                 public void onUserCallback(User newUser) {
+                    //Insert the newly created user to local & remote DB
                     remoteData.insertUser(newUser);
                     appExecutors.diskIO().execute(() -> {
                         localData.insertUser(newUser);
@@ -137,6 +198,10 @@ public class AppRepository {
         });
     }
 
+    /**
+     * Recieves user from remote DB by its ID and inserts it to Room DB
+     * @param id
+     */
     public void fetchUser(String id){
         appExecutors.networkIO().execute(() -> {
             remoteData.getUserById(id, new NetworkDataCallback.UserCallback() {
@@ -150,17 +215,11 @@ public class AppRepository {
         });
     }
 
-    public LiveData<User> getUserById(String id){
-        LiveData<User> user = localData.getUserById(id);
-        if(user == null){
-            fetchUser(id);
-            return localData.getUserById(id);
-        }
-        else {
-            return user;
-        }
-    }
 
+    /**
+     * Updates user in both local & remote DB
+     * @param user
+     */
     public void updateUser(User user){
         appExecutors.networkIO().execute(() -> {
             remoteData.updateUser(user);

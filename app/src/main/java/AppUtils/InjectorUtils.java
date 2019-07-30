@@ -18,26 +18,41 @@ package AppUtils;
 
 import android.content.Context;
 
-import com.google.firebase.firestore.Blob;
-
-import DataSources.AppRepository;
 import AppViewModel.CustomViewModelFactory;
+import DataSources.AppRepository;
 
-
+/**
+ * Provides all fragments (views) with an instance of a viewModel factory, including repository and executors
+ */
 public class InjectorUtils {
 
+    /**
+     * Gets an instance of the application repository (local & remote data access)
+     * @param context
+     * @param executors
+     * @return - repository instance
+     */
     public static AppRepository provideRepository(Context context, AppExecutors executors) {
         return AppRepository.getInstance(context, executors);
     }
 
+    /**
+     * Gets an instance of executors class (background jobs)
+     * @return - executors instance
+     */
     public static AppExecutors provideExecutors(){
         return AppExecutors.getInstance();
     }
 
+    /**
+     * Provides a viewModel factory with a repository and executors
+     * @param context
+     * @return - viewModelFactory class instance
+     */
     public static CustomViewModelFactory provideViewModelFactory(Context context) {
         AppExecutors executors = provideExecutors();
         AppRepository repository = provideRepository(context.getApplicationContext(), executors);
-        return new CustomViewModelFactory(repository);//, executors);
+        return new CustomViewModelFactory(repository);
     }
 
 }
