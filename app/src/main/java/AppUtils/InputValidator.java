@@ -113,4 +113,15 @@ public class InputValidator {
         return true;
     }
 
+    public static boolean locationValid(TextInputLayout inputLayout, boolean isSet){
+        if(!isSet){
+            inputLayout.setError("Location is missing");
+            return false;
+        }
+        else{
+            inputLayout.setError(null);
+            return true;
+        }
+    }
+
 }

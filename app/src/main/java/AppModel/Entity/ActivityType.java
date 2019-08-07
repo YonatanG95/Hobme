@@ -29,6 +29,8 @@ public class ActivityType {
         this.id = id;
     }
 
+    public ActivityType(){}
+
     @Ignore
     public ActivityType(String id, String name, String typeName, Blob typePicture) {
         this.id = id;

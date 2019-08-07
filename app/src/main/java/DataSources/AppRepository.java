@@ -8,6 +8,7 @@ import androidx.paging.PagedList;
 import java.util.Date;
 import java.util.List;
 import AppModel.Entity.Activity;
+import AppModel.Entity.ActivityType;
 import AppModel.Entity.Category;
 import AppModel.Entity.User;
 import AppModel.LocalData;
@@ -232,6 +233,10 @@ public class AppRepository {
 
 
     //region Category model methods
+
+    /**
+     * Gets categories from remote DB and inserts them to Room DB
+     */
     public void fetchCategories(){
         appExecutors.networkIO().execute(() -> {
            remoteData.getCategories(new NetworkDataCallback.CategoryCallback() {
@@ -245,11 +250,54 @@ public class AppRepository {
         });
     }
 
-    public List<String> getCategoriesNames(){
-        if(localData.getCategoriesNames() == null){
+    /**
+     * Returns categories names if those exist. Else - fetches them
+     * @return
+     */
+    public LiveData<List<String>> getCategoriesNames(){
+        if(localData.getCategoriesNames().getValue() == null){
             fetchCategories();
         }
+        //Log.d(TAG, "Cat size: " + localData.getCategoriesNames().getValue().size());
         return localData.getCategoriesNames();
+    }
+
+    public LiveData<String> getCategoryIdByName(String categoryName){
+        return localData.getCategoryIdByName(categoryName);
+    }
+    //endregion
+
+    //region ActivityType model methods
+
+    /**
+     * Gets activity types of a specific category from remote DB and inserts them into Room DB
+     * @param categoryId
+     */
+    public void fetchActivityTypesByCategory(String categoryId){
+        appExecutors.networkIO().execute(() -> {
+            remoteData.getTypesByCategory(new NetworkDataCallback.ActivityTypeCallback() {
+                @Override
+                public void onActivityTypeCallback(List<ActivityType> activityTypes) {
+                    appExecutors.diskIO().execute(() -> {
+                        localData.insertTypes(activityTypes);
+                        Log.d(TAG, "type: " + activityTypes.size());
+                    });
+                }
+            }, categoryId);
+        });
+    }
+
+    /**
+     * Returns activity type names if those exist. Else - fetches them
+     * @param categoryId
+     * @return
+     */
+    public LiveData<List<String>> getTypeNamesByCategory(String categoryId){
+        if(localData.getTypeNamesByCategoryId(categoryId).getValue() == null){
+            Log.d(TAG, "Types not found");
+            fetchActivityTypesByCategory(categoryId);
+        }
+        return localData.getTypeNamesByCategoryId(categoryId);
     }
     //endregion
 }

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import AppModel.Entity.Activity;
+import AppModel.Entity.ActivityType;
 import AppModel.Entity.Category;
 import AppModel.Entity.User;
 import AppView.CreateActivityFragmentDirections;
@@ -329,6 +330,7 @@ public class RemoteData {
     //endregion
 
 
+    //region Category model methods
     /**
      * Request all categories entries - as a list
      * @param callback
@@ -352,4 +354,36 @@ public class RemoteData {
                     }
                 });
     }
+    //endregion
+
+    //region ActivityType model methods
+    /**
+     * Request all activity types of a specific category
+     * @param callback
+     * @param categoryId
+     */
+    public void getTypesByCategory(NetworkDataCallback.ActivityTypeCallback callback, String categoryId){
+        Log.d(TAG, "Category " + categoryId);
+        firestoreDb.collection(ACTIVITY_TYPE_COLLECTION_NAME)
+                .whereEqualTo("categoryId", categoryId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<ActivityType> activityTypes = new ArrayList<ActivityType>();
+                            Log.d(TAG, "Docs " + task.getResult().getDocuments().size());
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                activityTypes.add(document.toObject(ActivityType.class));
+                            }
+                            callback.onActivityTypeCallback(activityTypes);
+                            Log.d(TAG, "got types: " + activityTypes.size());
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
+    //endregion
 }

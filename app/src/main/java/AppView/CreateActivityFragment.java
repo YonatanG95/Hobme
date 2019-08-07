@@ -5,45 +5,45 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
-
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.project.hobme.R;
 import com.project.hobme.databinding.FragmentCreateActivityBinding;
-
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import AppModel.Entity.User;
 import AppUtils.DataConverters;
 import AppUtils.InjectorUtils;
@@ -51,20 +51,10 @@ import AppUtils.InputValidator;
 import AppViewModel.CreateActivityViewModel;
 import AppViewModel.CustomViewModelFactory;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
-
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class CreateActivityFragment extends Fragment {
 
     private FragmentCreateActivityBinding mFragmentCreateActivityBinding;
@@ -104,20 +94,52 @@ public class CreateActivityFragment extends Fragment {
 
         bindData();
         passUser();
-        initializeRangeBar();
-        initializeLocation();
-//        initializeSpinners();
-        mFragmentCreateActivityBinding.addActivityBtn.setEnabled(false);
-        //((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        initializeUI();
 
         return mFragmentCreateActivityBinding.getRoot();
     }
 
-//    private void initializeSpinners() {
-//        List<String> categories = mCreateActivityViewModel.getCategories();
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, categories);
-//        mFragmentCreateActivityBinding.categorySpinner.setAdapter(adapter);
-//    }
+    private void initializeUI() {
+        initializeRangeBar();
+        initializeLocation();
+        initializeSpinners();
+        mFragmentCreateActivityBinding.addActivityBtn.setEnabled(false);
+    }
+
+    private void initializeSpinners() {
+        LiveData<List<String>> categories = mCreateActivityViewModel.getCategories();
+        categories.observe(this, new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> strings) {
+                ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, categories.getValue());
+                mFragmentCreateActivityBinding.categorySpinner.setAdapter(categoryAdapter);
+                mFragmentCreateActivityBinding.categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String categoryName = parent.getItemAtPosition(position).toString();
+                        mCreateActivityViewModel.getCategoryIdByName(categoryName).observe(getViewLifecycleOwner(), new Observer<String>() {
+                            @Override
+                            public void onChanged(String categoryId) {
+                                LiveData<List<String>> types = mCreateActivityViewModel.getTypeNamesByCategory(categoryId);
+                                types.observe(getViewLifecycleOwner(), new Observer<List<String>>() {
+                                    @Override
+                                    public void onChanged(List<String> strings) {
+                                        ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, types.getValue());
+                                        mFragmentCreateActivityBinding.activityTypesSpinner.setAdapter(typesAdapter);
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+            }
+        });
+    }
 
     private void initializeLocation() {
         // Initialize the AutocompleteSupportFragment.
@@ -133,6 +155,7 @@ public class CreateActivityFragment extends Fragment {
             public void onPlaceSelected(Place place) {
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
                 mCreateActivityViewModel.getActivity().getValue().setActivityLocation(place);
+                validation("", 0,0,0);
             }
 
             @Override
@@ -171,26 +194,26 @@ public class CreateActivityFragment extends Fragment {
     {
         //Insert new activity using repository with a method of the ViewModel
         setActivityDatesTimes();
+        setActivityMembersRange();
         mCreateActivityViewModel.insertActivity(view);
-//        Navigation.findNavController(view).navigate(R.id.actCreateToList);
     }
 
-//    private void initiateSpinners(){
-//        String[] members = new String[101];
-//        members[0] = NO_LIMIT_OPTION;
-//        for(int i=2; i < 101; i++){
-//            members[i-1] = Integer.toString(i);
-//        }
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, members);
-//        mFragmentCreateActivityBinding.spinnerMinMembers.setAdapter(adapter);
-//        mFragmentCreateActivityBinding.spinnerMaxMembers.setAdapter(adapter);
-//    }
+    private void setActivityMembersRange() {
+        mCreateActivityViewModel.getActivity().getValue().setMinMembers(mFragmentCreateActivityBinding.
+                membersSeekbar.getSelectedMinValue().intValue());
+        mCreateActivityViewModel.getActivity().getValue().setMaxMembers(mFragmentCreateActivityBinding.
+                membersSeekbar.getSelectedMaxValue().intValue());
+    }
 
     public void validation(CharSequence s, int start, int before, int count){
         if(InputValidator.isValidField(mFragmentCreateActivityBinding.inputActNameLayout)
                 & InputValidator.isValidField(mFragmentCreateActivityBinding.inputActInfoLayout)
-                & InputValidator.datesRangeValid(mFragmentCreateActivityBinding.inputStartDateLayout, mFragmentCreateActivityBinding.inputStartTimeLayout,
-                mFragmentCreateActivityBinding.inputEndDateLayout, mFragmentCreateActivityBinding.inputEndTimeLayout)){
+                & InputValidator.datesRangeValid(mFragmentCreateActivityBinding.inputStartDateLayout,
+                mFragmentCreateActivityBinding.inputStartTimeLayout, mFragmentCreateActivityBinding.inputEndDateLayout,
+                mFragmentCreateActivityBinding.inputEndTimeLayout )
+                & InputValidator.locationValid(mFragmentCreateActivityBinding.location,
+                mCreateActivityViewModel.getActivity().getValue().getActivityLocation() != null)
+                & mCreateActivityViewModel.getActivity().getValue().getDisplayedImage() != null){ /* passes - place null or not */
             mFragmentCreateActivityBinding.addActivityBtn.setEnabled(true);
         }
         else {
@@ -198,7 +221,7 @@ public class CreateActivityFragment extends Fragment {
         }
     }
 
-    //TODO implement as data converters for databinding
+
     private void setActivityDatesTimes(){
         mCreateActivityViewModel.getActivity().getValue().setCreationTime(date.getTime());
         String startDate = mFragmentCreateActivityBinding.startDate.getText() + " " +
@@ -212,7 +235,6 @@ public class CreateActivityFragment extends Fragment {
             dateToInsert = format.parse(endDate);
             mCreateActivityViewModel.getActivity().getValue().setActivityEndDateTime(dateToInsert);
         } catch (ParseException e){
-            //TODO check form on button clicked
             e.printStackTrace();
         }
     }
@@ -264,16 +286,7 @@ public class CreateActivityFragment extends Fragment {
                         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_PERMISSION);}
                     if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
                         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);}
-//                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-//                    StrictMode.setVmPolicy(builder.build());
-//                    File filePhoto = new File(Environment.getExternalStorageDirectory(), "Pic.jpg");
-//                    capturedImageUri = Uri.fromFile(filePhoto);
-//                    selectedImagePath = capturedImageUri.getPath();
-//                    takePicture.putExtra(MediaStore.EXTRA_OUTPUT, selectedImagePath);
-//                    startActivityForResult(takePicture, 0);
-                    Intent takePictureIntent = new Intent(
-                            MediaStore.ACTION_IMAGE_CAPTURE);
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                     }
@@ -297,50 +310,6 @@ public class CreateActivityFragment extends Fragment {
             switch (requestCode) {
                 case REQUEST_IMAGE_CAPTURE:
                     if (resultCode == RESULT_OK) {
-//                        if (data != null) {
-//                            Bundle extras = data.getExtras();
-//                            if (extras.containsKey("data")) {
-//                                bitmap = (Bitmap) extras.get("data");
-//                            }
-//                            else {
-//                                bitmap = getBitmapFromUri();
-//                            }
-//                        }
-//                        else {
-//                            bitmap = getBitmapFromUri();
-//                        }
-//
-//                        ExifInterface ei = null;
-//                        try {
-//                            ei = new ExifInterface(selectedImagePath);
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-//                                ExifInterface.ORIENTATION_UNDEFINED);
-//
-//                        Log.d(TAG, "" +orientation);
-//
-//                        Bitmap rotatedBitmap = null;
-//                        switch(orientation) {
-//
-//                            case ExifInterface.ORIENTATION_ROTATE_90:
-//                                rotatedBitmap = rotateImage(bitmap, 90);
-//                                break;
-//
-//                            case ExifInterface.ORIENTATION_ROTATE_180:
-//                                rotatedBitmap = rotateImage(bitmap, 180);
-//                                break;
-//
-//                            case ExifInterface.ORIENTATION_ROTATE_270:
-//                                rotatedBitmap = rotateImage(bitmap, 270);
-//                                break;
-//
-//                            case ExifInterface.ORIENTATION_NORMAL:
-//                            default:
-//                                rotatedBitmap = bitmap;
-//                        }
-//                        mFragmentCreateActivityBinding.imageView.setImageBitmap(rotatedBitmap);
                         Bundle extras = data.getExtras();
                         Bitmap imageBitmap = (Bitmap) extras.get("data");
                         mFragmentCreateActivityBinding.imageView.setImageBitmap(imageBitmap);
@@ -369,29 +338,10 @@ public class CreateActivityFragment extends Fragment {
                     }
                     break;
             }
+            validation("", 0,0,0);
         }
     }
 
-//    private Bitmap getBitmapFromUri() {
-//
-//        getContext().getContentResolver().notifyChange(capturedImageUri, null);
-//        ContentResolver cr = getContext().getContentResolver();
-//        Bitmap bitmap;
-//        try {
-//            bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, capturedImageUri);
-//            return bitmap;
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-//
-//    public static Bitmap rotateImage(Bitmap source, float angle) {
-//        Matrix matrix = new Matrix();
-//        matrix.postRotate(angle);
-//        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
-//                matrix, true);
-//    }
+
 
 }

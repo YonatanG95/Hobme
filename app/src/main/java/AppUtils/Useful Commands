@@ -395,3 +395,73 @@ DataConverters
         return Blob.fromBytes(byteArr);
     }
 }
+
+===========================
+Create Activity
+===========================
+//    private Bitmap getBitmapFromUri() {
+//
+//        getContext().getContentResolver().notifyChange(capturedImageUri, null);
+//        ContentResolver cr = getContext().getContentResolver();
+//        Bitmap bitmap;
+//        try {
+//            bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, capturedImageUri);
+//            return bitmap;
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+//
+//    public static Bitmap rotateImage(Bitmap source, float angle) {
+//        Matrix matrix = new Matrix();
+//        matrix.postRotate(angle);
+//        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+//                matrix, true);
+//    }
+
+//                        if (data != null) {
+//                            Bundle extras = data.getExtras();
+//                            if (extras.containsKey("data")) {
+//                                bitmap = (Bitmap) extras.get("data");
+//                            }
+//                            else {
+//                                bitmap = getBitmapFromUri();
+//                            }
+//                        }
+//                        else {
+//                            bitmap = getBitmapFromUri();
+//                        }
+//
+//                        ExifInterface ei = null;
+//                        try {
+//                            ei = new ExifInterface(selectedImagePath);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+//                                ExifInterface.ORIENTATION_UNDEFINED);
+//
+//                        Log.d(TAG, "" +orientation);
+//
+//                        Bitmap rotatedBitmap = null;
+//                        switch(orientation) {
+//
+//                            case ExifInterface.ORIENTATION_ROTATE_90:
+//                                rotatedBitmap = rotateImage(bitmap, 90);
+//                                break;
+//
+//                            case ExifInterface.ORIENTATION_ROTATE_180:
+//                                rotatedBitmap = rotateImage(bitmap, 180);
+//                                break;
+//
+//                            case ExifInterface.ORIENTATION_ROTATE_270:
+//                                rotatedBitmap = rotateImage(bitmap, 270);
+//                                break;
+//
+//                            case ExifInterface.ORIENTATION_NORMAL:
+//                            default:
+//                                rotatedBitmap = bitmap;
+//                        }
+//                        mFragmentCreateActivityBinding.imageView.setImageBitmap(rotatedBitmap);

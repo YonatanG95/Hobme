@@ -52,7 +52,15 @@ public class CreateActivityViewModel extends ViewModel {
         this.currUser = currUser;
     }
 
-    public List<String> getCategories(){
+    public LiveData<List<String>> getCategories(){
         return repository.getCategoriesNames();
+    }
+
+    public LiveData<List<String>> getTypeNamesByCategory(String categoryId){
+        return repository.getTypeNamesByCategory(categoryId);
+    }
+
+    public LiveData<String> getCategoryIdByName(String categoryName){
+        return repository.getCategoryIdByName(categoryName);
     }
 }

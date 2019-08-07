@@ -7,9 +7,11 @@ import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 import java.util.List;
 import AppModel.Dao.ActivityDao;
+import AppModel.Dao.ActivityTypeDao;
 import AppModel.Dao.CategoryDao;
 import AppModel.Dao.UserDao;
 import AppModel.Entity.Activity;
+import AppModel.Entity.ActivityType;
 import AppModel.Entity.Category;
 import AppModel.Entity.User;
 import DataSources.RepoBoundaryCallback;
@@ -22,7 +24,7 @@ public class LocalData {
     private ActivityDao activityDao;
     private UserDao userDao;
     private CategoryDao categoryDao;
-
+    private ActivityTypeDao activityTypeDao;
 
     /**
      * Gets DB instance and connects to models (Dao) through it
@@ -33,6 +35,7 @@ public class LocalData {
         this.activityDao = appDB.activityDao();
         this.userDao = appDB.userDao();
         this.categoryDao = appDB.categoryDao();
+        this.activityTypeDao = appDB.activityTypeDao();
     }
 
     //region Activity model methods
@@ -113,7 +116,7 @@ public class LocalData {
     /**
      * @return a list of the names of all categories
      */
-    public List<String> getCategoriesNames(){
+    public LiveData<List<String>> getCategoriesNames(){
         return categoryDao.getAllCategoriesNames();
     }
 
@@ -123,6 +126,34 @@ public class LocalData {
      */
     public void insertCategories(List<Category> categories){
         categoryDao.bulkInsertCategory(categories);
+    }
+
+    /**
+     *
+     * @param categoryName
+     * @return category ID by its name
+     */
+    public LiveData<String> getCategoryIdByName(String categoryName){
+        return categoryDao.getCategoryIdByName(categoryName);
+    }
+    //endregion
+
+    //region ActivityType model methods
+    /**
+     *
+     * @param categoryId
+     * @return list of all activity types of a specific category
+     */
+    public LiveData<List<String>> getTypeNamesByCategoryId(String categoryId){
+        return activityTypeDao.getTypesNamesByCategory(categoryId);
+    }
+
+    /**
+     * Inserts activity types into Room DB
+     * @param activityTypes
+     */
+    public void insertTypes(List<ActivityType> activityTypes){
+        activityTypeDao.bulkInsertActivityType(activityTypes);
     }
     //endregion
 }

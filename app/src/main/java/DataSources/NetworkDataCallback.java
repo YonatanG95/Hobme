@@ -2,6 +2,7 @@ package DataSources;
 
 import java.util.List;
 import AppModel.Entity.Activity;
+import AppModel.Entity.ActivityType;
 import AppModel.Entity.Category;
 import AppModel.Entity.User;
 
@@ -32,5 +33,13 @@ public class NetworkDataCallback {
          * @param categories
          */
         void onCategoryCallback(List<Category> categories);
+    }
+
+    public interface ActivityTypeCallback{
+        /**
+         * Implement this to get a list of activity types from remote DB
+         * @param activityTypes
+         */
+        void onActivityTypeCallback(List<ActivityType> activityTypes);
     }
 }

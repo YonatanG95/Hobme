@@ -95,7 +95,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"/>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/categorySpinner"
@@ -125,7 +125,7 @@
                 </androidx.appcompat.widget.AppCompatSpinner>
 
                 <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/appCompatSpinner"
+                    android:id="@+id/activityTypesSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -146,7 +146,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="15dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/appCompatSpinner">
+                    app:layout_constraintTop_toBottomOf="@+id/activityTypesSpinner">
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/startDate"
@@ -168,7 +168,7 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/appCompatSpinner">
+                    app:layout_constraintTop_toBottomOf="@+id/activityTypesSpinner">
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/startTime"

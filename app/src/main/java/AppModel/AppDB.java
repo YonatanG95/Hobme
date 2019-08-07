@@ -2,6 +2,7 @@ package AppModel;
 
 import android.content.Context;
 
+import AppModel.Dao.ActivityTypeDao;
 import AppModel.Dao.CategoryDao;
 import AppModel.Dao.UserDao;
 import AppModel.Entity.Activity;
@@ -28,6 +29,7 @@ public abstract class AppDB extends RoomDatabase {
     public abstract ActivityDao activityDao();
     public abstract UserDao userDao();
     public abstract CategoryDao categoryDao();
+    public abstract ActivityTypeDao activityTypeDao();
     //endregion
 
     /**
