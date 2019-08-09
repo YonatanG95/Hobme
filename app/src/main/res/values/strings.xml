@@ -54,9 +54,13 @@
     <string name="menu_send">Send</string>
     <string name="open">OPEN</string>
 
-    <!--Toolbar menu-->
+    <!--Toolbar list menu-->
     <string name="action_sort">Sort</string>
     <string name="action_filter">Filter</string>
+
+    <!--Toolbar detailed activity menu-->
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
 
     <!--Bottom nav bar menu-->
     <string name="action_history">Previous</string>
@@ -81,5 +85,6 @@
 
     <!--Detailed Activity-->
     <string name="joinActivity">JOIN</string>
+    <string name="saveActivity">SAVE</string>
 
 </resources>

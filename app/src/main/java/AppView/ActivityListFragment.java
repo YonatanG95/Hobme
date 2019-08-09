@@ -19,6 +19,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -54,11 +56,21 @@ public class ActivityListFragment extends Fragment{
 
         bindData();
         passUser();
+        initializeUI();
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
-        ((ActivitiesFragmentsContainer)getActivity()).showBottomNav();
 
         return mActivityListBinding.getRoot();
+    }
+
+    private void initializeUI(){
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        ((ActivitiesFragmentsContainer)getActivity()).showBottomNav();
+        setHasOptionsMenu(true);
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.top_bar_list, menu);
     }
 
     private void bindData()

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,9 @@ import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -52,6 +56,8 @@ public class DetailedActivityFragment extends Fragment implements OnMapReadyCall
     private FragmentDetailedActivityBinding mDetailedActivityBinding;
     private CustomViewModelFactory viewModelFactory;
     private DetailedActivityViewModel detailedActivityViewModel;
+    private boolean userIsCreator = false;
+    private boolean userIsMember = false;
 
     public DetailedActivityFragment() {
     }
@@ -70,8 +76,30 @@ public class DetailedActivityFragment extends Fragment implements OnMapReadyCall
         passUser();
         initializeUI();
 
-
         return mDetailedActivityBinding.getRoot();
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        if(userIsCreator) {
+            inflater.inflate(R.menu.top_bar_detailed, menu);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                mDetailedActivityBinding.joinActivityBtn.setVisibility(View.GONE);
+                mDetailedActivityBinding.saveActivityBtn.setVisibility(View.VISIBLE);
+                mDetailedActivityBinding.inputActNameLayout.getEditText().setEnabled(true);
+                mDetailedActivityBinding.inputActInfoLayout.getEditText().setEnabled(true);
+                break;
+
+            case R.id.action_delete:
+                deleteActivity(getView());
+        }
+        return true;
     }
 
     private void initializeUI() {
@@ -82,12 +110,31 @@ public class DetailedActivityFragment extends Fragment implements OnMapReadyCall
                 .getActivityStartDateTime()));
         mDetailedActivityBinding.endDate.setText(format.format(detailedActivityViewModel.getActivity().getValue()
                 .getActivityEndDateTime()));
+        setHasOptionsMenu(true);
+        if(userIsCreator || userIsMember ||
+                detailedActivityViewModel.getActivity().getValue().getCurrMembers() ==
+                        detailedActivityViewModel.getActivity().getValue().getMaxMembers()){
+            mDetailedActivityBinding.joinActivityBtn.setEnabled(false);
+        }
     }
 
     private void passUser(){
         DetailedActivityFragmentArgs args = DetailedActivityFragmentArgs.fromBundle(getArguments());
         User user = args.getUser();
         detailedActivityViewModel.setCurrUser(user);
+        if(user.getMyActivitiesIds().contains(detailedActivityViewModel.getActivity().getValue().getId())){
+            userIsCreator = true;
+        }
+        else {
+            userIsCreator = false;
+        }
+        if(user.getActivitiesMemberIds().contains(detailedActivityViewModel.getActivity().getValue().getId())){
+            userIsMember = true;
+        }
+        else
+        {
+            userIsMember = false;
+        }
     }
 
     private void setActivity() {
@@ -104,29 +151,32 @@ public class DetailedActivityFragment extends Fragment implements OnMapReadyCall
 
     public void updateActivity(View view){
         detailedActivityViewModel.updateActivity();
-        //TODO what if fail?
-        DetailedActivityFragmentDirections.ActDetailsToList action = DetailedActivityFragmentDirections.actDetailsToList(detailedActivityViewModel.getCurrUser());
-        Navigation.findNavController(view).navigate(action);
+        mDetailedActivityBinding.saveActivityBtn.setVisibility(View.GONE);
+        mDetailedActivityBinding.joinActivityBtn.setVisibility(View.VISIBLE);
+        mDetailedActivityBinding.inputActNameLayout.getEditText().setEnabled(false);
+        mDetailedActivityBinding.inputActInfoLayout.getEditText().setEnabled(false);
+//        DetailedActivityFragmentDirections.ActDetailsToList action = DetailedActivityFragmentDirections.actDetailsToList(detailedActivityViewModel.getCurrUser());
+//        Navigation.findNavController(view).navigate(action);
     }
 
     public void deleteActivity(View view){
         detailedActivityViewModel.deleteActivity();
-        //TODO what if fail?
         DetailedActivityFragmentDirections.ActDetailsToList action = DetailedActivityFragmentDirections.actDetailsToList(detailedActivityViewModel.getCurrUser());
         Navigation.findNavController(view).navigate(action);
     }
 
     public void joinActivity(View view){
         detailedActivityViewModel.joinActivity();
+        mDetailedActivityBinding.joinActivityBtn.setEnabled(false);
     }
 
     public void validation(CharSequence s, int start, int before, int count){
         if(InputValidator.isValidField(mDetailedActivityBinding.inputActNameLayout)
                 & InputValidator.isValidField(mDetailedActivityBinding.inputActInfoLayout)){
-            mDetailedActivityBinding.joinActivityBtn.setEnabled(true);
+            mDetailedActivityBinding.saveActivityBtn.setEnabled(true);
         }
         else {
-            mDetailedActivityBinding.joinActivityBtn.setEnabled(false);
+            mDetailedActivityBinding.saveActivityBtn.setEnabled(false);
         }
     }
 
