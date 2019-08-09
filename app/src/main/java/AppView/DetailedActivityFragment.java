@@ -28,6 +28,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.project.hobme.R;
 import com.project.hobme.databinding.FragmentDetailedActivityBinding;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import AppModel.Entity.Activity;
 import AppModel.Entity.User;
 import AppUtils.InjectorUtils;
@@ -65,16 +68,20 @@ public class DetailedActivityFragment extends Fragment implements OnMapReadyCall
 
         bindData();
         passUser();
-
-        SupportMapFragment mapFragment = ((SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map));
-        mapFragment.getMapAsync(this);
+        initializeUI();
 
 
         return mDetailedActivityBinding.getRoot();
     }
 
-    private void disableEdit(){
-
+    private void initializeUI() {
+        SupportMapFragment mapFragment = ((SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map));
+        mapFragment.getMapAsync(this);
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        mDetailedActivityBinding.startDate.setText(format.format(detailedActivityViewModel.getActivity().getValue()
+                .getActivityStartDateTime()));
+        mDetailedActivityBinding.endDate.setText(format.format(detailedActivityViewModel.getActivity().getValue()
+                .getActivityEndDateTime()));
     }
 
     private void passUser(){

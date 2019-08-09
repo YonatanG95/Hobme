@@ -80,22 +80,6 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!--<com.google.android.material.textfield.TextInputLayout-->
-                    <!--android:id="@+id/location"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--app:layout_constraintTop_toBottomOf="@id/input_actName_layout"-->
-                    <!--app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--app:layout_constraintStart_toStartOf="parent"-->
-                    <!--android:layout_marginStart="10dp"-->
-                    <!--android:layout_marginTop="15dp"-->
-                    <!--android:layout_marginEnd="10dp">-->
-                    <!--<fragment android:id="@+id/autocomplete_fragment"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"/>-->
-                <!--</com.google.android.material.textfield.TextInputLayout>-->
-
                 <androidx.cardview.widget.CardView
                     android:id="@+id/location"
                     android:layout_width="match_parent"
@@ -121,8 +105,8 @@
                         map:uiZoomGestures="true"/>
                 </androidx.cardview.widget.CardView>
 
-                <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/categorySpinner"
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -132,11 +116,12 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/location"
-                    android:clickable="false">
-                </androidx.appcompat.widget.AppCompatSpinner>
+                    android:enabled="false"
+                    android:text="@{viewModel.activity.activityCategory}">
+                </androidx.appcompat.widget.AppCompatEditText>
 
-                <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/activityTypesSpinner"
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/activityType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -146,9 +131,10 @@
                     android:dropDownWidth="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/categorySpinner"
-                    android:clickable="false">
-                </androidx.appcompat.widget.AppCompatSpinner>
+                    app:layout_constraintTop_toBottomOf="@+id/category"
+                    android:enabled="false"
+                    android:text="@{viewModel.activity.activityType}">
+                </androidx.appcompat.widget.AppCompatEditText>
 
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -158,7 +144,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="15dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/activityTypesSpinner">
+                    app:layout_constraintTop_toBottomOf="@+id/activityType">
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/startDate"
@@ -167,27 +153,6 @@
                         android:focusable="false"
                         android:hint="@string/startDate"
                         android:drawableLeft="@drawable/ic_date"
-                        android:drawablePadding="3dp"
-                        android:enabled="false"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/input_startTime_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/activityTypesSpinner">
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/startTime"
-                        android:layout_width="145dp"
-                        android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:hint="@string/startTime"
-                        android:drawableLeft="@drawable/ic_time"
                         android:drawablePadding="3dp"
                         android:enabled="false"/>
 
@@ -214,26 +179,6 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/input_endTime_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/input_startTime_layout">
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/endTime"
-                        android:layout_width="145dp"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_time"
-                        android:drawablePadding="3dp"
-                        android:focusable="false"
-                        android:hint="@string/endTime"
-                        android:enabled="false"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/membersTxt"
@@ -289,7 +234,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/switchText"
-                    app:layout_constraintEnd_toEndOf="@id/input_endTime_layout"
+                    app:layout_constraintStart_toStartOf="@id/input_endDate_layout"
                     app:layout_constraintTop_toBottomOf="@id/minMembers"
                     android:enabled="false"/>
 

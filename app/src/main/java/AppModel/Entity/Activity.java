@@ -39,7 +39,8 @@ public class Activity implements Parcelable {
     @PrimaryKey @NonNull//(autoGenerate = true)
     private String id;
     private String name;
-    private int activityTypeId;
+    private String activityType;
+    private String activityCategory;
     private Date creationTime;
     private String creatorId;
     private int minMembers;
@@ -64,30 +65,30 @@ public class Activity implements Parcelable {
     @Ignore
     private List<String> membersIds;
 
-    @Ignore
-    public Activity(int activityTypeId, Date creationTime, List<String> membersIds, String creatorId, boolean isPrivate, List<Bitmap> activityPhotos, Blob displayedImage, Place activityLocation, Date activityDateTime, String activityInfo) {
-        this.activityTypeId = activityTypeId;
-        this.creationTime = creationTime;
-        this.membersIds = membersIds;
-        this.creatorId = creatorId;
-        this.isPrivate = isPrivate;
-        this.activityPhotos = activityPhotos;
-        this.displayedImage = displayedImage;
-        this.activityLocation = activityLocation;
-        this.activityStartDateTime = activityDateTime;
-        this.activityInfo = activityInfo;
-    }
+//    @Ignore
+//    public Activity(int activityTypeId, Date creationTime, List<String> membersIds, String creatorId, boolean isPrivate, List<Bitmap> activityPhotos, Blob displayedImage, Place activityLocation, Date activityDateTime, String activityInfo) {
+//        this.activityType = activityTypeId;
+//        this.creationTime = creationTime;
+//        this.membersIds = membersIds;
+//        this.creatorId = creatorId;
+//        this.isPrivate = isPrivate;
+//        this.activityPhotos = activityPhotos;
+//        this.displayedImage = displayedImage;
+//        this.activityLocation = activityLocation;
+//        this.activityStartDateTime = activityDateTime;
+//        this.activityInfo = activityInfo;
+//    }
 
-    @Ignore
-    public Activity(int activityTypeId, Date creationTime, String creatorId, boolean isPrivate, Date activityDateTime, String activityInfo, Date activityEndDateTime) {
-        this.activityTypeId = activityTypeId;
-        this.creationTime = creationTime;
-        this.creatorId = creatorId;
-        this.isPrivate = isPrivate;
-        this.activityStartDateTime = activityDateTime;
-        this.activityInfo = activityInfo;
-        this.activityEndDateTime = activityEndDateTime;
-    }
+//    @Ignore
+//    public Activity(int activityTypeId, Date creationTime, String creatorId, boolean isPrivate, Date activityDateTime, String activityInfo, Date activityEndDateTime) {
+//        this.activityTypeId = activityTypeId;
+//        this.creationTime = creationTime;
+//        this.creatorId = creatorId;
+//        this.isPrivate = isPrivate;
+//        this.activityStartDateTime = activityDateTime;
+//        this.activityInfo = activityInfo;
+//        this.activityEndDateTime = activityEndDateTime;
+//    }
 
     public Activity(){
         this.membersIds = new ArrayList<String>();
@@ -99,7 +100,7 @@ public class Activity implements Parcelable {
 
     protected Activity(Parcel in) {
         id = in.readString();
-        activityTypeId = in.readInt();
+        activityType = in.readString();
         creatorId = in.readString();
         minMembers = in.readInt();
         maxMembers = in.readInt();
@@ -143,6 +144,14 @@ public class Activity implements Parcelable {
         this.activityEndDateTime = activityEndDateTime;
     }
 
+    public String getActivityCategory() {
+        return activityCategory;
+    }
+
+    public void setActivityCategory(String activityCategory) {
+        this.activityCategory = activityCategory;
+    }
+
     public void setMaxMembers(int maxMembers) {
         this.maxMembers = maxMembers;
     }
@@ -179,12 +188,12 @@ public class Activity implements Parcelable {
         this.id = id;
     }
 
-    public int getActivityTypeId() {
-        return activityTypeId;
+    public String getActivityType() {
+        return activityType;
     }
 
-    public void setActivityTypeId(int activityTypeId) {
-        this.activityTypeId = activityTypeId;
+    public void setActivityType(String activityType) {
+        this.activityType = activityType;
     }
 
     public Date getCreationTime() {
@@ -271,7 +280,7 @@ public class Activity implements Parcelable {
         if (this == o) return true;
         if (!(o instanceof Activity)) return false;
         Activity activity = (Activity) o;
-        return getActivityTypeId() == activity.getActivityTypeId() &&
+        return Objects.equals(getActivityType(),activity.getActivityType()) &&
                 getCreatorId() == activity.getCreatorId() &&
                 getMinMembers() == activity.getMinMembers() &&
                 getMaxMembers() == activity.getMaxMembers() &&
@@ -296,7 +305,7 @@ public class Activity implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeInt(activityTypeId);
+        dest.writeString(activityType);
         dest.writeString(creatorId);
         dest.writeInt(minMembers);
         dest.writeInt(maxMembers);

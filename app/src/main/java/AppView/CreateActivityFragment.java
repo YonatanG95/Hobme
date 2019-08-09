@@ -194,9 +194,17 @@ public class CreateActivityFragment extends Fragment {
     public void addActivityBtn(View view)
     {
         //Insert new activity using repository with a method of the ViewModel
+        getSpinnersData();
         setActivityDatesTimes();
         setActivityMembersRange();
         mCreateActivityViewModel.insertActivity(view);
+    }
+
+    private void getSpinnersData(){
+        mCreateActivityViewModel.getActivity().getValue()
+                .setActivityCategory(mFragmentCreateActivityBinding.categorySpinner.getSelectedItem().toString());
+        mCreateActivityViewModel.getActivity().getValue()
+                .setActivityType(mFragmentCreateActivityBinding.activityTypesSpinner.getSelectedItem().toString());
     }
 
     private void setActivityMembersRange() {
