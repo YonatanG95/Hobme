@@ -147,14 +147,15 @@ public class CreateActivityFragment extends Fragment {
                 getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
         // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-                mCreateActivityViewModel.getActivity().getValue().setActivityLocation(place);
+//                mCreateActivityViewModel.getActivity().getValue().setActivityLocation(place);
+                mCreateActivityViewModel.getActivity().getValue().setSimplePlace(DataConverters.placeToSimplePlace(place));
                 validation("", 0,0,0);
             }
 
@@ -205,6 +206,7 @@ public class CreateActivityFragment extends Fragment {
                 membersSeekbar.getSelectedMaxValue().intValue());
     }
 
+    //TODO replace place with simplePlace
     public void validation(CharSequence s, int start, int before, int count){
         if(InputValidator.isValidField(mFragmentCreateActivityBinding.inputActNameLayout)
                 & InputValidator.isValidField(mFragmentCreateActivityBinding.inputActInfoLayout)
@@ -212,7 +214,7 @@ public class CreateActivityFragment extends Fragment {
                 mFragmentCreateActivityBinding.inputStartTimeLayout, mFragmentCreateActivityBinding.inputEndDateLayout,
                 mFragmentCreateActivityBinding.inputEndTimeLayout )
                 & InputValidator.locationValid(mFragmentCreateActivityBinding.location,
-                mCreateActivityViewModel.getActivity().getValue().getActivityLocation() != null)
+                mCreateActivityViewModel.getActivity().getValue().getSimplePlace().getId() != null)
                 & mCreateActivityViewModel.getActivity().getValue().getDisplayedImage() != null){ /* passes - place null or not */
             mFragmentCreateActivityBinding.addActivityBtn.setEnabled(true);
         }

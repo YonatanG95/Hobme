@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.BindingMethod;
 import androidx.databinding.BindingMethods;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -51,6 +52,11 @@ public class Activity implements Parcelable {
 
    // @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     private Blob displayedImage;
+//    @Embedded (prefix = "place_")
+//    private SimplePlace simplePlace;
+
+    @Embedded (prefix = "place_")
+    private SimplePlace simplePlace;
     @Ignore
     private Place activityLocation;
     @Ignore
@@ -88,6 +94,7 @@ public class Activity implements Parcelable {
         this.currMembers = 0;
         this.maxMembers = 0;
         this.minMembers = 0;
+        this.simplePlace = new SimplePlace();
     }
 
     protected Activity(Parcel in) {
@@ -114,6 +121,7 @@ public class Activity implements Parcelable {
             return new Activity[size];
         }
     };
+
 
     public int getMinMembers() {
         return minMembers;
@@ -250,6 +258,13 @@ public class Activity implements Parcelable {
         this.activityLocation = activityLocation;
     }
 
+    public SimplePlace getSimplePlace() {
+        return simplePlace;
+    }
+
+    public void setSimplePlace(SimplePlace simplePlace) {
+        this.simplePlace = simplePlace;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -15,12 +15,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.project.hobme.R;
 import com.project.hobme.databinding.FragmentDetailedActivityBinding;
 
 import AppModel.Entity.Activity;
 import AppModel.Entity.User;
 import AppUtils.InjectorUtils;
+import AppUtils.InputValidator;
 import AppViewModel.CreateActivityViewModel;
 import AppViewModel.CustomViewModelFactory;
 import AppViewModel.DetailedActivityViewModel;
@@ -33,7 +44,7 @@ import AppViewModel.DetailedActivityViewModel;
 // * Use the {@link DetailedActivityFragment#newInstance} factory method to
 // * create an instance of this fragment.
 // */
-public class DetailedActivityFragment extends Fragment {
+public class DetailedActivityFragment extends Fragment implements OnMapReadyCallback {
 
     private FragmentDetailedActivityBinding mDetailedActivityBinding;
     private CustomViewModelFactory viewModelFactory;
@@ -55,9 +66,15 @@ public class DetailedActivityFragment extends Fragment {
         bindData();
         passUser();
 
-        //((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        SupportMapFragment mapFragment = ((SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map));
+        mapFragment.getMapAsync(this);
+
 
         return mDetailedActivityBinding.getRoot();
+    }
+
+    private void disableEdit(){
+
     }
 
     private void passUser(){
@@ -94,5 +111,28 @@ public class DetailedActivityFragment extends Fragment {
 
     public void joinActivity(View view){
         detailedActivityViewModel.joinActivity();
+    }
+
+    public void validation(CharSequence s, int start, int before, int count){
+        if(InputValidator.isValidField(mDetailedActivityBinding.inputActNameLayout)
+                & InputValidator.isValidField(mDetailedActivityBinding.inputActInfoLayout)){
+            mDetailedActivityBinding.joinActivityBtn.setEnabled(true);
+        }
+        else {
+            mDetailedActivityBinding.joinActivityBtn.setEnabled(false);
+        }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        LatLng placeCenter = new LatLng(detailedActivityViewModel.getActivity().getValue().getSimplePlace().getLatitude(),
+                detailedActivityViewModel.getActivity().getValue().getSimplePlace().getLongitude());
+        googleMap.addMarker(new MarkerOptions()
+            .position(placeCenter).title(detailedActivityViewModel.getActivity().getValue().getSimplePlace().getName()));
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(placeCenter).zoom(16).tilt(30).build();
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
     }
 }

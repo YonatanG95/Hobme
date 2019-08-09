@@ -79,4 +79,7 @@
     <string name="membersTxt">Members</string>
     <string name="membersSpace">To</string>
 
+    <!--Detailed Activity-->
+    <string name="joinActivity">JOIN</string>
+
 </resources>

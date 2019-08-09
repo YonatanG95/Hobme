@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:text="@={view.email}"
-                android:onTextChanged="@{handler.validation}"
+                android:onTextChanged="@{handler::validation}"
                 android:hint="@string/editText_email" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:text="@={view.password}"
-                android:onTextChanged="@{handler.validation}"
+                android:onTextChanged="@{handler::validation}"
                 android:hint="@string/editText_pass"/>
         </com.google.android.material.textfield.TextInputLayout>
 

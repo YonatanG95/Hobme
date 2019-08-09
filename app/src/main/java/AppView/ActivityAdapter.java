@@ -39,11 +39,15 @@ public class ActivityAdapter extends PagedListAdapter<Activity, ActivityAdapter.
     }
 
 
-    public void setActivities(List<Activity> activities) {
-        Log.d("Check", "" + getItemCount());
-        this.activityList = activities;
-        notifyDataSetChanged();
-    }
+//    public void setActivities(List<Activity> activities) {
+//        Log.d("Check", "" + getItemCount());
+//        this.activityList = activities;
+//        for (Activity activity :activities) {
+//            Log.d("HHHH", activity.getName());
+//            Log.d("HHHH", activity.getActivityLocation().getName());
+//        }
+//        notifyDataSetChanged();
+//    }
 
     @NonNull
     @Override

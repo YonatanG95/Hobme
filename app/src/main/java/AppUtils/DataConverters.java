@@ -3,9 +3,15 @@ package AppUtils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import androidx.room.TypeConverter;
+
+import com.google.android.libraries.places.api.model.Place;
 import com.google.firebase.firestore.Blob;
+import com.google.gson.Gson;
+
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
+
+import AppModel.Entity.SimplePlace;
 
 /**
  * Converts objects from one type to another
@@ -52,6 +58,15 @@ public class DataConverters {
         return Blob.fromBytes(bytes);
     }
 
+
+    public static SimplePlace placeToSimplePlace(Place place){
+        SimplePlace simplePlace = new SimplePlace();
+        simplePlace.setId(place.getId());
+        simplePlace.setName(place.getName());
+        simplePlace.setLatitude(place.getLatLng().latitude);
+        simplePlace.setLongitude(place.getLatLng().longitude);
+        return simplePlace;
+    }
 
     /**
      * Converts Blob object to Bitmap object
