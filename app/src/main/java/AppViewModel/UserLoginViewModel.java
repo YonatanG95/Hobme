@@ -4,6 +4,7 @@ import android.view.View;
 
 import androidx.lifecycle.ViewModel;
 
+import AppModel.Entity.SimplePlace;
 import AppView.UserLoginFragment;
 import DataSources.AppRepository;
 
@@ -25,8 +26,8 @@ public class UserLoginViewModel extends ViewModel {
      * If user session exists - navigate directly to main page (ActivityListFragment)
      * @param view
      */
-    public void isAlreadyLoggedIn(View view){
-        repository.currentlyLoggedIn(view);
+    public void isAlreadyLoggedIn(View view, SimplePlace currLocation){
+        repository.currentlyLoggedIn(view, currLocation);
     }
 
     /**
@@ -34,8 +35,8 @@ public class UserLoginViewModel extends ViewModel {
      * @param fragment
      * @param view
      */
-    public void userLogInEmail(UserLoginFragment fragment, View view){
-        repository.signInUserEmail(email, password, view, fragment);
+    public void userLogInEmail(UserLoginFragment fragment, View view, SimplePlace currLocation){
+        repository.signInUserEmail(email, password, view, fragment, currLocation);
     }
 
 

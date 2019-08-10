@@ -1,31 +1,28 @@
 package AppView;
 
-import AppModel.Entity.Activity;
-import AppModel.Entity.User;
-import AppUtils.InjectorUtils;
-import AppViewModel.ActivityListViewModel;
-import AppViewModel.CustomViewModelFactory;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
-import androidx.paging.PagedList;
-
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
+import androidx.paging.PagedList;
+
 import com.project.hobme.R;
 import com.project.hobme.databinding.FragmentActivityListBinding;
+
+import AppModel.Entity.Activity;
+import AppModel.Entity.User;
+import AppUtils.InjectorUtils;
+import AppViewModel.ActivityListViewModel;
+import AppViewModel.CustomViewModelFactory;
 
 public class ActivityListFragment extends Fragment{
 
@@ -33,6 +30,7 @@ public class ActivityListFragment extends Fragment{
     private ActivityListViewModel mActivityListViewModel;
     private CustomViewModelFactory viewModelFactory;
     private ActivityAdapter adapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,5 +91,7 @@ public class ActivityListFragment extends Fragment{
         mActivityListViewModel.setCurrUser(user);
         adapter.setCurrUser(user);
     }
+
+
 
 }

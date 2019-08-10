@@ -19,12 +19,15 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.project.hobme.R;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import AppModel.Entity.Activity;
 import AppModel.Entity.ActivityType;
 import AppModel.Entity.Category;
+import AppModel.Entity.SimplePlace;
 import AppModel.Entity.User;
 import AppView.CreateActivityFragmentDirections;
 import AppView.UserLoginFragment;
@@ -160,13 +163,14 @@ public class RemoteData {
      * Checks if firebase user session exists. If so - navigates to main page
      * @param view
      */
-    public void currentlyLoggedIn(View view){
+    public void currentlyLoggedIn(View view, SimplePlace currLocation){
         FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
         if(currentUser != null) {
             String id = currentUser.getUid();
             getUserById(id, new NetworkDataCallback.UserCallback() {
                 @Override
                 public void onUserCallback(User user) {
+                    user.setCurrLocation(currLocation);
                     UserLoginFragmentDirections.LoginToActList action = UserLoginFragmentDirections.loginToActList(user);
                     Navigation.findNavController(view).navigate(action);
                 }
@@ -181,7 +185,7 @@ public class RemoteData {
      * @param view
      * @param fragment
      */
-    public void userSignInEmail(String email, String pass, View view, UserLoginFragment fragment){
+    public void userSignInEmail(String email, String pass, View view, UserLoginFragment fragment, SimplePlace currLocation){
         mFirebaseAuth.signInWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(fragment.getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -193,6 +197,7 @@ public class RemoteData {
                             getUserById(fbUser.getUid(), new NetworkDataCallback.UserCallback() {
                                 @Override
                                 public void onUserCallback(User user) {
+                                    user.setCurrLocation(currLocation);
                                     UserLoginFragmentDirections.LoginToActList action = UserLoginFragmentDirections.loginToActList(user);
                                     Navigation.findNavController(view).navigate(action);
                                 }
@@ -248,8 +253,9 @@ public class RemoteData {
                                             callback.onUserCallback(createdUser);
 
                                             //Navigate to main page
-                                            UserRegisterFragmentDirections.RegisterToActList action = UserRegisterFragmentDirections.registerToActList(createdUser);
-                                            Navigation.findNavController(view).navigate(action);
+//                                            UserRegisterFragmentDirections.registerToLogin() action = UserRegisterFragmentDirections.registerToLogin();
+//                                            Navigation.findNavController(view).navigate(action);
+                                            Navigation.findNavController(view).navigate(R.id.registerToLogin);
                                         }
                                     }
                                 });

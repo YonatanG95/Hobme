@@ -10,6 +10,7 @@ import java.util.List;
 import AppModel.Entity.Activity;
 import AppModel.Entity.ActivityType;
 import AppModel.Entity.Category;
+import AppModel.Entity.SimplePlace;
 import AppModel.Entity.User;
 import AppModel.LocalData;
 import AppModel.RemoteData;
@@ -146,9 +147,9 @@ public class AppRepository {
      * Checks if user's session to firebase is already open and if so - navigates to main page
      * @param view
      */
-    public void currentlyLoggedIn(View view){
+    public void currentlyLoggedIn(View view, SimplePlace currLocation){
         appExecutors.networkIO().execute(()-> {
-            remoteData.currentlyLoggedIn(view);
+            remoteData.currentlyLoggedIn(view, currLocation);
         });
     }
 
@@ -160,9 +161,9 @@ public class AppRepository {
      * @param loginFragment
      */
     //TODO think of keeping this user special way in DB
-    public void signInUserEmail(String email, String password, View view, UserLoginFragment loginFragment){
+    public void signInUserEmail(String email, String password, View view, UserLoginFragment loginFragment, SimplePlace currLocation){
         appExecutors.networkIO().execute(()-> {
-            remoteData.userSignInEmail(email, password, view, loginFragment);
+            remoteData.userSignInEmail(email, password, view, loginFragment, currLocation);
         });
     }
 

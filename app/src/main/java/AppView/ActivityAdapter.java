@@ -9,11 +9,14 @@ import android.view.ViewGroup;
 import com.project.hobme.R;
 import com.project.hobme.databinding.LayoutActivityRowItemBinding;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import AppModel.Entity.Activity;
+import AppModel.Entity.SimplePlace;
 import AppModel.Entity.User;
+import AppUtils.LocationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -28,26 +31,13 @@ public class ActivityAdapter extends PagedListAdapter<Activity, ActivityAdapter.
 
     private final String TAG = "ActivityAdapter";
     private LayoutInflater layoutInflater;
-    private List<Activity> activityList = new ArrayList<>();
+//    private List<Activity> activityList = new ArrayList<>();
     private User currUser;
-//    private CustomOnItemClickListener mListener;
 
     protected ActivityAdapter()
     {
         super(DIFF_CALLBACK);
-//        this.mListener = listener;
     }
-
-
-//    public void setActivities(List<Activity> activities) {
-//        Log.d("Check", "" + getItemCount());
-//        this.activityList = activities;
-//        for (Activity activity :activities) {
-//            Log.d("HHHH", activity.getName());
-//            Log.d("HHHH", activity.getActivityLocation().getName());
-//        }
-//        notifyDataSetChanged();
-//    }
 
     @NonNull
     @Override
@@ -64,6 +54,16 @@ public class ActivityAdapter extends PagedListAdapter<Activity, ActivityAdapter.
         Activity activity = getItem(position);
 
         if (activity != null) {
+            SimplePlace actLoc = activity.getSimplePlace();
+            SimplePlace userLoc = getCurrUser().getCurrLocation();
+            if(userLoc != null) {
+                double dist = LocationUtils.calcDistance(actLoc.getLatitude(), actLoc.getLongitude(), userLoc.getLatitude(), userLoc.getLongitude());
+                holder.binding.setDistance(new DecimalFormat("###.#").format(dist));
+            }
+            else
+            {
+                holder.binding.setDistance("--");
+            }
             holder.binding.setActivity(activity);
             ActivityListFragmentDirections.ActListToDetails action = ActivityListFragmentDirections.actListToDetails(activity, currUser);
             holder.itemView.setOnClickListener(Navigation.createNavigateOnClickListener(action)); //{
@@ -89,28 +89,12 @@ public class ActivityAdapter extends PagedListAdapter<Activity, ActivityAdapter.
     class ActivityHolder extends RecyclerView.ViewHolder{
 
         private final LayoutActivityRowItemBinding binding;
-//        CustomOnItemClickListener mListener;
 
         public ActivityHolder(View itemView) {
             super(itemView);
-//            this.mListener = mListener;
             this.binding = DataBindingUtil.bind(itemView);
-//            Activity activity = getItem(getAdapterPosition());
-//            ActivityListFragmentDirections.ActListToDetails action = ActivityListFragmentDirections.actListToDetails(activity);
-//            itemView.setOnClickListener(Navigation.createNavigateOnClickListener(action)); //{
-//                @Override
-//                public void onClick(View v) {
-//                    int position = getAdapterPosition();
-//                    Activity act = getItem(position);
-//                    mListener.openActivityDetails(v, act);
-//                }
-//            });
         }
     }
-
-//    interface CustomOnItemClickListener{
-//        void openActivityDetails(View view, Activity activity);
-//    }
 
     public User getCurrUser() {
         return currUser;

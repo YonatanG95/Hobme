@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -24,6 +25,8 @@ public class User implements Parcelable {
     private Date birthDate;
     private String fbDocId;
 
+    @Embedded (prefix = "currPlace_")
+    private SimplePlace currLocation;
     @Ignore
     private Bitmap profilePicture;
     @Ignore
@@ -34,11 +37,9 @@ public class User implements Parcelable {
     private List<String> myActivitiesIds;
     @Ignore
     private List<String> activitiesMemberIds;
-    @Ignore
-    private Location userLocation;
 
     @Ignore
-    public User(String id, String fullName, Date birthDate, Bitmap profilePicture, List<Bitmap> userPhotos, List<String> favoriteTypesIds, List<String> myActivitiesIds, List<String> activitiesMemberIds, Location userLocation) {
+    public User(String id, String fullName, Date birthDate, Bitmap profilePicture, List<Bitmap> userPhotos, List<String> favoriteTypesIds, List<String> myActivitiesIds, List<String> activitiesMemberIds) {
         this.id = id;
         this.fullName = fullName;
         this.birthDate = birthDate;
@@ -47,7 +48,6 @@ public class User implements Parcelable {
         this.favoriteTypesIds = favoriteTypesIds;
         this.myActivitiesIds = myActivitiesIds;
         this.activitiesMemberIds = activitiesMemberIds;
-        this.userLocation = userLocation;
     }
 
     @Ignore
@@ -69,7 +69,6 @@ public class User implements Parcelable {
         email = in.readString();
         profilePicture = in.readParcelable(Bitmap.class.getClassLoader());
         userPhotos = in.createTypedArrayList(Bitmap.CREATOR);
-        userLocation = in.readParcelable(Location.class.getClassLoader());
     }
 
     @Override
@@ -79,7 +78,6 @@ public class User implements Parcelable {
         dest.writeString(email);
         dest.writeParcelable(profilePicture, flags);
         dest.writeTypedList(userPhotos);
-        dest.writeParcelable(userLocation, flags);
     }
 
     @Override
@@ -105,14 +103,6 @@ public class User implements Parcelable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Location getUserLocation() {
-        return userLocation;
-    }
-
-    public void setUserLocation(Location userLocation) {
-        this.userLocation = userLocation;
     }
 
     public String getId() {
@@ -186,5 +176,13 @@ public class User implements Parcelable {
 
     public void setFbDocId(String fbDocId) {
         this.fbDocId = fbDocId;
+    }
+
+    public SimplePlace getCurrLocation() {
+        return currLocation;
+    }
+
+    public void setCurrLocation(SimplePlace currLocation) {
+        this.currLocation = currLocation;
     }
 }
