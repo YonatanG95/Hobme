@@ -25,6 +25,7 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -44,6 +45,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import AppModel.Entity.SimplePlace;
 import AppModel.Entity.User;
 import AppUtils.DataConverters;
 import AppUtils.InjectorUtils;
@@ -51,6 +54,8 @@ import AppUtils.InputValidator;
 import AppViewModel.CreateActivityViewModel;
 import AppViewModel.CustomViewModelFactory;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
@@ -70,6 +75,7 @@ public class CreateActivityFragment extends Fragment {
     private static final int REQUEST_WRITE_PERMISSION = 101;
     private static final int REQUEST_IMAGE_CAPTURE = 0;
     private static final int REQUEST_CHOOSE_IMAGE = 1;
+    private final int REQUEST_READ_EXTERNAL_STORAGE = 111;
 //    private final String MIN_MEMBERS_HINT = "Minimum Members";
 //    private final String MAX_MEMBERS_HINT = "Maximum Members";
     private final String NO_LIMIT_OPTION = "100+";
@@ -240,10 +246,11 @@ public class CreateActivityFragment extends Fragment {
                 mFragmentCreateActivityBinding.endTime.getText();
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try {
-            Date dateToInsert = format.parse(startDate);
-            mCreateActivityViewModel.getActivity().getValue().setActivityStartDateTime(dateToInsert);
-            dateToInsert = format.parse(endDate);
-            mCreateActivityViewModel.getActivity().getValue().setActivityEndDateTime(dateToInsert);
+            Date start = format.parse(startDate);
+            mCreateActivityViewModel.getActivity().getValue().setActivityStartDateTime(start);
+            Date end = format.parse(endDate);
+            mCreateActivityViewModel.getActivity().getValue().setActivityEndDateTime(end);
+            mCreateActivityViewModel.getActivity().getValue().setActivityDurationMin((int)(end.getTime() - start.getTime()) / (60 * 1000));
         } catch (ParseException e){
             e.printStackTrace();
         }
@@ -290,20 +297,26 @@ public class CreateActivityFragment extends Fragment {
 
             @Override
             public void onClick(DialogInterface dialog, int item) {
-
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_PERMISSION);}
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);}
                 if (PHOTO_OPTIONS[item].equals("Take Photo")) {
-                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
-                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_PERMISSION);}
-                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
-                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);}
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                     }
 
                 } else if (PHOTO_OPTIONS[item].equals("Choose from Gallery")) {
+//                    if (ContextCompat.checkSelfPermission(getContext(), READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(pickPhoto , 1);
+                    startActivityForResult(pickPhoto, 1);
+//                    }
+//                    else{
+//                        requestPermissions(new String[]{READ_EXTERNAL_STORAGE},
+//                                REQUEST_READ_EXTERNAL_STORAGE);
+//                        Log.d("Login", "No permissions");
+//                    }
 
                 } else if (PHOTO_OPTIONS[item].equals("Cancel")) {
                     dialog.dismiss();
@@ -312,6 +325,24 @@ public class CreateActivityFragment extends Fragment {
         });
         builder.show();
     }
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode,
+//                                           String[] permissions, int[] grantResults) {
+//        switch (requestCode) {
+//            case REQUEST_READ_EXTERNAL_STORAGE: {
+//                // If request is cancelled, the result arrays are empty.
+//                if (grantResults.length > 0 &&
+//                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                    startActivityForResult(pickPhoto, 1);
+//                } else {
+//                    return;
+//                }
+//                return;
+//            }
+//        }
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

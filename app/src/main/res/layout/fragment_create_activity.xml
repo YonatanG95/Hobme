@@ -275,14 +275,14 @@
                     android:enabled="false"/>
 
 
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switch_private"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/switchText"
-                    app:layout_constraintEnd_toEndOf="@id/input_endTime_layout"
-                    app:layout_constraintTop_toBottomOf="@id/minMembers" />
+                <!--<androidx.appcompat.widget.SwitchCompat-->
+                    <!--android:id="@+id/switch_private"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:text="@string/switchText"-->
+                    <!--app:layout_constraintEnd_toEndOf="@id/input_endTime_layout"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/minMembers" />-->
 
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -294,7 +294,7 @@
                     android:layout_marginEnd="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/switch_private">
+                    app:layout_constraintTop_toBottomOf="@+id/maxMembers">
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:layout_width="match_parent"
@@ -302,7 +302,7 @@
                         android:ems="10"
                         android:hint="@string/activityInfo"
                         android:inputType="textMultiLine"
-                        android:lines="4"
+                        android:lines="2"
                         android:scrollbars="vertical"
                         android:drawableLeft="@drawable/ic_info"
                         android:drawablePadding="3dp"

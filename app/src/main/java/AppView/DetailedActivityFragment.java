@@ -98,6 +98,7 @@ public class DetailedActivityFragment extends Fragment implements OnMapReadyCall
 
             case R.id.action_delete:
                 deleteActivity(getView());
+                break;
         }
         return true;
     }
@@ -105,11 +106,13 @@ public class DetailedActivityFragment extends Fragment implements OnMapReadyCall
     private void initializeUI() {
         SupportMapFragment mapFragment = ((SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map));
         mapFragment.getMapAsync(this);
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        mDetailedActivityBinding.startDate.setText(format.format(detailedActivityViewModel.getActivity().getValue()
-                .getActivityStartDateTime()));
-        mDetailedActivityBinding.endDate.setText(format.format(detailedActivityViewModel.getActivity().getValue()
-                .getActivityEndDateTime()));
+//        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+//        mDetailedActivityBinding.startDate.setText(format.format(detailedActivityViewModel.getActivity().getValue()
+//                .getActivityStartDateTime()));
+//        mDetailedActivityBinding.endDate.setText(format.format(detailedActivityViewModel.getActivity().getValue()
+//                .getActivityEndDateTime()));
+        mDetailedActivityBinding.startDate.setText(detailedActivityViewModel.getActivity().getValue().startDateString());
+        mDetailedActivityBinding.endDate.setText(detailedActivityViewModel.getActivity().getValue().endDateString());
         setHasOptionsMenu(true);
         if(userIsCreator || userIsMember ||
                 detailedActivityViewModel.getActivity().getValue().getCurrMembers() ==

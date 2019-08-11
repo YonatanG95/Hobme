@@ -57,6 +57,9 @@
     <!--Toolbar list menu-->
     <string name="action_sort">Sort</string>
     <string name="action_filter">Filter</string>
+    <string name="option_start">Start Date</string>
+    <string name="option_duration">Duration</string>
+    <string name="option_category">Category</string>
 
     <!--Toolbar detailed activity menu-->
     <string name="action_edit">Edit</string>

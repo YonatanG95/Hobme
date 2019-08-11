@@ -6,6 +6,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.widget.ImageView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,12 +55,9 @@ public class Activity implements Parcelable {
     private Date activityStartDateTime;
     private Date activityEndDateTime;
     private String activityInfo;
-
-   // @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+    private Double userDistance;
+    private int activityDurationMin;
     private Blob displayedImage;
-//    @Embedded (prefix = "place_")
-//    private SimplePlace simplePlace;
-
     @Embedded (prefix = "place_")
     private SimplePlace simplePlace;
     @Ignore
@@ -65,36 +67,12 @@ public class Activity implements Parcelable {
     @Ignore
     private List<String> membersIds;
 
-//    @Ignore
-//    public Activity(int activityTypeId, Date creationTime, List<String> membersIds, String creatorId, boolean isPrivate, List<Bitmap> activityPhotos, Blob displayedImage, Place activityLocation, Date activityDateTime, String activityInfo) {
-//        this.activityType = activityTypeId;
-//        this.creationTime = creationTime;
-//        this.membersIds = membersIds;
-//        this.creatorId = creatorId;
-//        this.isPrivate = isPrivate;
-//        this.activityPhotos = activityPhotos;
-//        this.displayedImage = displayedImage;
-//        this.activityLocation = activityLocation;
-//        this.activityStartDateTime = activityDateTime;
-//        this.activityInfo = activityInfo;
-//    }
-
-//    @Ignore
-//    public Activity(int activityTypeId, Date creationTime, String creatorId, boolean isPrivate, Date activityDateTime, String activityInfo, Date activityEndDateTime) {
-//        this.activityTypeId = activityTypeId;
-//        this.creationTime = creationTime;
-//        this.creatorId = creatorId;
-//        this.isPrivate = isPrivate;
-//        this.activityStartDateTime = activityDateTime;
-//        this.activityInfo = activityInfo;
-//        this.activityEndDateTime = activityEndDateTime;
-//    }
-
     public Activity(){
         this.membersIds = new ArrayList<String>();
         this.currMembers = 0;
         this.maxMembers = 0;
         this.minMembers = 0;
+        this.activityDurationMin = 0;
         this.simplePlace = new SimplePlace();
     }
 
@@ -275,6 +253,22 @@ public class Activity implements Parcelable {
         this.simplePlace = simplePlace;
     }
 
+    public Double getUserDistance() {
+        return userDistance;
+    }
+
+    public void setUserDistance(Double userDistance) {
+        this.userDistance = userDistance;
+    }
+
+    public int getActivityDurationMin() {
+        return activityDurationMin;
+    }
+
+    public void setActivityDurationMin(int activityDurationMin) {
+        this.activityDurationMin = activityDurationMin;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -314,5 +308,27 @@ public class Activity implements Parcelable {
         dest.writeString(activityInfo);
         dest.writeParcelable(activityLocation, flags);
         dest.writeTypedList(activityPhotos);
+    }
+
+    public String durationString(){
+        if(this.activityDurationMin < 60)
+            return this.activityDurationMin + " Min";
+        else if(this.activityDurationMin < 1440)
+            return (this.activityDurationMin / 60) + " H, " + (this.activityDurationMin % 60) + " M";
+        else{
+            int days = this.activityDurationMin / 1440;
+            int left = this.activityDurationMin % 1440;
+            return days + " D, " + (left / 60) + " H";
+        }
+    }
+
+    public String startDateString(){
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM HH:mm");
+        return format.format(activityStartDateTime);
+    }
+
+    public String endDateString(){
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM HH:mm");
+        return format.format(activityEndDateTime);
     }
 }

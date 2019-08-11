@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -44,18 +46,16 @@ public class ActivityListFragment extends Fragment{
                 .get(ActivityListViewModel.class);
 
 
-        //TODO delete when type ready
+        bindData();
+        passUser();
+        initializeUI();
+
         mActivityListViewModel.getActivities().observe(getViewLifecycleOwner(), new Observer<PagedList<Activity>>() {
             @Override
             public void onChanged(PagedList<Activity> activities) {
                 adapter.submitList(activities);
             }
         });
-
-        bindData();
-        passUser();
-        initializeUI();
-
 
         return mActivityListBinding.getRoot();
     }
@@ -69,6 +69,21 @@ public class ActivityListFragment extends Fragment{
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.top_bar_list, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.option_duration:
+
+                break;
+
+            case R.id.option_start:
+                break;
+
+
+        }
+        return true;
     }
 
     private void bindData()
