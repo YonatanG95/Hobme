@@ -15,6 +15,7 @@ import AppModel.Entity.User;
 import AppModel.LocalData;
 import AppModel.RemoteData;
 import AppUtils.AppExecutors;
+import AppUtils.DataConverters;
 import AppView.UserLoginFragment;
 import AppView.UserRegisterFragment;
 
@@ -23,7 +24,7 @@ import AppView.UserRegisterFragment;
  */
 public class AppRepository {
 
-    public static final int PAGE_SIZE = 10;
+    public static final int PAGE_SIZE = 15;
     public static final int INIT_SIZE = 15;
     private final int PREFETCH_DISTANCE = 4;
     private static AppRepository sInstance;
@@ -63,9 +64,9 @@ public class AppRepository {
      * Creates boundary callback and sends it to the local-DB implementation of this method
      * @return liveData of type paged list of activities to display in recycler views
      */
-    public LiveData<PagedList<Activity>> getActivities(){
+    public LiveData<PagedList<Activity>> getActivities(){//(String sortFilterString){
         RepoBoundaryCallback boundaryCallback = new RepoBoundaryCallback(this);
-        return localData.getActivities(boundaryCallback);
+        return localData.getActivities(boundaryCallback);//, sortFilterString);
     }
 
     /**
@@ -106,6 +107,8 @@ public class AppRepository {
                     if(activities != null) {
                         appExecutors.diskIO().execute(() -> {
                             localData.insertActivities(activities);
+                            Date date = new Date();
+                            localData.deletePrevious(DataConverters.toDate(date.getTime()));
                         });
                     }
                 }

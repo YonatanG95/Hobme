@@ -1,10 +1,14 @@
 package AppModel;
 
 import android.content.Context;
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
+
+import java.util.Date;
 import java.util.List;
 import AppModel.Dao.ActivityDao;
 import AppModel.Dao.ActivityTypeDao;
@@ -25,6 +29,8 @@ public class LocalData {
     private UserDao userDao;
     private CategoryDao categoryDao;
     private ActivityTypeDao activityTypeDao;
+    public static final String SORT_DURATION = "duration";
+    public static final String SORT_START = "start";
 
     /**
      * Gets DB instance and connects to models (Dao) through it
@@ -44,8 +50,19 @@ public class LocalData {
      * according to paged list state
      * @return activities as paged list. During this procedure, local data is syncing with remote data
      */
-    public LiveData<PagedList<Activity>> getActivities(RepoBoundaryCallback boundaryCallback){
-        DataSource.Factory factory = activityDao.getDataSourceFactory();
+    public LiveData<PagedList<Activity>> getActivities(RepoBoundaryCallback boundaryCallback){//, String sortString){
+        DataSource.Factory factory = activityDao.getActivitiesSortStart();
+//        switch (sortString){
+//            case SORT_DURATION:
+//                factory = activityDao.getActivitiesSortDuration();
+//                break;
+//            case SORT_START:
+//                factory = activityDao.getActivitiesSortStart();
+//                break;
+//            default:
+//                factory = activityDao.getActivitiesSortStart();
+//                break;
+//        }
         return new LivePagedListBuilder(factory, RepoBoundaryCallback.DATABASE_PAGE_SIZE)
                 .setBoundaryCallback(boundaryCallback).build();
     }
@@ -80,6 +97,10 @@ public class LocalData {
      * @param activity
      */
     public void deleteActivity(Activity activity) {activityDao.delete(activity);}
+
+    public void deletePrevious(Date date){
+        activityDao.deletePrevious(date);
+    }
     //endregion
 
     //region User model methods

@@ -1,5 +1,6 @@
 package AppModel.Dao;
 
+import java.util.Date;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
@@ -31,9 +32,15 @@ public interface ActivityDao {
 //    @Query("SELECT * FROM activity_table WHERE activityTypeId = :activityTypeId")
 //    LiveData<List<Activity>> getActivitiesByType(int activityTypeId);
 
-    //TODO delete when type ready
+
     @Query("SELECT * FROM activity_table ORDER BY activityStartDateTime ASC")
-    DataSource.Factory<Integer, Activity> getDataSourceFactory();
+    DataSource.Factory<Integer, Activity> getActivitiesSortStart();
+
+    @Query("SELECT * FROM activity_table ORDER BY activityDurationMin ASC")
+    DataSource.Factory<Integer, Activity> getActivitiesSortDuration();
+
+//    @Query("SELECT * FROM activity_table WHERE activityCategory = :category ORDER BY activityStartDateTime ASC")
+//    DataSource.Factory<Integer, Activity> getActivitiesFilterCategory(String category);
 
     @Query("SELECT * FROM activity_table")
     LiveData<Activity> getActivities();
@@ -41,8 +48,10 @@ public interface ActivityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertActivities(List<Activity> activities);
 
+    @Query("DELETE FROM activity_table WHERE activityStartDateTime < :startDate")
+    void deletePrevious(Date startDate);
 
-    //TODO delete this
-    @Query("DELETE FROM activity_table")
-    void deleteAllActivities();
+
+//    @Query("DELETE FROM activity_table")
+//    void deleteAllActivities();
 }

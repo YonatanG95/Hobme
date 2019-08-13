@@ -51,7 +51,7 @@ public class UserRegisterFragment extends Fragment {
     private void initializeUI() {
         binding.btnSignup.setEnabled(false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-        ((ActivitiesFragmentsContainer)getActivity()).hideBottomNav();
+//        ((ActivitiesFragmentsContainer)getActivity()).hideBottomNav();
     }
 
     /**

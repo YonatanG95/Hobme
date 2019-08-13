@@ -465,3 +465,40 @@ Create Activity
 //                                rotatedBitmap = bitmap;
 //                        }
 //                        mFragmentCreateActivityBinding.imageView.setImageBitmap(rotatedBitmap);
+===================
+UserActivityJoinDao
+===================
+@Dao
+public interface UserActivityJoinDao {
+
+    @Query("SELECT * FROM user_table INNER JOIN user_activity_join_table ON id = userId WHERE activityId = :activityId")
+    LiveData<List<User>> getUsersFromActivity(final int activityId);
+
+    @Query("SELECT * FROM activity_table INNER JOIN user_activity_join_table ON id = activityId WHERE userId = :userId")
+    LiveData<List<Activity>> getActivitiesFromUser(final int userId);
+}
+==================
+UserActivityJoin
+==================
+
+@Entity(tableName = "user_activity_join_table", primaryKeys = {"userId", "activityId"},
+        foreignKeys = {@ForeignKey(entity = User.class, parentColumns = "id", childColumns = "userId"),
+        @ForeignKey(entity = Activity.class, parentColumns = "id", childColumns = "activityId")})
+public class UserActivityJoin {
+
+    private final int userId;
+    private final int activityId;
+
+    public UserActivityJoin(final int userId, final int activityId){
+        this.activityId = activityId;
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public int getActivityId() {
+        return activityId;
+    }
+}

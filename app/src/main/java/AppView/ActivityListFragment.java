@@ -22,6 +22,7 @@ import com.project.hobme.databinding.FragmentActivityListBinding;
 
 import AppModel.Entity.Activity;
 import AppModel.Entity.User;
+import AppModel.LocalData;
 import AppUtils.InjectorUtils;
 import AppViewModel.ActivityListViewModel;
 import AppViewModel.CustomViewModelFactory;
@@ -32,6 +33,8 @@ public class ActivityListFragment extends Fragment{
     private ActivityListViewModel mActivityListViewModel;
     private CustomViewModelFactory viewModelFactory;
     private ActivityAdapter adapter;
+
+
 
 
     @Override
@@ -50,6 +53,7 @@ public class ActivityListFragment extends Fragment{
         passUser();
         initializeUI();
 
+//        mActivityListViewModel.setSortText("");
         mActivityListViewModel.getActivities().observe(getViewLifecycleOwner(), new Observer<PagedList<Activity>>() {
             @Override
             public void onChanged(PagedList<Activity> activities) {
@@ -62,29 +66,28 @@ public class ActivityListFragment extends Fragment{
 
     private void initializeUI(){
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
-        ((ActivitiesFragmentsContainer)getActivity()).showBottomNav();
+//        ((ActivitiesFragmentsContainer)getActivity()).showBottomNav();
         setHasOptionsMenu(true);
     }
 
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        inflater.inflate(R.menu.top_bar_list, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.option_duration:
-
-                break;
-
-            case R.id.option_start:
-                break;
-
-
-        }
-        return true;
-    }
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        inflater.inflate(R.menu.top_bar_list, menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.option_duration:
+//                mActivityListViewModel.setSortText(LocalData.SORT_DURATION);
+//                break;
+//
+//            case R.id.option_start:
+//                mActivityListViewModel.setSortText(LocalData.SORT_START);
+//                break;
+//        }
+//        return true;
+//    }
 
     private void bindData()
     {

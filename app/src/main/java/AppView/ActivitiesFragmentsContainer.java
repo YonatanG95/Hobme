@@ -112,44 +112,47 @@ public class ActivitiesFragmentsContainer extends AppCompatActivity implements N
 ////        return true;
 ////    }
 
-    public void hideBottomNav()
-    {
-        binding.bottomNavigation.setVisibility(View.GONE);
-    }
-
-    public void showBottomNav(){
-        binding.bottomNavigation.setVisibility(View.VISIBLE);
-    }
+//    public void hideBottomNav()
+//    {
+//        binding.bottomNavigation.setVisibility(View.GONE);
+//    }
+//
+//    public void showBottomNav(){
+//        binding.bottomNavigation.setVisibility(View.VISIBLE);
+//    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        Fragment host = getSupportFragmentManager().findFragmentById(R.id.activities_fragment_container);
+        Fragment fragmentById = host.getChildFragmentManager().getFragments().get(0);
         if (id == R.id.nav_home) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_tools) {
+            if (fragmentById instanceof  DetailedActivityFragment){
+                navController.navigate(R.id.actDetailsToList);
+            } else if (fragmentById instanceof  CreateActivityFragment){
+                navController.navigate(R.id.actCreateToList);
+            }
+//        } else if (id == R.id.nav_gallery) {
+//
+//        } else if (id == R.id.nav_slideshow) {
+//
+//        } else if (id == R.id.nav_tools) {
 
         } else if (id == R.id.nav_share) {
             containerViewModel.logOut();
-            Fragment host = getSupportFragmentManager().findFragmentById(R.id.activities_fragment_container);
-            Fragment fragmentById = host.getChildFragmentManager().getFragments().get(0);
             if(fragmentById instanceof ActivityListFragment) {
                 navController.navigate(R.id.actListToLogin);
             } else if (fragmentById instanceof  DetailedActivityFragment){
                 navController.navigate(R.id.actDetailsToLogin);
             } else if (fragmentById instanceof  CreateActivityFragment){
-                navController.navigate(R.id.actCreateToList);
+                navController.navigate(R.id.actCreateToLogin);
             }
-            else{
-
-            }
-        } else if (id == R.id.nav_send) {
-
+//            else{
+//
+//            }
+//        } else if (id == R.id.nav_send) {
+//
         }
 
         DrawerLayout drawer = binding.drawerLayout;

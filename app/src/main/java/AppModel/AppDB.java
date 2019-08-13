@@ -10,14 +10,13 @@ import AppModel.Dao.ActivityDao;
 import AppModel.Entity.ActivityType;
 import AppModel.Entity.Category;
 import AppModel.Entity.User;
-import AppModel.Entity.UserActivityJoin;
 import AppUtils.DataConverters;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {Activity.class, User.class, UserActivityJoin.class, ActivityType.class, Category.class}, version = 24)
+@Database(entities = {Activity.class, User.class, ActivityType.class, Category.class}, version = 25)
 @TypeConverters(DataConverters.class)
 public abstract class AppDB extends RoomDatabase {
 

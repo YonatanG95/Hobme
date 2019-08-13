@@ -24,6 +24,7 @@ public class RepoBoundaryCallback extends PagedList.BoundaryCallback<Activity> {
      */
     public RepoBoundaryCallback(AppRepository repository) {
         this.repository = repository;
+        onZeroItemsLoaded();
     }
 
     /**
@@ -43,6 +44,7 @@ public class RepoBoundaryCallback extends PagedList.BoundaryCallback<Activity> {
     @Override
     public void onItemAtFrontLoaded(@NonNull Activity itemAtFront) {
         Log.d(TAG, "onItemAtFrontLoaded");
+//        repository.fetchMoreActivities(AppUtils.DataConverters.toDate(ite);
     }
 
     /**
@@ -52,5 +54,6 @@ public class RepoBoundaryCallback extends PagedList.BoundaryCallback<Activity> {
     @Override
     public void onItemAtEndLoaded(@NonNull Activity itemAtEnd) {
         Log.d(TAG, "onItemAtEndLoaded");
+        repository.fetchMoreActivities(itemAtEnd.getActivityStartDateTime());
     }
 }

@@ -83,7 +83,7 @@ public class UserLoginFragment extends Fragment {
     private void initializeUI() {
         binding.btnLogin.setEnabled(false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-        ((ActivitiesFragmentsContainer)getActivity()).hideBottomNav();
+//        ((ActivitiesFragmentsContainer)getActivity()).hideBottomNav();
     }
 
     /**
