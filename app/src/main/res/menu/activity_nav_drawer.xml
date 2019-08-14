@@ -3,24 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_home_black"
-            android:title="@string/menu_home" />
+    <!--<group android:checkableBehavior="single">-->
         <!--<item-->
-            <!--android:id="@+id/nav_gallery"-->
-            <!--android:icon="@drawable/ic_menu_gallery"-->
-            <!--android:title="@string/menu_gallery" />-->
-        <!--<item-->
-            <!--android:id="@+id/nav_slideshow"-->
-            <!--android:icon="@drawable/ic_menu_slideshow"-->
-            <!--android:title="@string/menu_slideshow" />-->
-        <!--<item-->
-            <!--android:id="@+id/nav_tools"-->
-            <!--android:icon="@drawable/ic_menu_manage"-->
-            <!--android:title="@string/menu_tools" />-->
-    </group>
+            <!--android:id="@+id/nav_home"-->
+            <!--android:icon="@drawable/ic_home_black"-->
+            <!--android:title="@string/menu_home" />-->
+        <!--&lt;!&ndash;<item&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/nav_gallery"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:icon="@drawable/ic_menu_gallery"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:title="@string/menu_gallery" />&ndash;&gt;-->
+        <!--&lt;!&ndash;<item&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/nav_slideshow"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:icon="@drawable/ic_menu_slideshow"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:title="@string/menu_slideshow" />&ndash;&gt;-->
+        <!--&lt;!&ndash;<item&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/nav_tools"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:icon="@drawable/ic_menu_manage"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:title="@string/menu_tools" />&ndash;&gt;-->
+    <!--</group>-->
 
     <item android:title="Options">
         <menu>

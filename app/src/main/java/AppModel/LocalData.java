@@ -50,8 +50,10 @@ public class LocalData {
      */
     public LiveData<PagedList<Activity>> getActivities(RepoBoundaryCallback boundaryCallback){
         DataSource.Factory factory = activityDao.getActivitiesSortStart();
-        return new LivePagedListBuilder(factory, RepoBoundaryCallback.DATABASE_PAGE_SIZE)
+        return new LivePagedListBuilder(factory, new PagedList.Config.Builder().setPageSize(RepoBoundaryCallback.DATABASE_PAGE_SIZE).setPrefetchDistance(0).build())
                 .setBoundaryCallback(boundaryCallback).build();
+                //RepoBoundaryCallback.DATABASE_PAGE_SIZE)
+                //.setBoundaryCallback(boundaryCallback).build();
     }
 
     /**

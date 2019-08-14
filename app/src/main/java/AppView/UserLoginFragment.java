@@ -178,6 +178,7 @@ public class UserLoginFragment extends Fragment {
      */
     public void loginBtn(View view){
         mViewModel.userLogInEmail(this, view, currLocation);
+        binding.btnLogin.setEnabled(false);
     }
 
     /**

@@ -307,7 +307,9 @@
                         android:drawableLeft="@drawable/ic_info"
                         android:drawablePadding="3dp"
                         android:text="@={viewModel.activity.activityInfo}"
-                        android:onTextChanged="@{handler::validation}"/>
+                        android:onTextChanged="@{handler::validation}"
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>

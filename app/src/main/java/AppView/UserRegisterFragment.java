@@ -74,6 +74,7 @@ public class UserRegisterFragment extends Fragment {
      */
     public void createUserEmail(View view){
         mViewModel.createUserEmail(this, view);
+        binding.btnSignup.setEnabled(false);
     }
 
 

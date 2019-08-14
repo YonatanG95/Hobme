@@ -94,16 +94,17 @@ public class ActivitiesFragmentsContainer extends AppCompatActivity implements N
         Fragment host = getSupportFragmentManager().findFragmentById(R.id.activities_fragment_container);
         Fragment fragmentById = host.getChildFragmentManager().getFragments().get(0);
 
-        //Home button - return to activities list
-        if (id == R.id.nav_home) {
-            if (fragmentById instanceof  DetailedActivityFragment){
-                navController.navigate(R.id.actDetailsToList);
-            } else if (fragmentById instanceof  CreateActivityFragment){
-                navController.navigate(R.id.actCreateToList);
-            }
+//        //Home button - return to activities list
+//        if (id == R.id.nav_home) {
+//            if (fragmentById instanceof  DetailedActivityFragment){
+//                navController.navigate(R.id.actDetailsToList);
+//            } else if (fragmentById instanceof  CreateActivityFragment){
+//                navController.navigate(R.id.actCreateToList);
+//            }
 
         //Sign out button - end user's firebase session
-        } else if (id == R.id.nav_logout) {
+        //} else
+        if (id == R.id.nav_logout) {
             containerViewModel.logOut();
             if(fragmentById instanceof ActivityListFragment) {
                 navController.navigate(R.id.actListToLogin);
