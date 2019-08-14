@@ -6,7 +6,6 @@ import androidx.room.TypeConverter;
 
 import com.google.android.libraries.places.api.model.Place;
 import com.google.firebase.firestore.Blob;
-import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
@@ -58,7 +57,11 @@ public class DataConverters {
         return Blob.fromBytes(bytes);
     }
 
-
+    /**
+     * Converts a place (google place API) object to a more simple representation of a place
+     * @param place
+     * @return
+     */
     public static SimplePlace placeToSimplePlace(Place place){
         SimplePlace simplePlace = new SimplePlace();
         simplePlace.setId(place.getId());

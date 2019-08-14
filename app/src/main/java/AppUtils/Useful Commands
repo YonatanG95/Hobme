@@ -502,3 +502,86 @@ public class UserActivityJoin {
         return activityId;
     }
 }
+
+===================
+Add licence executors
+===================
+===================
+Container
+===================
+
+//    public boolean onCreateOptionsMenu(Menu menu) {
+////        // Inflate the menu; this adds items to the action bar if it is present.
+////        getMenuInflater().inflate(R.menu.top_bar_list, menu);
+////        return true;
+////    }
+
+//    public void hideBottomNav()
+//    {
+//        binding.bottomNavigation.setVisibility(View.GONE);
+//    }
+//
+//    public void showBottomNav(){
+//        binding.bottomNavigation.setVisibility(View.VISIBLE);
+//    }
+
+//        ((ActivitiesFragmentsContainer)getActivity()).hideBottomNav();
+
+======================
+ActivityListFragment
+========================
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        inflater.inflate(R.menu.top_bar_list, menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.option_duration:
+//                mActivityListViewModel.setSortText(LocalData.SORT_DURATION);
+//                break;
+//
+//            case R.id.option_start:
+//                mActivityListViewModel.setSortText(LocalData.SORT_START);
+//                break;
+//        }
+//        return true;
+//    }
+
+=============
+Detailed VM
+==============
+
+    public void leaveActivity(){
+        activity.getValue().setCurrMembers(activity.getValue().getCurrMembers()-1);
+        activity.getValue().getMembersIds().remove(currUser.getId());
+        currUser.getActivitiesMemberIds().remove(activity.getValue().getId());
+        repository.updateActivity(activity.getValue());
+        repository.updateUser(currUser);
+    }
+
+
+===============
+List VM
+===============
+//    private MutableLiveData<String> sortText = new MutableLiveData<>();
+//    private LiveData<PagedList<Activity>> activities;
+
+        //Date d = new Date();
+        //repository.fetchMoreActivities(DataConverters.toDate(d.getTime()));
+//        activities = Transformations.switchMap(sortText, (input) -> {
+//            if(input == null || input.equals("")){
+//                return repository.getActivities("");
+//            }
+//            else return repository.getActivities(input);
+//        });
+
+
+//    public MutableLiveData<String> getSortText() {
+//        return sortText;
+//    }
+//
+//    public void setSortText(String sortText) {
+//        this.sortText.setValue(sortText);
+//    }

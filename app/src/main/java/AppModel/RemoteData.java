@@ -33,7 +33,6 @@ import AppView.CreateActivityFragmentDirections;
 import AppView.UserLoginFragment;
 import AppView.UserLoginFragmentDirections;
 import AppView.UserRegisterFragment;
-import AppView.UserRegisterFragmentDirections;
 import DataSources.AppRepository;
 import DataSources.NetworkDataCallback;
 
@@ -123,6 +122,10 @@ public class RemoteData {
     }
 
 
+    /**
+     * Updates activity in the remote DB
+     * @param activity
+     */
     public void updateActivity(Activity activity){
         DocumentReference ref = firestoreDb.collection(ACTIVITY_COLLECTION_NAME).document(activity.getId());
         ref.set(activity).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -139,6 +142,10 @@ public class RemoteData {
                 });
     }
 
+    /**
+     * Deletes activity from remote DB
+     * @param activity
+     */
     public void deleteActivity(Activity activity){
 
         DocumentReference ref = firestoreDb.collection(ACTIVITY_COLLECTION_NAME).document(activity.getId());

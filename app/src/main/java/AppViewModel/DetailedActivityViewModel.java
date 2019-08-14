@@ -22,14 +22,6 @@ public class DetailedActivityViewModel extends ViewModel {
     }
 
     public LiveData<Activity> getActivity(){
-//        if (activity == null){
-//            activity = new MutableLiveData<>();
-//            Activity newActivity = new Activity();
-////            Log.d("CHECK", "New act id: " + newActivity.getId());
-//            activity.setValue(newActivity);
-//        }
-////        Log.d("Act", "Act ID: " + this.activity.getValue().getId());
-//        return this.activity;
         return this.activity;
     }
 
@@ -56,19 +48,11 @@ public class DetailedActivityViewModel extends ViewModel {
         repository.updateUser(currUser);
     }
 
-    public void leaveActivity(){
-        activity.getValue().setCurrMembers(activity.getValue().getCurrMembers()-1);
-        activity.getValue().getMembersIds().remove(currUser.getId());
-        currUser.getActivitiesMemberIds().remove(activity.getValue().getId());
-        repository.updateActivity(activity.getValue());
-        repository.updateUser(currUser);
-    }
-
     public User getCurrUser() {
         return currUser;
     }
 
-    //TODO consider add user to factory
+
     public void setCurrUser(User currUser) {
         this.currUser = currUser;
     }

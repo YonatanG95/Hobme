@@ -83,7 +83,6 @@ public class UserLoginFragment extends Fragment {
     private void initializeUI() {
         binding.btnLogin.setEnabled(false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-//        ((ActivitiesFragmentsContainer)getActivity()).hideBottomNav();
     }
 
     /**
@@ -100,7 +99,9 @@ public class UserLoginFragment extends Fragment {
         placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
     }
 
-
+    /**
+     * Gets the location current place by the highest likelihood
+     */
     public void getCurrLocation() {
 
         FindCurrentPlaceRequest request =
@@ -122,7 +123,6 @@ public class UserLoginFragment extends Fragment {
                     }
                     currLocation = new SimplePlace();
                 }
-                //TODO move to onCreate & create a pre-login page with data initialization
                 checkUserStatus();
             });
         }
@@ -133,6 +133,12 @@ public class UserLoginFragment extends Fragment {
         }
     }
 
+    /**
+     * Handles location services permission response
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                                   String[] permissions, int[] grantResults) {

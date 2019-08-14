@@ -29,8 +29,6 @@ public class LocalData {
     private UserDao userDao;
     private CategoryDao categoryDao;
     private ActivityTypeDao activityTypeDao;
-    public static final String SORT_DURATION = "duration";
-    public static final String SORT_START = "start";
 
     /**
      * Gets DB instance and connects to models (Dao) through it
@@ -50,19 +48,8 @@ public class LocalData {
      * according to paged list state
      * @return activities as paged list. During this procedure, local data is syncing with remote data
      */
-    public LiveData<PagedList<Activity>> getActivities(RepoBoundaryCallback boundaryCallback){//, String sortString){
+    public LiveData<PagedList<Activity>> getActivities(RepoBoundaryCallback boundaryCallback){
         DataSource.Factory factory = activityDao.getActivitiesSortStart();
-//        switch (sortString){
-//            case SORT_DURATION:
-//                factory = activityDao.getActivitiesSortDuration();
-//                break;
-//            case SORT_START:
-//                factory = activityDao.getActivitiesSortStart();
-//                break;
-//            default:
-//                factory = activityDao.getActivitiesSortStart();
-//                break;
-//        }
         return new LivePagedListBuilder(factory, RepoBoundaryCallback.DATABASE_PAGE_SIZE)
                 .setBoundaryCallback(boundaryCallback).build();
     }
@@ -98,6 +85,10 @@ public class LocalData {
      */
     public void deleteActivity(Activity activity) {activityDao.delete(activity);}
 
+    /**
+     * Deletes all activities before specified date from Room DB
+     * @param date
+     */
     public void deletePrevious(Date date){
         activityDao.deletePrevious(date);
     }

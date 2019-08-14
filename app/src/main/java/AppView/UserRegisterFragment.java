@@ -22,6 +22,9 @@ import AppUtils.InputValidator;
 import AppViewModel.CustomViewModelFactory;
 import AppViewModel.UserRegisterViewModel;
 
+/**
+ * User registration form
+ */
 public class UserRegisterFragment extends Fragment {
 
     private UserRegisterViewModel mViewModel;

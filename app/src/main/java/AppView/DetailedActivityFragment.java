@@ -1,17 +1,6 @@
 package AppView;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,38 +8,31 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.project.hobme.R;
 import com.project.hobme.databinding.FragmentDetailedActivityBinding;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import AppModel.Entity.Activity;
 import AppModel.Entity.User;
 import AppUtils.InjectorUtils;
 import AppUtils.InputValidator;
-import AppViewModel.CreateActivityViewModel;
 import AppViewModel.CustomViewModelFactory;
 import AppViewModel.DetailedActivityViewModel;
 
-///**
-// * A simple {@link Fragment} subclass.
-// * Activities that contain this fragment must implement the
-// * {@link DetailedActivityFragment.OnFragmentInteractionListener} interface
-// * to handle interaction events.
-// * Use the {@link DetailedActivityFragment#newInstance} factory method to
-// * create an instance of this fragment.
-// */
+/**
+ * Presents full activity information
+ */
 public class DetailedActivityFragment extends Fragment implements OnMapReadyCallback {
 
     private FragmentDetailedActivityBinding mDetailedActivityBinding;
@@ -58,9 +40,6 @@ public class DetailedActivityFragment extends Fragment implements OnMapReadyCall
     private DetailedActivityViewModel detailedActivityViewModel;
     private boolean userIsCreator = false;
     private boolean userIsMember = false;
-
-    public DetailedActivityFragment() {
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,16 +58,28 @@ public class DetailedActivityFragment extends Fragment implements OnMapReadyCall
         return mDetailedActivityBinding.getRoot();
     }
 
+    /**
+     * Inflate the menu. this adds items to the action bar.
+     * @param menu
+     * @param inflater
+     */
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        //Show action bar options only if user is the owner (creator) of the activity
         if(userIsCreator) {
             inflater.inflate(R.menu.top_bar_detailed, menu);
         }
     }
 
+    /**
+     * Handles action bar selections
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+
+            //Edit activity option - enable text fields
             case R.id.action_edit:
                 mDetailedActivityBinding.joinActivityBtn.setVisibility(View.GONE);
                 mDetailedActivityBinding.saveActivityBtn.setVisibility(View.VISIBLE);
@@ -96,6 +87,7 @@ public class DetailedActivityFragment extends Fragment implements OnMapReadyCall
                 mDetailedActivityBinding.inputActInfoLayout.getEditText().setEnabled(true);
                 break;
 
+            //Delete activity
             case R.id.action_delete:
                 deleteActivity(getView());
                 break;
@@ -103,17 +95,21 @@ public class DetailedActivityFragment extends Fragment implements OnMapReadyCall
         return true;
     }
 
+    /**
+     * Handles UI modifications
+     */
     private void initializeUI() {
+        //Sets map callback on map fragment
         SupportMapFragment mapFragment = ((SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map));
         mapFragment.getMapAsync(this);
-//        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-//        mDetailedActivityBinding.startDate.setText(format.format(detailedActivityViewModel.getActivity().getValue()
-//                .getActivityStartDateTime()));
-//        mDetailedActivityBinding.endDate.setText(format.format(detailedActivityViewModel.getActivity().getValue()
-//                .getActivityEndDateTime()));
+
+        //Present dates
         mDetailedActivityBinding.startDate.setText(detailedActivityViewModel.getActivity().getValue().startDateString());
         mDetailedActivityBinding.endDate.setText(detailedActivityViewModel.getActivity().getValue().endDateString());
+
         setHasOptionsMenu(true);
+
+        //If user already joined or activity is full - join button grayed
         if(userIsCreator || userIsMember ||
                 detailedActivityViewModel.getActivity().getValue().getCurrMembers() ==
                         detailedActivityViewModel.getActivity().getValue().getMaxMembers()){
@@ -121,10 +117,15 @@ public class DetailedActivityFragment extends Fragment implements OnMapReadyCall
         }
     }
 
+    /**
+     * Gets the currently logged user (passed by activity list fragment)
+     */
     private void passUser(){
         DetailedActivityFragmentArgs args = DetailedActivityFragmentArgs.fromBundle(getArguments());
         User user = args.getUser();
         detailedActivityViewModel.setCurrUser(user);
+
+        //Checks if user either creator or member
         if(user.getMyActivitiesIds().contains(detailedActivityViewModel.getActivity().getValue().getId())){
             userIsCreator = true;
         }
@@ -140,11 +141,18 @@ public class DetailedActivityFragment extends Fragment implements OnMapReadyCall
         }
     }
 
+    /**
+     * Gets the current (clicked) activity (passed by activity list fragment)
+     */
     private void setActivity() {
         DetailedActivityFragmentArgs args = DetailedActivityFragmentArgs.fromBundle(getArguments());
         detailedActivityViewModel.setActivity(args.getActivity());
     }
 
+
+    /**
+     * Set databinding parameters
+     */
     private void bindData(){
         setActivity();
         mDetailedActivityBinding.setViewModel(detailedActivityViewModel);
@@ -152,27 +160,46 @@ public class DetailedActivityFragment extends Fragment implements OnMapReadyCall
         mDetailedActivityBinding.setLifecycleOwner(this);
     }
 
+    /**
+     * Handles activity update option click - UI changes
+     * @param view
+     */
     public void updateActivity(View view){
         detailedActivityViewModel.updateActivity();
         mDetailedActivityBinding.saveActivityBtn.setVisibility(View.GONE);
         mDetailedActivityBinding.joinActivityBtn.setVisibility(View.VISIBLE);
         mDetailedActivityBinding.inputActNameLayout.getEditText().setEnabled(false);
         mDetailedActivityBinding.inputActInfoLayout.getEditText().setEnabled(false);
-//        DetailedActivityFragmentDirections.ActDetailsToList action = DetailedActivityFragmentDirections.actDetailsToList(detailedActivityViewModel.getCurrUser());
-//        Navigation.findNavController(view).navigate(action);
     }
 
+    /**
+     * Handles activity delete option click
+     * @param view
+     */
     public void deleteActivity(View view){
         detailedActivityViewModel.deleteActivity();
         DetailedActivityFragmentDirections.ActDetailsToList action = DetailedActivityFragmentDirections.actDetailsToList(detailedActivityViewModel.getCurrUser());
         Navigation.findNavController(view).navigate(action);
     }
 
+    /**
+     * Handles activity join button click
+     * @param view
+     */
     public void joinActivity(View view){
         detailedActivityViewModel.joinActivity();
         mDetailedActivityBinding.joinActivityBtn.setEnabled(false);
     }
 
+    /**
+     * Validates UI text fields. All "onTextChanged" attributes
+     * refer this method on every text modification.
+     * Parameters are meaningless ("onTextChanged" requirements)
+     * @param s
+     * @param start
+     * @param before
+     * @param count
+     */
     public void validation(CharSequence s, int start, int before, int count){
         if(InputValidator.isValidField(mDetailedActivityBinding.inputActNameLayout)
                 & InputValidator.isValidField(mDetailedActivityBinding.inputActInfoLayout)){
@@ -183,6 +210,10 @@ public class DetailedActivityFragment extends Fragment implements OnMapReadyCall
         }
     }
 
+    /**
+     * Handles the map callback - show place on map
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         LatLng placeCenter = new LatLng(detailedActivityViewModel.getActivity().getValue().getSimplePlace().getLatitude(),
@@ -190,6 +221,7 @@ public class DetailedActivityFragment extends Fragment implements OnMapReadyCall
         googleMap.addMarker(new MarkerOptions()
             .position(placeCenter).title(detailedActivityViewModel.getActivity().getValue().getSimplePlace().getName()));
 
+        //Move camera to position
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(placeCenter).zoom(16).tilt(30).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));

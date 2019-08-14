@@ -113,6 +113,12 @@ public class InputValidator {
         return true;
     }
 
+    /**
+     * Validates the location fragment
+     * @param inputLayout
+     * @param isSet
+     * @return True if the place is set. Else - returns False
+     */
     public static boolean locationValid(TextInputLayout inputLayout, boolean isSet){
         if(!isSet){
             inputLayout.setError("Location is missing");
