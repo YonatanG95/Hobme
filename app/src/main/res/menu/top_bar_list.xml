@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--<item-->
+        <!--android:id="@+id/action_settings"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="@string/action_settings"-->
+        <!--app:showAsAction="never" />-->
+    <!--<item-->
+        <!--android:id="@+id/action_sort"-->
+        <!--android:icon="@drawable/ic_sort"-->
+        <!--android:title="@string/action_sort"-->
+        <!--app:showAsAction="always">-->
+
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/option_start"-->
+                <!--android:title="@string/option_start">-->
+            <!--</item>-->
+            <!--<item-->
+                <!--android:id="@+id/option_duration"-->
+                <!--android:title="@string/option_duration">-->
+            <!--</item>-->
+        <!--</menu>-->
+    <!--</item>-->
+
+    <!--<item-->
+        <!--android:id="@+id/action_filter"-->
+        <!--android:icon="@drawable/ic_filter"-->
+        <!--android:title="@string/action_filter"-->
+        <!--app:showAsAction="always">-->
+
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/option_category"-->
+                <!--android:title="@string/option_category">-->
+            <!--</item>-->
+        <!--</menu>-->
+    <!--</item>-->
+
+</menu>

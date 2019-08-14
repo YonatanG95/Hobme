@@ -6,6 +6,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.widget.ImageView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Period;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -14,10 +20,12 @@ import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.BindingMethod;
 import androidx.databinding.BindingMethods;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.android.libraries.places.api.model.Place;
 import com.google.firebase.firestore.Blob;
 
 import AppUtils.DataConverters;
@@ -35,9 +43,11 @@ public class Activity implements Parcelable {
 
     @PrimaryKey @NonNull//(autoGenerate = true)
     private String id;
-    private int activityTypeId;
+    private String name;
+    private String activityType;
+    private String activityCategory;
     private Date creationTime;
-    private int creatorId;
+    private String creatorId;
     private int minMembers;
     private int maxMembers;
     private int currMembers;
@@ -45,48 +55,31 @@ public class Activity implements Parcelable {
     private Date activityStartDateTime;
     private Date activityEndDateTime;
     private String activityInfo;
-
-   // @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+    private Double userDistance;
+    private int activityDurationMin;
     private Blob displayedImage;
+    @Embedded (prefix = "place_")
+    private SimplePlace simplePlace;
     @Ignore
-    private Location activityLocation;
+    private Place activityLocation;
     @Ignore
     private List<Bitmap> activityPhotos;
     @Ignore
-    private List<Integer> membersIds;
+    private List<String> membersIds;
 
-    @Ignore
-    public Activity(int activityTypeId, Date creationTime, List<Integer> membersIds, int creatorId, boolean isPrivate, List<Bitmap> activityPhotos, Blob displayedImage, Location activityLocation, Date activityDateTime, String activityInfo) {
-        this.activityTypeId = activityTypeId;
-        this.creationTime = creationTime;
-        this.membersIds = membersIds;
-        this.creatorId = creatorId;
-        this.isPrivate = isPrivate;
-        this.activityPhotos = activityPhotos;
-        this.displayedImage = displayedImage;
-        this.activityLocation = activityLocation;
-        this.activityStartDateTime = activityDateTime;
-        this.activityInfo = activityInfo;
+    public Activity(){
+        this.membersIds = new ArrayList<String>();
+        this.currMembers = 0;
+        this.maxMembers = 0;
+        this.minMembers = 0;
+        this.activityDurationMin = 0;
+        this.simplePlace = new SimplePlace();
     }
-
-    @Ignore
-    public Activity(int activityTypeId, Date creationTime, int creatorId, boolean isPrivate, Date activityDateTime, String activityInfo, Date activityEndDateTime) {
-        this.activityTypeId = activityTypeId;
-        this.creationTime = creationTime;
-        this.creatorId = creatorId;
-        this.isPrivate = isPrivate;
-        this.activityStartDateTime = activityDateTime;
-        this.activityInfo = activityInfo;
-        this.activityEndDateTime = activityEndDateTime;
-    }
-
-    //TODO check if legal
-    public Activity(){}
 
     protected Activity(Parcel in) {
         id = in.readString();
-        activityTypeId = in.readInt();
-        creatorId = in.readInt();
+        activityType = in.readString();
+        creatorId = in.readString();
         minMembers = in.readInt();
         maxMembers = in.readInt();
         currMembers = in.readInt();
@@ -108,6 +101,7 @@ public class Activity implements Parcelable {
         }
     };
 
+
     public int getMinMembers() {
         return minMembers;
     }
@@ -126,6 +120,14 @@ public class Activity implements Parcelable {
 
     public void setActivityEndDateTime(Date activityEndDateTime) {
         this.activityEndDateTime = activityEndDateTime;
+    }
+
+    public String getActivityCategory() {
+        return activityCategory;
+    }
+
+    public void setActivityCategory(String activityCategory) {
+        this.activityCategory = activityCategory;
     }
 
     public void setMaxMembers(int maxMembers) {
@@ -164,12 +166,12 @@ public class Activity implements Parcelable {
         this.id = id;
     }
 
-    public int getActivityTypeId() {
-        return activityTypeId;
+    public String getActivityType() {
+        return activityType;
     }
 
-    public void setActivityTypeId(int activityTypeId) {
-        this.activityTypeId = activityTypeId;
+    public void setActivityType(String activityType) {
+        this.activityType = activityType;
     }
 
     public Date getCreationTime() {
@@ -180,19 +182,19 @@ public class Activity implements Parcelable {
         this.creationTime = creationTime;
     }
 
-    public List<Integer> getMembersIds() {
+    public List<String> getMembersIds() {
         return membersIds;
     }
 
-    public void setMembersIds(List<Integer> membersIds) {
+    public void setMembersIds(List<String> membersIds) {
         this.membersIds = membersIds;
     }
 
-    public int getCreatorId() {
+    public String getCreatorId() {
         return creatorId;
     }
 
-    public void setCreatorId(int creatorId) {
+    public void setCreatorId(String creatorId) {
         this.creatorId = creatorId;
     }
 
@@ -221,27 +223,58 @@ public class Activity implements Parcelable {
         this.displayedImage = displayedImage;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @BindingAdapter("android:src")
     public static void setSrc(ImageView imageView, Blob bitmap){
         if(bitmap != null)
             imageView.setImageBitmap(DataConverters.blobToBitmap(bitmap));
     }
 
-    public Location getActivityLocation() {
+    public Place getActivityLocation() {
         return activityLocation;
     }
 
-    public void setActivityLocation(Location activityLocation) {
+    public void setActivityLocation(Place activityLocation) {
         this.activityLocation = activityLocation;
     }
 
+    public SimplePlace getSimplePlace() {
+        return simplePlace;
+    }
+
+    public void setSimplePlace(SimplePlace simplePlace) {
+        this.simplePlace = simplePlace;
+    }
+
+    public Double getUserDistance() {
+        return userDistance;
+    }
+
+    public void setUserDistance(Double userDistance) {
+        this.userDistance = userDistance;
+    }
+
+    public int getActivityDurationMin() {
+        return activityDurationMin;
+    }
+
+    public void setActivityDurationMin(int activityDurationMin) {
+        this.activityDurationMin = activityDurationMin;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Activity)) return false;
         Activity activity = (Activity) o;
-        return getActivityTypeId() == activity.getActivityTypeId() &&
+        return Objects.equals(getActivityType(),activity.getActivityType()) &&
                 getCreatorId() == activity.getCreatorId() &&
                 getMinMembers() == activity.getMinMembers() &&
                 getMaxMembers() == activity.getMaxMembers() &&
@@ -266,8 +299,8 @@ public class Activity implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeInt(activityTypeId);
-        dest.writeInt(creatorId);
+        dest.writeString(activityType);
+        dest.writeString(creatorId);
         dest.writeInt(minMembers);
         dest.writeInt(maxMembers);
         dest.writeInt(currMembers);
@@ -275,5 +308,27 @@ public class Activity implements Parcelable {
         dest.writeString(activityInfo);
         dest.writeParcelable(activityLocation, flags);
         dest.writeTypedList(activityPhotos);
+    }
+
+    public String durationString(){
+        if(this.activityDurationMin < 60)
+            return this.activityDurationMin + " Min";
+        else if(this.activityDurationMin < 1440)
+            return (this.activityDurationMin / 60) + " H, " + (this.activityDurationMin % 60) + " M";
+        else{
+            int days = this.activityDurationMin / 1440;
+            int left = this.activityDurationMin % 1440;
+            return days + " D, " + (left / 60) + " H";
+        }
+    }
+
+    public String startDateString(){
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM HH:mm");
+        return format.format(activityStartDateTime);
+    }
+
+    public String endDateString(){
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM HH:mm");
+        return format.format(activityEndDateTime);
     }
 }

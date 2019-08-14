@@ -4,28 +4,34 @@ import android.view.View;
 
 import androidx.lifecycle.ViewModel;
 
-import AppModel.Entity.User;
 import AppView.UserRegisterFragment;
 import DataSources.AppRepository;
 
 public class UserRegisterViewModel extends ViewModel {
-    // TODO: Implement the ViewModel
 
     private AppRepository repository;
     private String email;
     private String password;
-    private User user;
+    private String displayName;
 
-
+    /**
+     * Constructor
+     * @param repository  - repository instance
+     */
     public UserRegisterViewModel(AppRepository repository){
         this.repository = repository;
-        this.user = new User();
     }
 
+    /**
+     * Handles register button press - Firebase create user with email.
+     * On result - navigation to  ActivityListFragment
+     * @param view
+     */
     public void createUserEmail(UserRegisterFragment fragment, View view){
-        repository.createUserEmail(user, email, password, view, fragment);
+        repository.createUserEmail(email, password, displayName, view, fragment);
     }
 
+    //region Getters and setters
     public String getEmail() {
         return email;
     }
@@ -41,4 +47,13 @@ public class UserRegisterViewModel extends ViewModel {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+    //endregion
 }

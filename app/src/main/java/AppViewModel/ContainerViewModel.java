@@ -13,6 +13,9 @@ public class ContainerViewModel extends ViewModel {
         this.repository = repository;
     }
 
+    /**
+     * Disconnects user from Firebase session
+     */
     public void logOut(){
         repository.logOutUser();
     }

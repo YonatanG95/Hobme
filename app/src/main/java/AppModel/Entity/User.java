@@ -2,38 +2,44 @@ package AppModel.Entity;
 
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.os.Parcel;
+import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "user_table")
-public class User {
+public class User implements Parcelable {
 
-    @PrimaryKey
+    @PrimaryKey @NonNull
     private String id;
     private String fullName;
     private String email;
     private Date birthDate;
+    private String fbDocId;
 
+    @Embedded (prefix = "currPlace_")
+    private SimplePlace currLocation;
     @Ignore
     private Bitmap profilePicture;
     @Ignore
     private List<Bitmap> userPhotos;
     @Ignore
-    private List<Integer> favoriteTypesIds;
+    private List<String> favoriteTypesIds;
     @Ignore
-    private List<Integer> myActivitiesIds;
+    private List<String> myActivitiesIds;
     @Ignore
-    private List<Integer> activitiesMemberIds;
-    @Ignore
-    private Location userLocation;
+    private List<String> activitiesMemberIds;
 
     @Ignore
-    public User(String id, String fullName, Date birthDate, Bitmap profilePicture, List<Bitmap> userPhotos, List<Integer> favoriteTypesIds, List<Integer> myActivitiesIds, List<Integer> activitiesMemberIds, Location userLocation) {
+    public User(String id, String fullName, Date birthDate, Bitmap profilePicture, List<Bitmap> userPhotos, List<String> favoriteTypesIds, List<String> myActivitiesIds, List<String> activitiesMemberIds) {
         this.id = id;
         this.fullName = fullName;
         this.birthDate = birthDate;
@@ -42,7 +48,6 @@ public class User {
         this.favoriteTypesIds = favoriteTypesIds;
         this.myActivitiesIds = myActivitiesIds;
         this.activitiesMemberIds = activitiesMemberIds;
-        this.userLocation = userLocation;
     }
 
     @Ignore
@@ -52,7 +57,45 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public User(){}
+    public User(){
+        this.favoriteTypesIds = new ArrayList<String>();
+        this.myActivitiesIds = new ArrayList<String>();
+        this.activitiesMemberIds = new ArrayList<String>();
+    }
+
+    protected User(Parcel in) {
+        id = in.readString();
+        fullName = in.readString();
+        email = in.readString();
+        profilePicture = in.readParcelable(Bitmap.class.getClassLoader());
+        userPhotos = in.createTypedArrayList(Bitmap.CREATOR);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(fullName);
+        dest.writeString(email);
+        dest.writeParcelable(profilePicture, flags);
+        dest.writeTypedList(userPhotos);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String getEmail() {
         return email;
@@ -60,14 +103,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Location getUserLocation() {
-        return userLocation;
-    }
-
-    public void setUserLocation(Location userLocation) {
-        this.userLocation = userLocation;
     }
 
     public String getId() {
@@ -110,27 +145,44 @@ public class User {
         this.userPhotos = userPhotos;
     }
 
-    public List<Integer> getFavoriteTypesIds() {
+    public List<String> getFavoriteTypesIds() {
         return favoriteTypesIds;
     }
 
-    public void setFavoriteTypesIds(List<Integer> favoriteTypesIds) {
+    public void setFavoriteTypesIds(List<String> favoriteTypesIds) {
         this.favoriteTypesIds = favoriteTypesIds;
     }
 
-    public List<Integer> getMyActivitiesIds() {
+    public List<String> getMyActivitiesIds()
+    {
         return myActivitiesIds;
     }
 
-    public void setMyActivitiesIds(List<Integer> myActivitiesIds) {
+    public void setMyActivitiesIds(List<String> myActivitiesIds) {
         this.myActivitiesIds = myActivitiesIds;
     }
 
-    public List<Integer> getActivitiesMemberIds() {
+    public List<String> getActivitiesMemberIds() {
         return activitiesMemberIds;
     }
 
-    public void setActivitiesMemberIds(List<Integer> activitiesMemberIds) {
+    public void setActivitiesMemberIds(List<String> activitiesMemberIds) {
         this.activitiesMemberIds = activitiesMemberIds;
+    }
+
+    public String getFbDocId() {
+        return fbDocId;
+    }
+
+    public void setFbDocId(String fbDocId) {
+        this.fbDocId = fbDocId;
+    }
+
+    public SimplePlace getCurrLocation() {
+        return currLocation;
+    }
+
+    public void setCurrLocation(SimplePlace currLocation) {
+        this.currLocation = currLocation;
     }
 }

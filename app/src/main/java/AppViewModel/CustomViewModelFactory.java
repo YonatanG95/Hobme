@@ -1,21 +1,31 @@
 package AppViewModel;
 
 import DataSources.AppRepository;
-import AppUtils.AppExecutors;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+/**
+ * Basic class for all viewModels (a template)
+ */
 public class CustomViewModelFactory implements ViewModelProvider.Factory {
 
     private final AppRepository repository;
-    //private final AppExecutors executors;
 
-    public CustomViewModelFactory(AppRepository repository){//, AppExecutors executors) {
+    /**
+     * Constructor - gives the viewModel an access to the repository
+     * @param repository
+     */
+    public CustomViewModelFactory(AppRepository repository){
         this.repository = repository;
-        //this.executors = executors;
     }
 
+    /**
+     * Creates a viewModel by request with basic parameters
+     * @param modelClass
+     * @param <T>
+     * @return - a viewModel suitable to the requesting class
+     */
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {

@@ -10,9 +10,10 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "activity_types_table",
         foreignKeys = {@ForeignKey(entity = Category.class, parentColumns = "id", childColumns = "categoryId")})
-public class ActivityType{
+public class ActivityType {
 
-    @PrimaryKey @NonNull
+    @PrimaryKey
+    @NonNull
     private String id;
     private String typeName;
     private String categoryId;
@@ -28,6 +29,8 @@ public class ActivityType{
         this.id = id;
     }
 
+    public ActivityType(){}
+
     @Ignore
     public ActivityType(String id, String name, String typeName, Blob typePicture) {
         this.id = id;
@@ -41,20 +44,10 @@ public class ActivityType{
         this.typeName = typeName;
     }
 
-    public ActivityType(String id, String typeName)
-    {
+    public ActivityType(String id, String typeName) {
         this.id = id;
         this.typeName = typeName;
     }
-
-    @Ignore
-    public ActivityType(@NonNull String id, String typeName, Blob typePicture, String categoryId) {
-        this.id = id;
-        this.typeName = typeName;
-        this.typePicture = typePicture;
-        this.categoryId = categoryId;
-    }
-
 
     public String getTypeName() {
         return typeName;
@@ -64,23 +57,19 @@ public class ActivityType{
         this.typeName = typeName;
     }
 
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
     public Blob getTypePicture() {
         return typePicture;
     }
 
     public void setTypePicture(Blob typePicture) {
         this.typePicture = typePicture;
-    }
-
-    public String getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategory(String category) {
-        this.categoryId = category;
-    }
-
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
     }
 }

@@ -1,47 +1,46 @@
 package AppView;
 
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.project.hobme.R;
-import com.project.hobme.databinding.LayoutActivityRowItemBinding;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import AppModel.Entity.Activity;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.navigation.ActionOnlyNavDirections;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.project.hobme.R;
+import com.project.hobme.databinding.LayoutActivityRowItemBinding;
+
+import java.text.DecimalFormat;
+
+import AppModel.Entity.Activity;
+import AppModel.Entity.SimplePlace;
+import AppModel.Entity.User;
+import AppUtils.LocationUtils;
+
+/**
+ * Presents a row in the recycler view of activities
+ */
 public class ActivityAdapter extends PagedListAdapter<Activity, ActivityAdapter.ActivityHolder> {
 
     private final String TAG = "ActivityAdapter";
     private LayoutInflater layoutInflater;
-    private List<Activity> activityList = new ArrayList<>();
-//    private CustomOnItemClickListener mListener;
+    private User currUser;
 
     protected ActivityAdapter()
     {
         super(DIFF_CALLBACK);
-//        this.mListener = listener;
     }
 
-
-    public void setActivities(List<Activity> activities) {
-        Log.d("Check", "" + getItemCount());
-        this.activityList = activities;
-        notifyDataSetChanged();
-    }
-
+    /**
+     * Inflates single activity UI
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public ActivityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -52,13 +51,33 @@ public class ActivityAdapter extends PagedListAdapter<Activity, ActivityAdapter.
         return new ActivityHolder(binding.getRoot());
     }
 
+    /**
+     * Binds a row with an activity with additional information presented
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull ActivityHolder holder, int position) {
         Activity activity = getItem(position);
 
         if (activity != null) {
+
+            //Calculates the distance between user's location and a single activity
+            //and presents in the row UI
+            SimplePlace actLoc = activity.getSimplePlace();
+            SimplePlace userLoc = getCurrUser().getCurrLocation();
+            if(userLoc != null) {
+                double dist = LocationUtils.calcDistance(actLoc.getLatitude(), actLoc.getLongitude(), userLoc.getLatitude(), userLoc.getLongitude());
+                holder.binding.setDistance(new DecimalFormat("###.#").format(dist));
+            }
+            else
+            {
+                holder.binding.setDistance("--");
+            }
             holder.binding.setActivity(activity);
-            ActivityListFragmentDirections.ActListToDetails action = ActivityListFragmentDirections.actListToDetails(activity);
+
+            //Creates a listener for each activity row to move to the detailed activity
+            ActivityListFragmentDirections.ActListToDetails action = ActivityListFragmentDirections.actListToDetails(activity, currUser);
             holder.itemView.setOnClickListener(Navigation.createNavigateOnClickListener(action)); //{
         }
         else {
@@ -66,6 +85,9 @@ public class ActivityAdapter extends PagedListAdapter<Activity, ActivityAdapter.
         }
     }
 
+    /**
+     * Determines whether a row should be updated based on its data
+     */
     public static final DiffUtil.ItemCallback<Activity> DIFF_CALLBACK =
         new DiffUtil.ItemCallback<Activity>() {
             @Override
@@ -79,30 +101,34 @@ public class ActivityAdapter extends PagedListAdapter<Activity, ActivityAdapter.
             }
     };
 
+
+    /**
+     * Binds the layout (row) with necessary data
+     */
     class ActivityHolder extends RecyclerView.ViewHolder{
 
         private final LayoutActivityRowItemBinding binding;
-//        CustomOnItemClickListener mListener;
 
         public ActivityHolder(View itemView) {
             super(itemView);
-//            this.mListener = mListener;
             this.binding = DataBindingUtil.bind(itemView);
-//            Activity activity = getItem(getAdapterPosition());
-//            ActivityListFragmentDirections.ActListToDetails action = ActivityListFragmentDirections.actListToDetails(activity);
-//            itemView.setOnClickListener(Navigation.createNavigateOnClickListener(action)); //{
-//                @Override
-//                public void onClick(View v) {
-//                    int position = getAdapterPosition();
-//                    Activity act = getItem(position);
-//                    mListener.openActivityDetails(v, act);
-//                }
-//            });
         }
     }
 
-//    interface CustomOnItemClickListener{
-//        void openActivityDetails(View view, Activity activity);
-//    }
+    /**
+     *
+     * @return the current app user
+     */
+    public User getCurrUser() {
+        return currUser;
+    }
+
+    /**
+     * Sets the current app user, to be passed later to the detailed activity
+     * @param currUser
+     */
+    public void setCurrUser(User currUser) {
+        this.currUser = currUser;
+    }
 
 }

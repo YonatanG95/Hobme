@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
@@ -13,92 +12,76 @@
         </variable>
     </data>
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="56dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/editText4"
+        <ImageView android:src="@drawable/logo"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="50dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@={view.email}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="72dp"
+            android:layout_marginBottom="24dp"
+            android:layout_gravity="center_horizontal" />
 
-        <EditText
-            android:id="@+id/editText5"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_email_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:text="@={view.password}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText4" />
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:text="@={view.email}"
+                android:onTextChanged="@{handler::validation}"
+                android:hint="@string/editText_email" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_password_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="150dp"
-            android:layout_marginTop="20dp"
-            android:onClick="@{(view) -> handler.loginBtn(view)}"
-            android:text="Button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText5" />
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:passwordToggleEnabled="true">
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:text="@={view.password}"
+                android:onTextChanged="@{handler::validation}"
+                android:hint="@string/editText_pass"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_login"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="100dp"
-            android:text="Button"
-            android:onClick="@{(view) -> handler.registerBtn(view)}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button2" />
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:padding="12dp"
+            android:text="@string/login_btn"
+            android:onClick="@{(view) -> handler.loginBtn(view)}"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/link_signup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="@string/register_link"
+            android:gravity="center"
+            android:textSize="16dip"
+            android:onClick="@{(view) -> handler.registerBtn(view)}" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </layout>
-    <!--<com.google.android.material.card.MaterialCardView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="100dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginStart="8dp">-->
-
-        <!--<androidx.constraintlayout.widget.ConstraintLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent">-->
-
-            <!--<ImageView-->
-                <!--android:id="@+id/displayedImage"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:src="@{activity.displayedImage}"-->
-                <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--app:layout_constraintStart_toStartOf="parent"-->
-                <!--app:layout_constraintTop_toTopOf="parent"-->
-                <!--app:layout_constraintWidth_percent="0.5"></ImageView>-->
-
-            <!--<androidx.appcompat.widget.AppCompatTextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginStart="8dp"-->
-                <!--android:layout_marginBottom="8dp"-->
-                <!--android:drawableLeft="@drawable/ic_person"-->
-                <!--android:text="@{String.valueOf(activity.currMembers) + '/' + String.valueOf(activity.maxMembers)}"-->
-                <!--android:textSize="18sp"-->
-                <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--app:layout_constraintStart_toEndOf="@+id/displayedImage" />-->
-        <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
-
-    <!--</com.google.android.material.card.MaterialCardView>-->
-

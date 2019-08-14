@@ -1,0 +1,587 @@
+=============================
+AppRepository
+=============================
+//    //Create new activity
+//    public void insertActivity(Activity activity){
+//        appExecutors.diskIO().execute(()-> {
+//            String id = networkData.insertActivity(activity);
+//            activity.setId(id);
+//            activityDao.insert(activity);
+//            Log.d("Check", "ID rep: " + activity.getId());
+//        });
+//
+//    }
+
+//    public List<String> getAllCategories(){
+//        return categoryDao.getAllCategories();
+//    }
+
+//    public void updateActivity(Activity activity){
+//        activityDao.update(activity);
+//    }
+//
+//    public void deleteActivity(Activity activity){
+//        activityDao.delete(activity);
+//    }
+//
+//    public LiveData<List<Activity>> getActivitiesByCreator(int creatorId){
+//        return activityDao.getActivitiesByCreator(creatorId);
+//    }
+
+//    public LiveData<List<Activity>> getActivitiesByType(int activityTypeId){
+//        return activityDao.getActivitiesByType(activityTypeId);
+//    }
+
+
+//    public LiveData<PagedList<Activity>> getActivities() {
+//        Log.d(TAG, "appRepo get activities");
+//        DataSource.Factory factory = activityDao.getDataSourceFactory();
+//        RepoBoundaryCallback repoBoundaryCallback = new RepoBoundaryCallback();
+//        return new LivePagedListBuilder(factory, new PagedList.Config.Builder()
+//                .setEnablePlaceholders(false).setInitialLoadSizeHint(INIT_SIZE)
+//                .setPageSize(PAGE_SIZE).setPrefetchDistance(PREFETCH_DISTANCE).build())
+//                .setBoundaryCallback(repoBoundaryCallback).build();
+//    }
+//
+//
+//    public void deleteAllActivities(){
+//        Log.d(TAG, "appRepo delete all activities");
+//        executors.diskIO().execute(() -> {
+//            activityDao.deleteAllActivities();
+//        });
+//    }
+
+//    public List<String> getAllCategories()
+//    {
+//        return activityTypeDao.getAllCategories();
+//    }
+
+//    public List<String> getAlltypes()
+//    {
+//        return activityTypeDao.getAllTypes();
+//    }
+
+
+//    private void insertCategory(Category category){
+//        executors.networkIO().execute(() -> {
+//            networkData.insertCategory(category);
+//        });
+//    }
+//
+//    private void insertActivityType(ActivityType activityType, String categoryName){
+//        executors.networkIO().execute(() -> {
+//            networkData.insertActivityType(activityType, categoryName);
+//        });
+//    }
+
+//    private synchronized void initializeData() {
+//
+//        if(mInitialized) return;
+//        mInitialized = true;
+//
+//
+//    }
+//
+
+//    private void dbInit(){
+//
+//        Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.category_outdoor);
+//        Category cat1 = new Category("Outdoor", DataConverters.drawableToBlob(drawable));
+//
+//        insertCategory(cat1);
+//
+//        drawable = ContextCompat.getDrawable(mContext, R.drawable.category_sports);
+//        cat1 = new Category("Sports", DataConverters.drawableToBlob(drawable));
+//
+//        insertCategory(cat1);
+//
+//        drawable = ContextCompat.getDrawable(mContext, R.drawable.type_tennis);
+//        ActivityType act1 = new ActivityType("", "Tennis", DataConverters.drawableToBlob(drawable), "");
+//
+//        insertActivityType(act1, "Sports");
+//
+//        drawable = ContextCompat.getDrawable(mContext, R.drawable.type_hiking);
+//        act1 = new ActivityType("", "Hiking", DataConverters.drawableToBlob(drawable), "");
+//
+//        insertActivityType(act1, "Outdoor");
+//
+//        drawable = ContextCompat.getDrawable(mContext, R.drawable.type_fishing);
+//        act1 = new ActivityType("", "Fishing", DataConverters.drawableToBlob(drawable), "");
+//
+//        insertActivityType(act1, "Outdoor");
+//
+//        drawable = ContextCompat.getDrawable(mContext, R.drawable.type_soccer);
+//        act1 = new ActivityType("", "Soccer", DataConverters.drawableToBlob(drawable), "");
+//
+//        insertActivityType(act1, "Sports");
+//
+//    }
+
+=========================================
+Old NetworkData
+=========================================
+String insertActivityType(ActivityType activityType, String categoryName){
+        String id = "";
+
+        DocumentReference ref = firestoreDb.collection(ACTIVITY_TYPE_COLLECTION_NAME).document();
+        id = ref.getId();
+        activityType.setId(id);
+
+        //Get category ID by name and insert to activityType
+        firestoreDb.collection(CATEGORY_COLLECTION_NAME)
+                .whereEqualTo("categoryName", categoryName)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult().getDocuments().get(0);
+                            Log.d(TAG, document.getId() + " => " + document.getData());
+                            activityType.setCategoryId(document.getString("id"));
+
+                            //Create new activityType with category ID
+                            ref.set(activityType).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "DocumentSnapshot activityType added with ID: " + ref.getId());
+                                }})
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w(TAG, "Error adding document activityType", e);
+                                        }
+                                    });
+
+                        }
+                        else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        return id;
+    }
+
+    String insertCategory(Category category){
+        String id = "";
+
+        DocumentReference ref = firestoreDb.collection(CATEGORY_COLLECTION_NAME).document();
+        id = ref.getId();
+        category.setId(id);
+        ref.set(category).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "DocumentSnapshot activityType added with ID: " + ref.getId());
+            }})
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document activityType", e);
+                    }
+                });
+        return id;
+    }
+
+//    void getCategoryIdByName(String name) {
+//        firestoreDb.collection(CATEGORY_COLLECTION_NAME)
+//                .whereEqualTo("categoryName", name)
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            DocumentSnapshot document = task.getResult().getDocuments().get(0);
+//                            Log.d(NETWORK_DATA_LOGS, document.getId() + " => " + document.getData());
+//                        }
+//                        else {
+//                            Log.d(NETWORK_DATA_LOGS, "Error getting documents: ", task.getException());
+//                        }
+//                    }
+//                });
+//    }
+
+    void getActivities(DocumentSnapshot lastPage, NetworkDataCallback.ActivityCallback callback){
+
+        Query query = firestoreDb.collection(ACTIVITY_COLLECTION_NAME)
+                .orderBy(ORDER_BY_FIELD)
+                .limit(AppRepository.PAGE_SIZE);
+        if(lastPage!=null)
+            if(lastPage.exists())
+                query.startAfter(lastPage);
+
+        query.get()
+        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        @Override
+        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            if (task.isSuccessful()) {
+                //for (QueryDocumentSnapshot document : task.getResult()) {
+                Log.d(TAG, "Firebase got activities");
+                QuerySnapshot result = task.getResult();
+                Log.d(TAG, "size: " + result.getDocuments().size());
+                DocumentSnapshot last = result.getDocuments().get(result.getDocuments().size()-1);
+                List<Activity> act = result.toObjects(Activity.class);
+                callback.onActivityCallback(act);//, last);
+                    //Log.d(NETWORK_DATA_LOGS, document.getId() + " => " + document.getData());
+                //}
+            } else {
+                Log.w(TAG, "Error getting documents.", task.getException());
+            }
+            }
+        });
+    }
+
+
+======================================================
+                RemoteData
+======================================================
+//    public void getUser(String id, NetworkDataCallback.ActivityCallback callback){
+//
+//        Query query = firestoreDb.collection(ACTIVITY_COLLECTION_NAME)
+//                .orderBy(ACTIVITY_ORDER_BY_FIELD).whereGreaterThan(ACTIVITY_ORDER_BY_FIELD, date)
+//                .limit(AppRepository.PAGE_SIZE);
+//
+//        query.get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            QuerySnapshot result = task.getResult();
+//                            List<Activity> act = result.toObjects(Activity.class);
+//                            callback.onCallback(act);
+//
+//                        }
+//                        else {
+//                            Log.w(TAG, "Error getting documents.", task.getException());
+//                        }
+//                    }
+//                });
+//    }
+
+
+==================================================
+AppRepository
+==================================================
+
+//    public LiveData<User> getUserById(String id){
+//        LiveData<User> user = localData.getUserById(id);
+//        if(user == null){
+//            fetchUser(id);
+//            return localData.getUserById(id);
+//        }
+//        else {
+//            return user;
+//        }
+//    }
+
+
+==================================================
+DataConverters
+=================================================
+//    public static Date stringToDate(String dateString){
+//        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+//        Date result = new Date();
+//        try {
+//            result = format.parse(dateString);
+//        } catch (ParseException e){
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
+
+//    public static Bitmap rotateImageIfNeeded(Bitmap bitmap, String path) throws IOException {
+//        ExifInterface ei = new ExifInterface(path);
+//        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+//                ExifInterface.ORIENTATION_UNDEFINED);
+//
+//        Bitmap rotatedBitmap = null;
+//        switch(orientation) {
+//
+//            case ExifInterface.ORIENTATION_ROTATE_90:
+//                return rotateImage(bitmap, 90);
+//
+//            case ExifInterface.ORIENTATION_ROTATE_180:
+//                return rotateImage(bitmap, 180);
+//
+//            case ExifInterface.ORIENTATION_ROTATE_270:
+//                return rotateImage(bitmap, 270);
+//
+//            case ExifInterface.ORIENTATION_NORMAL:
+//            default:
+//                return bitmap;
+//        }
+//    }
+//
+//    private static Bitmap rotateImage(Bitmap source, float angle) {
+//        Matrix matrix = new Matrix();
+//        matrix.postRotate(angle);
+//        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+//                matrix, true);
+//    }
+
+//    public static String getRealPathFromURIPath(Uri contentURI, Context context) {
+//        Cursor cursor = context.getContentResolver().query(contentURI, null, null, null, null);
+//        if (cursor == null) {
+//            return contentURI.getPath();
+//        } else {
+//            cursor.moveToFirst();
+//            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+//            return cursor.getString(idx);
+//        }
+//    }
+//
+//    public static Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
+//        Matrix matrix = new Matrix();
+//        switch (orientation) {
+//            case ExifInterface.ORIENTATION_NORMAL:
+//                return bitmap;
+//            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+//                matrix.setScale(-1, 1);
+//                break;
+//            case ExifInterface.ORIENTATION_ROTATE_180:
+//                matrix.setRotate(180);
+//                break;
+//            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+//                matrix.setRotate(180);
+//                matrix.postScale(-1, 1);
+//                break;
+//            case ExifInterface.ORIENTATION_TRANSPOSE:
+//                matrix.setRotate(90);
+//                matrix.postScale(-1, 1);
+//                break;
+//            case ExifInterface.ORIENTATION_ROTATE_90:
+//                matrix.setRotate(90);
+//                break;
+//            case ExifInterface.ORIENTATION_TRANSVERSE:
+//                matrix.setRotate(-90);
+//                matrix.postScale(-1, 1);
+//                break;
+//            case ExifInterface.ORIENTATION_ROTATE_270:
+//                matrix.setRotate(-90);
+//                break;
+//            default:
+//                return bitmap;
+//        }
+//        try {
+//            Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+//            bitmap.recycle();
+//            return bmRotated;
+//        }
+//        catch (OutOfMemoryError e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+
+    public static Bitmap getBitmapFromUri(Uri imageUri,Context context ) {
+
+        context.getContentResolver().notifyChange(imageUri, null);
+        ContentResolver cr = context.getContentResolver();
+        Bitmap bitmap;
+        try {
+            bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, imageUri);
+            return bitmap;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public static Blob drawableToBlob(Drawable drawable) {
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArr = stream.toByteArray();
+        return Blob.fromBytes(byteArr);
+    }
+}
+
+===========================
+Create Activity
+===========================
+//    private Bitmap getBitmapFromUri() {
+//
+//        getContext().getContentResolver().notifyChange(capturedImageUri, null);
+//        ContentResolver cr = getContext().getContentResolver();
+//        Bitmap bitmap;
+//        try {
+//            bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, capturedImageUri);
+//            return bitmap;
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+//
+//    public static Bitmap rotateImage(Bitmap source, float angle) {
+//        Matrix matrix = new Matrix();
+//        matrix.postRotate(angle);
+//        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+//                matrix, true);
+//    }
+
+//                        if (data != null) {
+//                            Bundle extras = data.getExtras();
+//                            if (extras.containsKey("data")) {
+//                                bitmap = (Bitmap) extras.get("data");
+//                            }
+//                            else {
+//                                bitmap = getBitmapFromUri();
+//                            }
+//                        }
+//                        else {
+//                            bitmap = getBitmapFromUri();
+//                        }
+//
+//                        ExifInterface ei = null;
+//                        try {
+//                            ei = new ExifInterface(selectedImagePath);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+//                                ExifInterface.ORIENTATION_UNDEFINED);
+//
+//                        Log.d(TAG, "" +orientation);
+//
+//                        Bitmap rotatedBitmap = null;
+//                        switch(orientation) {
+//
+//                            case ExifInterface.ORIENTATION_ROTATE_90:
+//                                rotatedBitmap = rotateImage(bitmap, 90);
+//                                break;
+//
+//                            case ExifInterface.ORIENTATION_ROTATE_180:
+//                                rotatedBitmap = rotateImage(bitmap, 180);
+//                                break;
+//
+//                            case ExifInterface.ORIENTATION_ROTATE_270:
+//                                rotatedBitmap = rotateImage(bitmap, 270);
+//                                break;
+//
+//                            case ExifInterface.ORIENTATION_NORMAL:
+//                            default:
+//                                rotatedBitmap = bitmap;
+//                        }
+//                        mFragmentCreateActivityBinding.imageView.setImageBitmap(rotatedBitmap);
+===================
+UserActivityJoinDao
+===================
+@Dao
+public interface UserActivityJoinDao {
+
+    @Query("SELECT * FROM user_table INNER JOIN user_activity_join_table ON id = userId WHERE activityId = :activityId")
+    LiveData<List<User>> getUsersFromActivity(final int activityId);
+
+    @Query("SELECT * FROM activity_table INNER JOIN user_activity_join_table ON id = activityId WHERE userId = :userId")
+    LiveData<List<Activity>> getActivitiesFromUser(final int userId);
+}
+==================
+UserActivityJoin
+==================
+
+@Entity(tableName = "user_activity_join_table", primaryKeys = {"userId", "activityId"},
+        foreignKeys = {@ForeignKey(entity = User.class, parentColumns = "id", childColumns = "userId"),
+        @ForeignKey(entity = Activity.class, parentColumns = "id", childColumns = "activityId")})
+public class UserActivityJoin {
+
+    private final int userId;
+    private final int activityId;
+
+    public UserActivityJoin(final int userId, final int activityId){
+        this.activityId = activityId;
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public int getActivityId() {
+        return activityId;
+    }
+}
+
+===================
+Add licence executors
+===================
+===================
+Container
+===================
+
+//    public boolean onCreateOptionsMenu(Menu menu) {
+////        // Inflate the menu; this adds items to the action bar if it is present.
+////        getMenuInflater().inflate(R.menu.top_bar_list, menu);
+////        return true;
+////    }
+
+//    public void hideBottomNav()
+//    {
+//        binding.bottomNavigation.setVisibility(View.GONE);
+//    }
+//
+//    public void showBottomNav(){
+//        binding.bottomNavigation.setVisibility(View.VISIBLE);
+//    }
+
+//        ((ActivitiesFragmentsContainer)getActivity()).hideBottomNav();
+
+======================
+ActivityListFragment
+========================
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        inflater.inflate(R.menu.top_bar_list, menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.option_duration:
+//                mActivityListViewModel.setSortText(LocalData.SORT_DURATION);
+//                break;
+//
+//            case R.id.option_start:
+//                mActivityListViewModel.setSortText(LocalData.SORT_START);
+//                break;
+//        }
+//        return true;
+//    }
+
+=============
+Detailed VM
+==============
+
+    public void leaveActivity(){
+        activity.getValue().setCurrMembers(activity.getValue().getCurrMembers()-1);
+        activity.getValue().getMembersIds().remove(currUser.getId());
+        currUser.getActivitiesMemberIds().remove(activity.getValue().getId());
+        repository.updateActivity(activity.getValue());
+        repository.updateUser(currUser);
+    }
+
+
+===============
+List VM
+===============
+//    private MutableLiveData<String> sortText = new MutableLiveData<>();
+//    private LiveData<PagedList<Activity>> activities;
+
+        //Date d = new Date();
+        //repository.fetchMoreActivities(DataConverters.toDate(d.getTime()));
+//        activities = Transformations.switchMap(sortText, (input) -> {
+//            if(input == null || input.equals("")){
+//                return repository.getActivities("");
+//            }
+//            else return repository.getActivities(input);
+//        });
+
+
+//    public MutableLiveData<String> getSortText() {
+//        return sortText;
+//    }
+//
+//    public void setSortText(String sortText) {
+//        this.sortText.setValue(sortText);
+//    }

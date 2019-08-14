@@ -4,29 +4,43 @@ import android.view.View;
 
 import androidx.lifecycle.ViewModel;
 
-import AppModel.Entity.User;
+import AppModel.Entity.SimplePlace;
 import AppView.UserLoginFragment;
 import DataSources.AppRepository;
 
 public class UserLoginViewModel extends ViewModel {
-    // TODO: Implement the ViewModel
 
     private AppRepository repository;
     private String password;
     private String email;
 
+    /**
+     * Constructor
+     * @param repository  - repository instance
+     */
     public UserLoginViewModel(AppRepository repository){
         this.repository = repository;
     }
 
-    public boolean isAlreadyLoggedIn(){
-        return repository.currentlyLoggedIn();
+    /**
+     * If user session exists - navigate directly to main page (ActivityListFragment)
+     * @param view
+     */
+    public void isAlreadyLoggedIn(View view, SimplePlace currLocation){
+        repository.currentlyLoggedIn(view, currLocation);
     }
 
-    public void userLogInEmail(UserLoginFragment fragment, View view){
-        repository.signInUserEmail(email, password, view, fragment);
+    /**
+     * Handles login button press - Firebase email login. On result - navigation to  ActivityListFragment
+     * @param fragment
+     * @param view
+     */
+    public void userLogInEmail(UserLoginFragment fragment, View view, SimplePlace currLocation){
+        repository.signInUserEmail(email, password, view, fragment, currLocation);
     }
 
+
+    //region Getters and setters
     public String getPassword() {
         return password;
     }
@@ -39,7 +53,10 @@ public class UserLoginViewModel extends ViewModel {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(String email)
+    {
         this.email = email;
     }
+    //endregion
 }
+

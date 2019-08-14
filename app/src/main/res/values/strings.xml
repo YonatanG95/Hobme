@@ -28,9 +28,10 @@
     <!--Create Activity Strings-->
     <string name="createButton">ADD</string>
     <string name="addPhoto">CHOOSE PHOTO</string>
-    <string name="date">TODAY</string>
-    <string name="endDate">END</string>
-    <string name="time">NOW</string>
+    <string name="startDate">Start Date</string>
+    <string name="endDate">End Date</string>
+    <string name="startTime">Start Time</string>
+    <string name="endTime">End Time</string>
     <string name="switchText">Private</string>
     <string-array name="choose_photo_options">
         <item>Take Photo</item>
@@ -50,7 +51,44 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
+    <string name="menu_logout">Sign Out</string>
     <string name="menu_send">Send</string>
     <string name="open">OPEN</string>
+
+    <!--Toolbar list menu-->
+    <string name="action_sort">Sort</string>
+    <string name="action_filter">Filter</string>
+    <string name="option_start">Start Date</string>
+    <string name="option_duration">Duration</string>
+    <string name="option_category">Category</string>
+
+    <!--Toolbar detailed activity menu-->
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+
+    <!--Bottom nav bar menu-->
+    <string name="action_history">Previous</string>
+    <string name="action_home">Home</string>
+    <string name="action_profile">Profile</string>
+
+    <!--Login Fragment-->
+    <string name="editText_email">Email</string>
+    <string name="editText_pass">Password</string>
+    <string name="login_btn">Login</string>
+    <string name="register_link">No account yet? Create one</string>
+
+    <!--Register Fragment-->
+    <string name="editText_name">Full Name</string>
+    <string name="create_account">Create Account</string>
+
+    <!--Create Activity-->
+    <string name="activityInfo">Activity Information</string>
+    <string name="activityName">Activity Name</string>
+    <string name="membersTxt">Members</string>
+    <string name="membersSpace">To</string>
+
+    <!--Detailed Activity-->
+    <string name="joinActivity">JOIN</string>
+    <string name="saveActivity">SAVE</string>
 
 </resources>
